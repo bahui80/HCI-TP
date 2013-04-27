@@ -13,6 +13,13 @@
   *zoom: 1;
 }
 
+p {
+  font-weight: 300 !important;
+}
+
+b {
+  font-weight: 400 !important;
+}
 .remove-bottom-margin {
   margin-bottom: 0 !important;
 }
