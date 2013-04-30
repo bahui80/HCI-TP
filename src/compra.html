@@ -13,57 +13,43 @@
         <div class="navbar-inner">
           <div class="container">
           <ul class="nav">
-            <a class="brand" href="#">Quiero viajar!</a>
-            <li><a href="#"><i class="icon-home"></i> Home</a></li>
-            <li><a href="#"><i class="icon-gift"></i> Promociones</a></li>
-            <li><a href="#"><i class="icon-comments"></i> Comentarios</a></li>
-          </ul>
-          <ul class="nav pull-right">
-            <li class="dropdown">
-              <a href="#" class=" dropdown-toggle" data-toggle="dropdown"><i class="icon-globe icon-large"></i> Idiomas <b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="#">Español</a></li>
-                <li><a href="#">Inglés</a></li>
-              </ul>
-            </li>
+            <a class="brand" href="index.html">Quiero viajar!</a>
+            <li class="enabled-link"><a href="results.html"><i class="icon-search"></i> Resultados</a></li>              
+            <li class="disabled-link"><i class="icon-angle-right"></i></li>
+            <li class="enabled-link"><a><i class="icon-group"></i> Pasajeros</a></li>
+            <li class="disabled-link"><i class="icon-angle-right"></i></li>
+            <li class="disabled-link"><p><i class="icon-shopping-cart"></i> Pago</p></li>
+            <li class="disabled-link"><i class="icon-angle-right"></i></li>
+            <li class="disabled-link"><p><i class="icon-plane"></i> Confirmación</p></li>
           </ul>
         </div>
       </div>
     </div>
-    <div class="navbar navbar-static-top">
-        <div class="navbar-inner">
-          <div class="container">
-            <ul class="nav">
-              <li><a href="#">Buscar vuelo <i class="icon-check"></i></a></li>
-              <li><a href="#">Seleccionar vuelo <i class="icon-check"></i></a></li>
-              <li class="active"><a href="#">Completar datos <i class="icon-check-empty"></i></a></a></li>
-              <li class="disabled"><a href="#" >Confirmar vuelo <i class="icon-check-empty"></i></a></a></li>
-            </ul>
-        </div>
-      </div>
-    </div>
-    <div class="container">      
+  <br>
+    <div class="container">
+      <img class="img-polaroid" src="img/large-3.jpg">      
       <div class="row-fluid">
-        <div class="span9">
+        <div class="span8">
           <div class="row-fluid">
             <h3><i class="icon-chevron-right"></i> Información de pasajeros</h3>
+            <!-- pasajero 1 -->
             <div class="well clearfix">  
               <div class="span12">
                 <legend><i class="icon-user"></i> Pasajero 1 (Adulto)</legend>
                 <div class="row-fluid">
                   <div class="span6">
                     <label>Nombre</label>
-                    <input class="span12" type="text" placeholder="Type something…">
+                    <input class="span12" type="text" placeholder="Ingrese el nombre del pasajero">
                   </div>
                   <div class="span6">
                     <label>Apellido</label>
-                    <input class="span12" type="text" placeholder="Type something…">
+                    <input class="span12" type="text" placeholder="Ingrese el apellido del pasajero">
                   </div>
                 </div>
                 <div class="row-fluid">
                   <div class="span6">
                     <label>DNI</label>
-                    <input class="span12" type="text" placeholder="Type something…">
+                    <input class="span12" type="text" placeholder="Ingrese el DNI del pasajero">
                   </div>
                   <div class="span6">
                     <label>Sexo</label>
@@ -83,37 +69,94 @@
                 </div>
               </div>
             </div>
+            <!-- pasajero 1 -->
+            <!-- pasajero 2 -->
             <div class="well clearfix">  
               <div class="span12">
-                <legend><i class="icon-user icon-x2"></i> Pasajero 2 (Niño)</legend>
-                <label>Nombre/s</label>
-                <input type="text" placeholder="Type something…">
-                <label>Apellido/s</label>
-                <input type="text" placeholder="Type something…">
-                <label>DNI</label>
-                <input type="text" placeholder="Type something…">                
-                <label>Sexo</label>
-                <select>
-                  <option>Masculino</option>
-                  <option>Femenino</option>
-                </select>
+                <legend><i class="icon-user"></i> Pasajero 1 (Niño)</legend>
+                <div class="row-fluid">
+                  <div class="span6">
+                    <label>Nombre</label>
+                    <input class="span12" type="text" placeholder="Ingrese el nombre del pasajero">
+                  </div>
+                  <div class="span6">
+                    <label>Apellido</label>
+                    <input class="span12" type="text" placeholder="Ingrese el apellido del pasajero">
+                  </div>
+                </div>
+                <div class="row-fluid">
+                  <div class="span6">
+                    <label>DNI</label>
+                    <input class="span12" type="text" placeholder="Ingrese el DNI del pasajero">
+                  </div>
+                  <div class="span6">
+                    <label>Sexo</label>
+                    <select class="span12">
+                      <option>Masculino</option>
+                      <option>Femenino</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row-fluid">
+                  <div class="span6">
                 <label>Fecha de nacimiento</label>
-                <input type="text" placeholder="dd" class="span1">
-                <input type="text" placeholder="mm" class="span1">
-                <input type="text" placeholder="aaaa" class="span2">
+                <input type="text" placeholder="dd" class="span3">
+                <input type="text" placeholder="mm" class="span3">
+                <input type="text" placeholder="aaaa" class="span3">
+                  </div>
+                </div>
               </div>
             </div>
+            <!-- pasajero 2 -->
+            <!-- pasajero 3 -->
+            <div class="well clearfix">  
+              <div class="span12">
+                <legend><i class="icon-user"></i> Pasajero 1 (Infante)</legend>
+                <div class="row-fluid">
+                  <div class="span6">
+                    <label>Nombre</label>
+                    <input class="span12" type="text" placeholder="Ingrese el nombre del pasajero">
+                  </div>
+                  <div class="span6">
+                    <label>Apellido</label>
+                    <input class="span12" type="text" placeholder="Ingrese el apellido del pasajero">
+                  </div>
+                </div>
+                <div class="row-fluid">
+                  <div class="span6">
+                    <label>DNI</label>
+                    <input class="span12" type="text" placeholder="Ingrese el DNI del pasajero">
+                  </div>
+                  <div class="span6">
+                    <label>Sexo</label>
+                    <select class="span12">
+                      <option>Masculino</option>
+                      <option>Femenino</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row-fluid">
+                  <div class="span6">
+                <label>Fecha de nacimiento</label>
+                <input type="text" placeholder="dd" class="span3">
+                <input type="text" placeholder="mm" class="span3">
+                <input type="text" placeholder="aaaa" class="span3">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- pasajero 3 -->
             <div class="row-fluid">
             <div class="span12">
               <div class="well clearfix">
               <button type="button" class="btn btn-inverse pull-right">Siguiente</button>
-              <button type="button" class="btn btn-inverse pull-left disabled">Anterior</button>
+              <a href="results.html" type="button" class="btn btn-inverse pull-left thin-font">Anterior</a>
             </div>
           </div>
         </div>
           </div>
         </div>
-        <div class="span3">          
+        <div class="span4">          
           <h3><i class="icon-chevron-right icon-x2"></i> Resumen</h3>
           <div class="well">
               <legend>Ida</legend>
@@ -121,11 +164,8 @@
                 <div class="span12">
                   <p><b>Origen:</b> Buenos Aires, Ezeisa</p>
                   <p><b>Destino:</b> Cordoba, Pajas Blancas</p>
-                  <p><b>Fecha partida:</b> 22-10-2015</p>
-                  <p><b>Horario partida:</b> 23:00</p>
-                  <p><b>Fecha llegada:</b> 22-10-2015</p>
-                  <p><b>Horario llegada:</b> 24:00</p>
-                  <p><b>Numero de vuelo:</b> BA-COR-230</p>
+                  <p><b>Fecha partida:</b> 22-10-2015 (23:00)</p>
+                  <p><b>Fecha llegada:</b> 22-10-2015 (24:00)</p>
                 </div>
               </div>
           </div>
@@ -135,11 +175,8 @@
                 <div class="span12">
                   <p><b>Origen:</b> Buenos Aires, Ezeisa</p>
                   <p><b>Destino:</b> Cordoba, Pajas Blancas</p>
-                  <p><b>Fecha partida:</b> 22-10-2015</p>
-                  <p><b>Horario partida:</b> 23:00</p>
-                  <p><b>Fecha llegada:</b> 22-10-2015</p>
-                  <p><b>Horario llegada:</b> 24:00</p>
-                  <p><b>Numero de vuelo:</b> BA-COR-230</p>
+                  <p><b>Fecha partida:</b> 22-10-2015 (23:00)</p>
+                  <p><b>Fecha llegada:</b> 22-10-2015 (24:00)</p>
                 </div>
               </div>
           </div>
