@@ -2064,7 +2064,7 @@ table {
 }
 
 .table th {
-  font-weight: 400;
+  font-weight: 400 !important;
 }
 
 .table thead th {

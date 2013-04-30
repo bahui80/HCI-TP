@@ -5,8 +5,11 @@
 		<meta charset="utf-8">
 		<link href="css/bootstrap.css" rel="stylesheet">
 		<link href="css/font-awesome.css" rel="stylesheet">
+    <link href="css/datepicker.css" rel="stylesheet">
 		<script src="js/jquery-1.9.1.js"></script>
 		<script src="js/bootstrap.js"></script>
+    <script src="js/datepicker.js"></script>
+    <script src="js/typeahead.js"></script>
 	</head>
 	<body>
       <div class="navbar navbar-inverse navbar-static-top">
@@ -72,21 +75,21 @@
               <div class="row-fluid">
                 <div class="span6">
                   <label>Origen</label>
-                  <input class="span12" type="text" placeholder="Ingrese ciudad de origen">
+                  <input id="origin" class="span12" type="text" placeholder="Ingrese ciudad de origen">
                 </div>
                 <div class="span6">
                   <label>Destino</label>
-                  <input class="span12" type="text" placeholder="Ingrese ciudad de destino">
+                  <input id="destination" class="span12" type="text" placeholder="Ingrese ciudad de destino">
                 </div>
               </div>
               <div class="row-fluid">
                 <div class="span6">
                   <label>Fecha de ida</label>
-                  <input class="span12" type="text" placeholder="Ingrese fecha de ida">
+                  <input id="departure" class="span12" type="text" placeholder="Ingrese fecha de ida">
                 </div>
                 <div class="span6">
                   <label>Fecha de vuelta</label>
-                  <input class="span12" type="text" placeholder="Ingrese fecha de vuelta">
+                  <input id="arrival" class="span12" type="text" placeholder="Ingrese fecha de vuelta">
                 </div>
               </div>
               <div class="row-fluid">
