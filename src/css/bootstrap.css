@@ -17,6 +17,10 @@ p {
   font-weight: 300 !important;
 }
 
+.space {
+  margin-bottom: 100px;
+}
+
 b {
   font-weight: 400 !important;
 }
