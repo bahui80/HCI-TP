@@ -24,6 +24,9 @@ p {
 b {
   font-weight: 400 !important;
 }
+.reduce-bottom-margin {
+  margin-bottom: -14px !important;
+}
 .remove-bottom-margin {
   margin-bottom: 0 !important;
 }
