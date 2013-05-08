@@ -6,10 +6,14 @@
 		<link href="css/bootstrap.css" rel="stylesheet">
 		<link href="css/font-awesome.css" rel="stylesheet">
 		<link href="css/datepicker.css" rel="stylesheet">
+		<link href="css/nouislider-larger.css" rel="stylesheet">
 		<script src="js/jquery-1.9.1.js"></script>
 		<script src="js/bootstrap.js"></script>
 		<script src="js/datepicker.js"></script>
 		<script src="js/typeahead.js"></script>
+		<script src="js/advanced-options.js"></script>
+		<script src="js/jquery.nouislider.js"></script>
+		<script src="js/slider.js"></script>
 	</head>
 	<body>
 		<div class="navbar navbar-inverse navbar-static-top">
@@ -126,6 +130,48 @@
 									<input id="arrival" class="span12" type="text" placeholder="Ingrese fecha de vuelta">
 								</div>
 							</div>
+							<div class="row-fluid advanced_options_div">
+								<div class="span6">
+									<label>Aerolinea</label>
+									<input class="span12" type="text" placeholder="Ingrese aerolinea de preferencia">
+								</div>
+								<div class="span6">
+									<label>Clase</label>
+									<select class="span12">
+										<option>Turista</option>
+										<option>Ejecutiva</option>
+									</select>
+								</div>
+
+							</div>
+							<div class="row-fluid advanced_options_div">
+								<div class="span6">
+									<label>Horario de partida</label>
+									<select class="span12">
+										<option>Indistinto</option>
+										<option>Madrugada</option>
+										<option>Mañana</option>
+										<option>Tarde</option>
+										<option>Noche</option>
+									</select>
+								</div>
+								<div class="span6 reduce-bottom-margin">
+									<label>Precio mínimo-máximo</label>
+									<div class="noUiSlider"></div>
+									<div class="row-fluid">
+									<div class="span6">
+										<p class="slide-font text-left" id="min">
+											Sin mínimo
+										</p>
+									</div>
+									<div class="span6">
+											<p class="slide-font text-right" id="max">
+												Sin máximo
+											</p>
+										</div>
+									</div>
+								</div>
+							</div>
 							<div class="row-fluid">
 								<div class="span2">
 									<label>Adultos</label>
@@ -180,7 +226,7 @@
 							</div>
 						</form>
 						<div id="push-top-padding">
-							<a type="button" class="btn thin-font ">Busqueda avanzada <i class="icon-plus-sign-alt"></i></a>
+							<a id="advanced_options_button" type="button" class="btn thin-font">Busqueda avanzada <i id="advanced_options_icon"class="icon-plus-sign"></i></a>
 							<a href="results.html" class="btn btn-inverse thin-font pull-right">Buscar</a>
 						</div>
 					</div>
