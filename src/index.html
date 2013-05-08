@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 	<head>
 		<title>Quiero viajar! - Compra tu pasaje online</title>
@@ -10,8 +10,7 @@
 		<script src="js/jquery-1.9.1.js"></script>
 		<script src="js/bootstrap.js"></script>
 		<script src="js/datepicker.js"></script>
-		<script src="js/typeahead.js"></script>
-		<script src="js/advanced-options.js"></script>
+		<script src="js/searchField.js"></script>
 		<script src="js/jquery.nouislider.js"></script>
 		<script src="js/slider.js"></script>
 	</head>
@@ -111,6 +110,11 @@
 				<div class="span7">
 					<h3><i class="icon-chevron-right icon-x2"></i> Buscar vuelo</h3>
 					<div class="well">
+						<div class="btn-group">
+  							<button id="round_trip" class="btn active">Ida y vuelta</button>
+  							<button id="oneway_trip" class="btn">Solo ida</button>
+  							<button id="offers_trip" class="btn">Ofertas</button>
+						</div>
 						<form>
 							<div class="row-fluid">
 								<div class="span6">
@@ -127,7 +131,7 @@
 									<label>Fecha de ida</label>
 									<input id="departure" class="span12" type="text" placeholder="Ingrese fecha de ida (dd/mm/aaaa)">
 								</div>
-								<div class="span6">
+								<div id="return_date" class="span6">
 									<label>Fecha de vuelta</label>
 									<input id="arrival" class="span12" type="text" placeholder="Ingrese fecha de vuelta (dd/mm/aaaa)">
 								</div>
@@ -135,7 +139,7 @@
 							<div class="row-fluid advanced_options_div">
 								<div class="span6">
 									<label>Aerolinea</label>
-									<input class="span12" type="text" placeholder="Ingrese aerolínea de preferencia">
+									<input id="airline" class="span12" type="text" placeholder="Ingrese aerolínea de preferencia">
 								</div>
 								<div class="span6">
 									<label>Clase</label>
@@ -157,7 +161,7 @@
 										<option>Noche  (6 PM - 12 PM)</option>
 									</select>
 								</div>
-								<div class="span6">
+								<div id="return_hour" class="span6">
 									<label>Horario de retorno</label>
 									<select class="span12">
 										<option>Indistinto</option>
@@ -239,7 +243,7 @@
 						</form>
 						<div id="push-top-padding">
 							<a id="advanced_options_button" type="button" class="btn thin-font">Búsqueda avanzada <i id="advanced_options_icon"class="icon-plus-sign"></i></a>
-							<a href="results.html" class="btn btn-inverse thin-font pull-right">Buscar</a>
+							<a id="search_button" href="results.html" class="btn btn-inverse thin-font pull-right">Buscar</a>
 						</div>
 					</div>
 				</div>
