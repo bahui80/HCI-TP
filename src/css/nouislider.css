@@ -1,65 +1,69 @@
-.noUiSlider, .noUiSlider * {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-	-webkit-user-select: none;
-	-moz-user-select: none;
+	.noUiSlider,
+	.noUiSlider * {
+-webkit-box-sizing: border-box;
+   -moz-box-sizing: border-box;
+		box-sizing: border-box;
+-webkit-user-select: none;
+   -moz-user-select: none;
 	-ms-user-select: none;
-	display: block;
-	cursor: default;
-}
-.slide-font {
-	font-size: 12px !important;
-	color: #6c6c6c;
-}
-.noUiSlider {
-	position: relative;
-}
-.noUiSlider a {
-	position: absolute;
-	z-index: 1;
-}
-.noUiSlider a:nth-child(2) {
-	background: inherit !important;
-}
-.noUiSlider.vertical a {
-	width: 100%;
-	bottom: 0;
-}
-.noUiSlider.horizontal a {
-	height: 100%;
-	right: 0;
-}
+		display: block;
+		cursor: default;
+	}
+	.slide-font {
+		font-size: 12px !important;
+		color: #6c6c6c;
+	}
+	.noUiSlider {
+		position: relative;
+	}
+	.noUiSlider a {
+		position: absolute;
+		z-index: 1;
+	}
+	.noUiSlider a:nth-child(2) {
+		background: inherit !important;
+	}
+	.noUiSlider.vertical a {
+		width: 100%;
+		bottom: 0;
+	}
+	.noUiSlider.horizontal a {
+		height: 100%;
+		right: 0;
+	}
 
-.noUiSlider {
-	margin: 10px 0px 5px 2px;
-	border: 1px solid #999999;
-	border-radius: 3px;
-}
-.noUiSlider.connect a, .noUiSlider.connect.lower {
-	background: #dadada;
-}
-.noUiSlider, .noUiSlider.connect.lower a {
-	background: #dadada;
-}
-.noUiSlider.disabled, .noUiSlider.disabled.connect.lower a {
-	background: #ccc;
-	box-shadow: none;
-}
-.noUiSlider div {
-	height: 18px;
-	width: 15px;
-	border: 1px solid #999999;
-	border-radius: 3px;
-	background: #eeeeee;
-}
-.noUiSlider.disabled div {
-	background: transparent;
-}
-.noUiSlider.horizontal {
-	width: 170px;
-	height: 10px;
-}
-.noUiSlider.horizontal div {
-	margin: -5px 0 0 -5px;
-}
+	.noUiSlider {
+		margin: 10px 0px 5px 2px;
+		border: 1px solid #999999;
+		border-radius: 3px;
+	}
+	.noUiSlider.connect a,
+	.noUiSlider.connect.lower {
+		background: #dadada;
+	}
+	.noUiSlider,
+	.noUiSlider.connect.lower a {
+		background: #dadada;
+	}
+	.noUiSlider.disabled,
+	.noUiSlider.disabled.connect.lower a {
+		background: #ccc;
+		box-shadow: none;
+	}
+	.noUiSlider div {
+		height: 18px;
+		width: 15px;
+		border: 1px solid #999999;
+		border-radius: 3px;
+		background: #eeeeee;
+	}
+	.noUiSlider.disabled div {
+		background: transparent;
+	}
+	.noUiSlider.horizontal {
+		width: 170px;
+		height: 10px;
+	}
+	.noUiSlider.horizontal div {
+		margin: -5px 0 0 -5px;
+	}
