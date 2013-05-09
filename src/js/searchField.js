@@ -3,6 +3,7 @@ var airlinesArray = new Array();
 var i=0;
 var curTotal=0;
 var advanced_options_on = false;
+var error_on = false;
 
 $(document).ready(function() {
 	$.ajax({
@@ -34,14 +35,14 @@ $(document).ready(function() {
 	
 	var trip_state = false; 
 	$("#oneway_trip").click(function () {
-		$("#return_date").fadeOut(500);
+		$("#return_span").fadeOut(500);
 		$("#return_hour").fadeOut(500);
 		$("#oneway_trip").addClass('active');
 		$("#round_trip").removeClass('active');
 	});
 	
 	$("#round_trip").click(function () {
-		$("#return_date").fadeIn(500);
+		$("#return_span").fadeIn(500);
 		$("#return_hour").fadeIn(500);
 		$("#oneway_trip").removeClass('active');
 		$("#round_trip").addClass('active');
@@ -112,6 +113,31 @@ function fillAirportsArray(data){
 				containsAirline = true;
 			}
 		}
-	});
-	
+
+		// pinta los inputs de rojo
+		if(!containsOrigin){
+			$("#origin_span").addClass('control-group error');
+		}else{
+			$("#origin_span").removeClass('control-group error');
+		}
+		if(!containsDestination){
+			$("#destination_span").addClass('control-group error');
+		}else{
+			$("#destination_span").removeClass('control-group error');
+		}
+		if(!containsAirline){
+			$("#airline_span").addClass('control-group error');
+		}else{
+			$("#airline_span").removeClass('control-group error');
+		}
+
+		// crea resumen de errores
+		if((!containsOrigin || !containsDestination || !containsAirline)){
+			if(error_on){
+				$(".alert-error").remove();
+			}
+			$("#button_section").prepend('<div class="alert alert-error"><strong>Cuidado!</strong> Revisa los siguientes campos:</div>');
+			error_on = true;
+		}	
+	});	
 }
