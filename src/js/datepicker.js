@@ -4,7 +4,7 @@ $(document).ready(
 			var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(),
 					nowTemp.getDate(), 0, 0, 0, 0);
 
-			var checkin = $('#departure').datepicker({
+			var checkin = $('#dep_date').datepicker({
 				onRender : function(date) {
 					return date.valueOf() < now.valueOf() ? 'disabled' : '';
 				}
@@ -15,9 +15,9 @@ $(document).ready(
 					checkout.setValue(newDate);
 				}
 				checkin.hide();
-				$('#arrival')[0].focus();
+				$('#ret_date')[0].focus();
 			}).data('datepicker');
-			var checkout = $('#arrival')
+			var checkout = $('#ret_date')
 					.datepicker(
 							{
 								onRender : function(date) {

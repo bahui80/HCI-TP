@@ -87,11 +87,11 @@ function fillAirportsArray(data){
 	}else{
         console.log(JSON.stringify(data));
 	}
-	$('#origin').typeahead({
+	$('#from').typeahead({
 		source : citiesAirportsArray,
 		minLength : 3
 	});
-	$('#destination').typeahead({
+	$('#to').typeahead({
 		source : citiesAirportsArray,
 		minLength : 3
 	});
@@ -101,10 +101,10 @@ function fillAirportsArray(data){
 		var containsDestination = false;
 		var containsAirline = false;
 		for(var k=0; k<citiesAirportsArray.length; k++){
-			if(citiesAirportsArray[k]==$("#origin").val()){
+			if(citiesAirportsArray[k]==$("#from").val()){
 				containsOrigin = true;
 			}
-			if(citiesAirportsArray[k]==$("#destination").val()){
+			if(citiesAirportsArray[k]==$("#to").val()){
 				containsDestination = true;
 			}
 		}
@@ -116,14 +116,14 @@ function fillAirportsArray(data){
 
 		// pinta los inputs de rojo
 		if(!containsOrigin){
-			$("#origin_span").addClass('control-group error');
+			$("#from_span").addClass('control-group error');
 		}else{
-			$("#origin_span").removeClass('control-group error');
+			$("#from_span").removeClass('control-group error');
 		}
 		if(!containsDestination){
-			$("#destination_span").addClass('control-group error');
+			$("#to_span").addClass('control-group error');
 		}else{
-			$("#destination_span").removeClass('control-group error');
+			$("#to_span").removeClass('control-group error');
 		}
 		if(!containsAirline){
 			$("#airline_span").addClass('control-group error');
@@ -136,7 +136,7 @@ function fillAirportsArray(data){
 			if(error_on){
 				$(".alert-error").remove();
 			}
-			$("#button_section").prepend('<div class="alert alert-error"><strong>Cuidado!</strong> Revisa los siguientes campos:</div>');
+			$("#button_section").prepend('<div class="alert alert-error"><strong>Cuidado!</strong> Revise los campos indicados</div>');
 			error_on = true;
 		}	
 	});	
