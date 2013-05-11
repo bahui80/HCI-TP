@@ -38,6 +38,7 @@ $(document).ready(function() {
 		// home
 		$("#return_span").fadeOut(500);
 		$("#return_hour").fadeOut(500);
+		$("#ret_date_div").slideUp(500);
 		$("#oneway_trip").addClass('active');
 		$("#round_trip").removeClass('active');
 	});
@@ -46,6 +47,7 @@ $(document).ready(function() {
 		// home
 		$("#return_span").fadeIn(500);
 		$("#return_hour").fadeIn(500);
+		$("#ret_date_div").slideDown(500);
 		$("#oneway_trip").removeClass('active');
 		$("#round_trip").addClass('active');
 	});

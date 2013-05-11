@@ -16,7 +16,7 @@
 		<script src="js/query-string.js"></script>
 		<script src="js/jquery.simplePagination.js"></script>
 		<script src="js/results.js"></script>
-		<script src="js/searchField.results.js"></script>
+		<script src="js/searchField.js"></script>
 	</head>
 	<body>
 		<div class="navbar navbar-inverse navbar-fixed-top">
@@ -83,8 +83,8 @@
 							<div class="row-fluid">
 								<div class="span12">
 									<div class="btn-group span12 btn-group-size">
-  										<button id="round_trip" class="btn active btn-size">Ida y vuelta</button>
-  										<button id="oneway_trip" class="btn btn-size">Solo ida</button>
+  										<a id="round_trip" class="btn active btn-size thin-font">Ida y vuelta</a>
+  										<a id="oneway_trip" class="btn btn-size thin-font">Solo ida</a>
 									</div>
 								</div>
 							</div>				
@@ -101,7 +101,7 @@
 								</div>
 							</div>
 							<div class="row-fluid">
-								<div id="dep_date_span" class="span12">
+								<div class="span12">
 									<label>Fecha de ida</label>
 									<input id="dep_date" class="span12" type="text" placeholder="Ingrese fecha de ida">
 								</div>
