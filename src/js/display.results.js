@@ -37,17 +37,23 @@ function filterEvents(){
 
 			var values = $(this).val();
 			if (values[0] == 0) {
-				values[0] = "Sin mínimo";
+				values[0] = "";
+				$("#min").text("Sin mínimo");
+			} else {
+				$("#min").text(values[0]);
 			}
 			if (values[1] == 5000) {
-				values[1] = "Sin máximo";
+				values[1] = "";
+				$("#max").text("Sin máximo");
+			} else {
+				$("#max").text(values[1]);
 			}
-
-			$("#min").text(values[0]);
-			$("#max").text(values[1]);
-
-			searchFlights(cur_page);
+			
 		}
+	});
+
+	$(".noUiSlider").mouseup(function(){
+		searchFlights(cur_page);
 	});
 
 	// function de la clase
