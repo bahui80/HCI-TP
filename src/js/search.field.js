@@ -38,7 +38,10 @@ $(document).ready(function() {
 		// home
 		$("#return_span").fadeOut(500);
 		$("#return_hour").fadeOut(500);
+		// esto es de la pag de res
 		$("#ret_date_div").slideUp(500);
+		$(".ret_time_filter").slideUp(500);
+		// cambia de estado
 		$("#oneway_trip").addClass('active');
 		$("#round_trip").removeClass('active');
 	});
@@ -47,7 +50,10 @@ $(document).ready(function() {
 		// home
 		$("#return_span").fadeIn(500);
 		$("#return_hour").fadeIn(500);
+		// esto es de la pag de res
 		$("#ret_date_div").slideDown(500);
+		$(".ret_time_filter").slideDown(500);
+		// cambia de estado
 		$("#oneway_trip").removeClass('active');
 		$("#round_trip").addClass('active');
 	});

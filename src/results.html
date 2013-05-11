@@ -12,11 +12,10 @@
 		<script src="js/bootstrap.js"></script>
 		<script src="js/datepicker.js"></script>
 		<script src="js/jquery.nouislider.js"></script>
-		<script src="js/slider.js"></script>
-		<script src="js/query-string.js"></script>
+		<script src="js/query.string.js"></script>
 		<script src="js/jquery.simplePagination.js"></script>
-		<script src="js/results.js"></script>
-		<script src="js/searchField.js"></script>
+		<script src="js/display.results.js"></script>
+		<script src="js/search.field.js"></script>
 	</head>
 	<body>
 		<div class="navbar navbar-inverse navbar-fixed-top">
@@ -172,11 +171,15 @@
 					</div>
 					<div class="well">
 						<legend>
-							Filtros
+							Opciones avanzadas
 						</legend>
-						<div class="row-fluid push-bottom-margin">
-							<div class="span12 reduce-bottom-margin">
-								<label>Precio mínimo-máximo</label>
+						<div class="row-fluid">
+							<div class="span12 label-fix">
+								<label id="min_max_filter_btn"><i class="icon-chevron-sign-up icon-padding"></i> Precio mínimo-máximo</label>
+							</div>
+						</div>
+						<div id="min_max_filter_div" class="row-fluid">
+							<div class="span12">
 								<div id="minMaxSlider"class="noUiSlider"></div>
 								<div class="row-fluid">
 									<div class="span6">
@@ -192,71 +195,87 @@
 								</div>
 							</div>
 						</div>
-						<div class="row-fluid">
+						<div class="row-fluid ">
+							<div class="span12 label-fix">
+								<label id="dep_time_filter_btn"><i class="icon-chevron-sign-up icon-padding"></i> Horario de partida</label>
+							</div>
+						</div>
+						<div id="dep_time_filter_div" class="row-fluid">
 							<div class="span12">
-								<label>Horario de partida</label>
 								<label class="radio label-font-fix">
-									<input id="all-dep-time"type="radio" name="dep_group" checked>
+									<input id="all-dep-time"type="radio" value="" name="dep_group" checked>
 									Todos los horarios 
 								</label>
 								<label class="radio label-font-fix">
-									<input id="morning-dep-time" type="radio" name="dep_group">
+									<input id="morning-dep-time" type="radio" value="Morning" name="dep_group">
 									Madrugada (12 PM - 6 AM)
 								</label>
 								<label class="radio label-font-fix">
-									<input id="noon-dep-time" type="radio" name="dep_group">
+									<input id="noon-dep-time" type="radio" value="Noon" name="dep_group">
 									Mañana (6 AM - 12 AM)
 								</label>
 								<label class="radio label-font-fix">
-									<input id="afternoon-dep-time" type="radio" name="dep_group">
+									<input id="afternoon-dep-time" type="radio" value="Afternoon" name="dep_group">
 									Tarde (12 AM - 6 PM)
 								</label>
 								<label class="radio label-font-fix">
-									<input id="night-dep-time" type="radio" name="dep_group">
+									<input id="night-dep-time" type="radio" value="Night" name="dep_group">
 									Noche (6 PM - 12 PM)
 								</label>
 							</div>
 						</div>
-						<div id="ret-time"class="row-fluid">
+						<div class="row-fluid ret_time_filter">
+							<div class="span12 label-fix">
+								<label id="ret_time_filter_btn"><i class="icon-chevron-sign-up icon-padding"></i> Horario de retorno</label>
+							</div>
+						</div>
+						<div id="ret_time_filter_div" class="row-fluid ret_time_filter">
 							<div class="span12">
-								<label>Horario de retorno</label>
 								<label class="radio label-font-fix">
-									<input id="morning-ret-time" type="radio" name="ret_group" checked>
+									<input id="all-ret-time" type="radio" value="" name="ret_group" checked>
 									Todos los horarios </label>
 								<label class="radio label-font-fix">
-									<input id="noon-ret-time" type="radio" name="ret_group">
+									<input id="morning-ret-time" type="radio" value="Morning" name="ret_group">
 									Madrugada (12 PM - 6 AM)</label>
 								<label class="radio label-font-fix">
-									<input id="afternoon-ret-time"type="radio" name="ret_group">
+									<input id="noon-ret-time"type="radio" value="Noon" name="ret_group">
 									Mañana (6 AM - 12 AM)</label>
 								<label class="radio label-font-fix">
-									<input id="night-ret-time" type="radio" name="ret_group">
+									<input id="afternoon-ret-time" type="radio" value="Afternoon" name="ret_group">
 									Tarde (12 AM - 6 PM)</label>
 								<label class="radio label-font-fix">
-									<input id="night-ret-time" type="radio" name="ret_group">
+									<input id="night-ret-time" type="radio" value="Night" name="ret_group">
 									Noche (6 PM - 12 PM)</label>
 							</div>
 						</div>
-						<div class="row-fluid">
+						<div class="row-fluid ">
+							<div class="span12 label-fix">
+								<label id="cabin_type_filter_btn"><i class="icon-chevron-sign-up icon-padding"></i> Clase</label>
+							</div>
+						</div>
+						<div id="cabin_type_filter_div" class="row-fluid">
 							<div class="span12">
-								<label>Clase</label>
 								<label class="radio label-font-fix">
-									<input type="radio" name="cabin_group" checked>
+									<input type="radio" value="" name="cabin_group" checked>
 									Todas las clases </label>
 								<label class="radio label-font-fix">
-									<input type="radio" name="cabin_group">
+									<input type="radio" value="ECONOMY" name="cabin_group" >
 									Turista </label>
 								<label class="radio label-font-fix">
-									<input type="radio" name="cabin_group">
+									<input type="radio" value="BUSINESS" name="cabin_group">
 									Ejecutiva </label>
 								<label class="radio label-font-fix">
-									<input type="radio" name="cabin_group">
+									<input type="radio" value="FIRST_CLASS" name="cabin_group">
 									Primera clase </label>
 							</div>
 						</div>
-						<div class="row-fluid">
+						<div class="row-fluid ">
+							<div class="span12 label-fix">
+								<label id="airline_filter_btn"><i class="icon-chevron-sign-up icon-padding"></i> Aerolinea</label>
+							</div>
+						</div>
+						<div id="airline_filter_div" class="row-fluid">
 							<div id="airline-div" class="span12">
-								<label>Nombre de la aerolínea</label>
 								<label class="radio label-font-fix">
 									<input type="radio" name="airlines_group">
 									Todas las aerolíneas </label>
@@ -278,15 +297,15 @@
 							<div class="span6">
 								<p class="text-right">
 									Ordenar por:
-									<select class="span6">
-										<option>Precio (Ascendente)</option>
-										<option>Precio (Descendente)</option>
-										<option>Escalas (Ascendente)</option>
-										<option>Escalas (Descendente)</option>
-										<option>Aerolinea (Ascendente)</option>
-										<option>Aerolinea (Descendente)</option>
-										<option>Duración (Ascendente)</option>
-										<option>Duración (Descendente)</option>
+									<select id="sort_type" class="span6">
+										<option value="total-asc">Precio final (Ascendente)</option>
+										<option value="total-desc">Precio final (Descendente)</option>
+										<option value="fare-asc">Precio base (Ascendente)</option>
+										<option value="fare-desc">Precio base (Descendente)</option>
+										<option value="airline-asc">Aerolinea (Ascendente)</option>
+										<option value="airline-desc">Aerolinea (Descendente)</option>
+										<option value="duration-asc">Duración (Ascendente)</option>
+										<option value="duration-desc">Duración (Descendente)</option>
 									</select>
 								</p>
 							</div>
@@ -298,8 +317,8 @@
 								<table class="table">
 									<thead>
 										<tr>
-											<th><i class="icon-circle-arrow-right icon-large"></i> IDA</th>
-											<th>13 de abril de 2013</th>
+											<th><i class="icon-circle-arrow-right icon-large"></i> Ida</th>
+											<th>2012-10-20</th>
 											<th>Buenos Aires (AER) <i class="icon-caret-right icon-large"></i> Cordoba (APB)</th>
 										</tr>
 									</thead>
@@ -312,7 +331,7 @@
 									</tbody>
 									<thead>
 										<tr>
-											<th><i class="icon-circle-arrow-left icon-large"></i> VUELTA</th>
+											<th><i class="icon-circle-arrow-left icon-large"></i> Vuelta</th>
 											<th>14 de abril de 2013</th>
 											<th>Cordoba (APB) <i class="icon-caret-right icon-large"></i> Buenos Aires (AER)</th>
 										</tr>
@@ -320,7 +339,7 @@
 									<tbody>
 										<tr>
 											<td>09:00hs <i class="icon-caret-right icon-large"></i> 10:23hs</td>
-											<td>(1h 23m, Directo)</td>
+											<td>(00:37, Directo)</td>
 											<td>Aerolineas Argentinas</td>
 										</tr>
 									</tbody>
@@ -347,14 +366,6 @@
 								</div>
 							</div>
 						</div>
-						<div id="flights_row"class="row-fluid">
-						<div class="well clearfix">
-							<div class="span12">
-								<h3 class="text-center"><i class="icon-warning-sign"></i> No pudimos encontrar ningún vuelo!</h3>
-								<p class="text-center">Intenta buscando con otro parámetros o quitando filtros si haz aplicado alguno</p>
-							</div>
-						</div>
-					</div>
 					</div>
 					<div class="row-fluid">
 						<div class="span12 ">

@@ -33,8 +33,18 @@ b {
   font-weight: 400 !important;
 }
 .reduce-bottom-margin {
-  margin-bottom: -14px !important;
+  margin-bottom: -10px !important;
 }
+
+.icon-padding {
+  padding-top: 3px;
+}
+
+.label-fix {
+  margin-top: 1px !important;
+  margin-bottom: -5px !important;
+}
+
 .remove-bottom-margin {
   margin-bottom: 0 !important;
 }
