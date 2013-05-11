@@ -16,7 +16,7 @@
 		<script src="js/query-string.js"></script>
 		<script src="js/jquery.simplePagination.js"></script>
 		<script src="js/results.js"></script>
-		<script src="js/searchField.js"></script>
+		<script src="js/searchField.results.js"></script>
 	</head>
 	<body>
 		<div class="navbar navbar-inverse navbar-fixed-top">
@@ -66,7 +66,7 @@
     			<h3 class="text-center"><i class="icon-spinner icon-spin"></i> Cargando</h3>
     		</div>
     		<div class="modal-footer">
-    			<p class="text-center">Por favor espere mientras buscamos las mejores ofertas</p>
+    			<p class="text-center">Por favor espere mientras buscamos los mejores precios</p>
     		</div>
     	</div>
 		<!-- Loading modal -->
@@ -82,23 +82,31 @@
 							</legend>
 							<div class="row-fluid">
 								<div class="span12">
+									<div class="btn-group span12 btn-group-size">
+  										<button id="round_trip" class="btn active btn-size">Ida y vuelta</button>
+  										<button id="oneway_trip" class="btn btn-size">Solo ida</button>
+									</div>
+								</div>
+							</div>				
+							<div class="row-fluid">
+								<div id="from_span" class="span12">
 									<label>Origen</label>
 									<input id="from" class="span12" type="text" placeholder="Ingrese ciudad de origen">
 								</div>
 							</div>
 							<div class="row-fluid">
-								<div class="span12">
+								<div id="to_span" class="span12">
 									<label>Destino</label>
 									<input id="to" class="span12" type="text" placeholder="Ingrese ciudad de destino">
 								</div>
 							</div>
 							<div class="row-fluid">
-								<div class="span12">
+								<div id="dep_date_span" class="span12">
 									<label>Fecha de ida</label>
 									<input id="dep_date" class="span12" type="text" placeholder="Ingrese fecha de ida">
 								</div>
 							</div>
-							<div class="row-fluid">
+							<div id="ret_date_div" class="row-fluid">
 								<div class="span12">
 									<label>Fecha de vuelta</label>
 									<input id="ret_date" class="span12" type="text" placeholder="Ingrese fecha de vuelta">
@@ -154,8 +162,8 @@
 								</div>
 							</div>
 							<div class="row-fluid">
-								<div class="span12">
-									<button type="button" class="btn btn-inverse btn-block">
+								<div id="button_section" class="span12">
+									<button id="search_button" type="button" class="btn btn-inverse btn-block">
 										Buscar vuelos
 									</button>
 								</div>
@@ -187,24 +195,24 @@
 						<div class="row-fluid">
 							<div class="span12">
 								<label>Horario de partida</label>
-								<label class="checkbox label-font-fix">
-									<input id="all-dep-time"type="checkbox">
+								<label class="radio label-font-fix">
+									<input id="all-dep-time"type="radio" name="dep_group" checked>
 									Todos los horarios 
 								</label>
-								<label class="checkbox label-font-fix">
-									<input id="morning-dep-time"type="checkbox">
+								<label class="radio label-font-fix">
+									<input id="morning-dep-time" type="radio" name="dep_group">
 									Madrugada (12 PM - 6 AM)
 								</label>
-								<label class="checkbox label-font-fix">
-									<input id="noon-dep-time" type="checkbox">
+								<label class="radio label-font-fix">
+									<input id="noon-dep-time" type="radio" name="dep_group">
 									Mañana (6 AM - 12 AM)
 								</label>
-								<label class="checkbox label-font-fix">
-									<input id="afternoon-dep-time" type="checkbox">
+								<label class="radio label-font-fix">
+									<input id="afternoon-dep-time" type="radio" name="dep_group">
 									Tarde (12 AM - 6 PM)
 								</label>
-								<label class="checkbox label-font-fix">
-									<input id="night-dep-time" type="checkbox">
+								<label class="radio label-font-fix">
+									<input id="night-dep-time" type="radio" name="dep_group">
 									Noche (6 PM - 12 PM)
 								</label>
 							</div>
@@ -212,45 +220,45 @@
 						<div id="ret-time"class="row-fluid">
 							<div class="span12">
 								<label>Horario de retorno</label>
-								<label class="checkbox label-font-fix">
-									<input id="morning-ret-time"type="checkbox" checked>
+								<label class="radio label-font-fix">
+									<input id="morning-ret-time" type="radio" name="ret_group" checked>
 									Todos los horarios </label>
-								<label class="checkbox label-font-fix">
-									<input id="noon-ret-time" type="checkbox">
+								<label class="radio label-font-fix">
+									<input id="noon-ret-time" type="radio" name="ret_group">
 									Madrugada (12 PM - 6 AM)</label>
-								<label class="checkbox label-font-fix">
-									<input id="afternoon-ret-time"type="checkbox">
+								<label class="radio label-font-fix">
+									<input id="afternoon-ret-time"type="radio" name="ret_group">
 									Mañana (6 AM - 12 AM)</label>
-								<label class="checkbox label-font-fix">
-									<input id="night-ret-time" type="checkbox">
+								<label class="radio label-font-fix">
+									<input id="night-ret-time" type="radio" name="ret_group">
 									Tarde (12 AM - 6 PM)</label>
-								<label class="checkbox label-font-fix">
-									<input id="night-ret-time" type="checkbox">
+								<label class="radio label-font-fix">
+									<input id="night-ret-time" type="radio" name="ret_group">
 									Noche (6 PM - 12 PM)</label>
 							</div>
 						</div>
 						<div class="row-fluid">
 							<div class="span12">
 								<label>Clase</label>
-								<label class="checkbox label-font-fix">
-									<input type="checkbox" checked>
+								<label class="radio label-font-fix">
+									<input type="radio" name="cabin_group" checked>
 									Todas las clases </label>
-								<label class="checkbox label-font-fix">
-									<input type="checkbox">
+								<label class="radio label-font-fix">
+									<input type="radio" name="cabin_group">
 									Turista </label>
-								<label class="checkbox label-font-fix">
-									<input type="checkbox">
+								<label class="radio label-font-fix">
+									<input type="radio" name="cabin_group">
 									Ejecutiva </label>
-								<label class="checkbox label-font-fix">
-									<input type="checkbox">
+								<label class="radio label-font-fix">
+									<input type="radio" name="cabin_group">
 									Primera clase </label>
 							</div>
 						</div>
 						<div class="row-fluid">
 							<div id="airline-div" class="span12">
 								<label>Nombre de la aerolínea</label>
-								<label class="checkbox label-font-fix">
-									<input type="checkbox" checked>
+								<label class="radio label-font-fix">
+									<input type="radio" name="airlines_group">
 									Todas las aerolíneas </label>
 							</div>
 						</div>
@@ -342,7 +350,7 @@
 						<div id="flights_row"class="row-fluid">
 						<div class="well clearfix">
 							<div class="span12">
-								<h3 class="text-center"><i class="icon-warning-sign"></i> No pudmios encontrar ningún vuelo!</h3>
+								<h3 class="text-center"><i class="icon-warning-sign"></i> No pudimos encontrar ningún vuelo!</h3>
 								<p class="text-center">Intenta buscando con otro parámetros o quitando filtros si haz aplicado alguno</p>
 							</div>
 						</div>

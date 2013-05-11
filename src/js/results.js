@@ -19,9 +19,9 @@ $(document).ready(function() {
 	// datos de la busqueda del home
 	var flightType = qs.value('flightType');
 	var from = qs.value('from');
-	var from_type = qs.value('from_type');
+	var from_code = qs.value('from_code');
 	var to = qs.value('to');
-	var to_type = qs.value('to_type');
+	var to_code = qs.value('to_code');
 	var dep_date = qs.value('dep_date');
 	var ret_date = qs.value('ret_date');
 	var airline_id = qs.value('airline_id');
@@ -131,11 +131,11 @@ function loadFields(flightType, from, to, dep_date, ret_date, adults, children, 
 
 function loadAirlinesChkboxes(data){
 	$("#airline-div").empty();
-	$('#airline-div').append('<label>Nombre de la aerolínea</label><label class="checkbox label-font-fix"><input id="any-airline-chk-box" type="checkbox" checked>Todas las aerolíneas</label>')
+	$('#airline-div').append('<label>Nombre de la aerolínea</label><label class="radio label-font-fix"><input id="any-airline-rd-box" type="radio" name="airlines_group" checked>Todas las aerolíneas</label>')
 	if(!data.hasOwnProperty("error")){
         for (var j=0;j<data['total'];j++){
         	//crea los chk box de cada aerolinea con su imagen y id
-        	$('#airline-div').append('<label class="checkbox label-font-fix"><input id="'+data['airlines'][j]['airlineId']+'-chk-box" type="checkbox"><img src="'+data['airlines'][j]['logo']+'" height="20" width="20"> '+data['airlines'][j]['name']+'</label>')
+        	$('#airline-div').append('<label class="radio label-font-fix"><input id="'+data['airlines'][j]['airlineId']+'-rd-box" type="radio" name="airlines_group"><img src="'+data['airlines'][j]['logo']+'" height="20" width="20"> '+data['airlines'][j]['name']+'</label>')
         }
 
         // saca la aerolinea de preferencia del qstring
@@ -143,9 +143,9 @@ function loadAirlinesChkboxes(data){
 
         // chkea el chk box de la aerolinea preferida
         if (airline_id != null) {
-        	$("#"+airline_id+"-chk-box").attr('checked',true);
+        	$("#"+airline_id+"-rd-box").attr('checked',true);
         }else{
-        	$("#any-airline-chk-box").attr('checked',true);
+        	$("#any-airline-rd-box").attr('checked',true);
         }        
 	}else{
         console.log(JSON.stringify(data));
@@ -204,13 +204,14 @@ function searchFlights(flightType, from, to, dep_date, ret_date, adults, childre
 }
 
 function oneWayFlight(data){
+	$('#flights_row').empty();
 	if(!data.hasOwnProperty("error")){
 		if(data['total'] == 0){
-			$('#flights_row').after('<div id="flights_row"class="row-fluid"><div class="well clearfix"><div class="span12"><h3 class="text-center"><i class="icon-warning-sign"></i> No pudmios encontrar ningún vuelo!</h3><p class="text-center">Intenta buscando con otros parámetros o quitando filtros si haz aplicado alguno</p></div></div></div>')
+			$('#flights_row').append('<div id="flights_row"class="row-fluid"><div class="well clearfix"><div class="span12"><h3 class="text-center"><i class="icon-warning-sign"></i> No pudomos encontrar ningún vuelo!</h3><p class="text-center">Intenta buscando con otros parámetros o quitando filtros si haz aplicado alguno</p></div></div></div>')
 		}else{
         	for (var j=0;j<data['total'];j++){
         		//falta ver como organizamos la inf al final
-        		$('#flights_row').after('')
+        		$('#flights_row').append('')
         	}
 		}
 	}else{
@@ -219,13 +220,14 @@ function oneWayFlight(data){
 }
 
 function roundWayFlight(data){
+	$('#flights_row').empty();
 	if(!data.hasOwnProperty("error")){
 		if(data['total'] == 0){
-			$('#flights_row').after('<div id="flights_row"class="row-fluid"><div class="well clearfix"><div class="span12"><h3 class="text-center"><i class="icon-warning-sign"></i> No pudmios encontrar ningún vuelo!</h3><p class="text-center">Intenta buscando con otros parámetros o quitando filtros si haz aplicado alguno</p></div></div></div>')
+			$('#flights_row').append('<div id="flights_row"class="row-fluid"><div class="well clearfix"><div class="span12"><h3 class="text-center"><i class="icon-warning-sign"></i> No pudimos encontrar ningún vuelo!</h3><p class="text-center">Intenta buscando con otros parámetros o quitando filtros si haz aplicado alguno</p></div></div></div>')
 		}else{
         	for (var j=0;j<data['total'];j++){
         		//falta ver como organizamos la inf al final
-        		$('#flights_row').after('')
+        		$('#flights_row').append('')
         	}
 		}
 	}else{

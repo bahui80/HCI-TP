@@ -17,37 +17,15 @@ $(document).ready(function() {
         jsonpCallback: "fillAirlinesArray",
     });
 	
-	$(".advanced_options_div").hide();
-
-	$("#advanced_options_button").click(function () {	
-		if(advanced_options_on){
-			$(".advanced_options_div").slideUp(1000);
-			$("#advanced_options_icon").toggleClass('icon-minus-sign icon-plus-sign');
-			advanced_options_on = false;
-		}else{
-			$(".advanced_options_div").slideDown(1000);
-			$("#advanced_options_icon").toggleClass('icon-plus-sign icon-minus-sign');
-			advanced_options_on = true;
-		}			
-	});
-	
-	$("#myCarousel").carousel('cycle');
-	
 	var trip_state = false; 
 	$("#oneway_trip").click(function () {
-		// home
-		$("#return_span").fadeOut(500);
-		$("#return_hour").fadeOut(500);
-		$("#oneway_trip").addClass('active');
-		$("#round_trip").removeClass('active');
+		//resultados
+		$("#ret_date_div").slideUp(500);
 	});
 	
 	$("#round_trip").click(function () {
-		// home
-		$("#return_span").fadeIn(500);
-		$("#return_hour").fadeIn(500);
-		$("#oneway_trip").removeClass('active');
-		$("#round_trip").addClass('active');
+		//resultados
+		$("#ret_date_div").slideDown(500);
 	});
 });
 

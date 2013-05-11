@@ -17,6 +17,14 @@ p {
   font-weight: 300 !important;
 }
 
+.btn-group-size{
+  width:100% !important;
+}
+
+.btn-size{
+  width:50% !important;
+}
+
 .space {
   margin-bottom: 100px;
 }
