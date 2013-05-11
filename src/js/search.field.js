@@ -108,7 +108,7 @@ function fillAirportsArray(data){
 		var containsOrigin = false;
 		var containsDestination = false;
 		var containsAirline = false;
-		for(var k=0; k<citiesAirportsArray.length; k++){
+		for(var k=0; k < citiesAirportsArray.length; k++){
 			if(citiesAirportsArray[k]==$("#from").val()){
 				containsOrigin = true;
 			}
@@ -116,22 +116,27 @@ function fillAirportsArray(data){
 				containsDestination = true;
 			}
 		}
-		for(var k=0; k<citiesAirportsArray.length && !containsAirline; k++){
-			if(airlinesArray[k]==$("#airline").val() || !advanced_options_on || (advanced_options_on && $("#airline").val()=="" )){
+		for(var k=0; k < citiesAirportsArray.length && !containsAirline; k++){
+			if(airlinesArray[k] == $("#airline").val() || !advanced_options_on || (advanced_options_on && $("#airline").val()=="" )){
 				containsAirline = true;
 			}
 		}
 
 		// pinta los inputs de rojo
 		if(!containsOrigin){
-			$("#from_span").addClass('control-group error');
+			$("#origin_span").addClass('control-group error');
+			if($("#from").val()=="") {
+				//escribir error que no se ingreso nada
+			} else {
+				//escribir error que es incorrecto
+			}	
 		}else{
-			$("#from_span").removeClass('control-group error');
+			$("#origin_span").removeClass('control-group error');
 		}
 		if(!containsDestination){
-			$("#to_span").addClass('control-group error');
+			$("#destination_span").addClass('control-group error');
 		}else{
-			$("#to_span").removeClass('control-group error');
+			$("#destination_span").removeClass('control-group error');
 		}
 		if(!containsAirline){
 			$("#airline_span").addClass('control-group error');
