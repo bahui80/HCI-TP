@@ -523,7 +523,7 @@ function getDateTime(data){
 }
 
 function getDuration(data){
-	var hrs = data.substring(0,3);
+	var hrs = data.substring(0,2);
 	var mins = data.substring(4,6);
 
 	var hasHrs = true;
