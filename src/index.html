@@ -121,27 +121,31 @@
 								<div id="origin_span" class="span6">
 									<label>Origen</label>
 									<input id="from" class="span12" type="text" placeholder="Ingrese ciudad o aeropuerto de origen">
-									<p class="text-error"><i class="icon-remove">  Por favor, ingrese una ciudad de origen</p></i>
+									<p id="from_error" class="text-error"><i class="icon-remove"></i><em>  Por favor, ingrese un origen</em></p>
 								</div>
 								<div id="destination_span" class="span6">
 									<label>Destino</label>
 									<input id="to" class="span12" type="text" placeholder="Ingrese ciudad o aeropuerto de destino">
+									<p id="destination_error" class="text-error"><i class="icon-remove"></i><em>  Por favor, ingrese un destino</em></p>
 								</div>
 							</div>
 							<div class="row-fluid">
 								<div id="depart_span" class="span6">
 									<label>Fecha de ida</label>
 									<input id="dep_date" class="span12 error" type="text" placeholder="Ingrese fecha de ida (dd/mm/aaaa)">
+									<p id="depart_date_error" class="text-error"><i class="icon-remove"></i><em>  Por favor, ingrese una fecha de origen</em></p>
 								</div>
 								<div id="return_span" class="span6">
 									<label>Fecha de vuelta</label>
 									<input id="ret_date" class="span12" type="text" placeholder="Ingrese fecha de vuelta (dd/mm/aaaa)">
+									<p id="return_date_error" class="text-error"><i class="icon-remove"></i><em>  Por favor, ingrese una fecha de destino</em></p>
 								</div>
 							</div>
 							<div class="row-fluid advanced_options_div">
 								<div id="airline_span" class="span6">
 									<label>Aerolinea</label>
 									<input id="airline" class="span12" type="text" placeholder="Ingrese aerolínea de preferencia">
+									<p id="airline_error" class="text-error"><i class="icon-remove"></i><em>  Por favor, ingrese una aerolínea válida</em></p>
 								</div>
 								<div class="span6">
 									<label>Clase</label>

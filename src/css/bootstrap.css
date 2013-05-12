@@ -6243,3 +6243,8 @@ a.badge:focus {
 .affix {
   position: fixed;
 }
+
+.neg-margin {
+	margin = -20px;	
+}
+}

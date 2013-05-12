@@ -4,6 +4,7 @@ var i=0;
 var curTotal=0;
 var advanced_options_on = false;
 var error_on = false;
+var round_trip = false;
 
 $(document).ready(function() {
 	$.ajax({
@@ -17,6 +18,9 @@ $(document).ready(function() {
         jsonpCallback: "fillAirlinesArray",
     });
 	
+	$("#from_error").hide();
+	$("#destination_error").hide();
+	$("#airline_error").hide();
 	$(".advanced_options_div").hide();
 
 	$("#advanced_options_button").click(function () {	
@@ -43,6 +47,7 @@ $(document).ready(function() {
 		// cambia de estado
 		$("#oneway_trip").addClass('active');
 		$("#round_trip").removeClass('active');
+		round_trip = false;
 	});
 	
 	$("#round_trip").click(function () {
@@ -54,6 +59,7 @@ $(document).ready(function() {
 		// cambia de estado
 		$("#oneway_trip").removeClass('active');
 		$("#round_trip").addClass('active');
+		round_trip = true;
 	});
 });
 
@@ -104,6 +110,24 @@ function fillAirportsArray(data){
 		minLength : 3
 	});
 	
+	$("#from").click(function() {
+		$("#from").select();
+		$("#origin_span").removeClass('control-group error');
+		$("#from_error").hide();
+	});
+	
+	$("#to").click(function() {
+		$("#to").select();
+		$("#destination_span").removeClass('control-group error');
+		$("#destination_error").hide();
+	});
+	
+	$("#airline").click(function() {
+		$("#airline").select();
+		$("#airline_span").removeClass('control-group error');
+		$("#airline_error").hide();
+	});
+	
 	$("#search_button").click(function () {
 		var containsOrigin = false;
 		var containsDestination = false;
@@ -122,26 +146,47 @@ function fillAirportsArray(data){
 			}
 		}
 
-		// pinta los inputs de rojo
+		if(($("#to").val()) == ($("#from").val())) {
+			$("#origin_span").addClass('control-group error');
+			$("#destination_span").addClass('control-group error');
+			$("#from_error > em").text(" Mismo origen y destino");
+			$("#destination_error > em").text(" Mismo origen y destino");
+			$("#from_error").show();
+			$("#destination_error").show();
+		}
+		
+		
 		if(!containsOrigin){
 			$("#origin_span").addClass('control-group error');
 			if($("#from").val()=="") {
-				//escribir error que no se ingreso nada
+				$("#from_error > em").text(" Por favor, ingrese un origen");
+				$("#from_error").show();
 			} else {
-				//escribir error que es incorrecto
-			}	
-		}else{
-			$("#origin_span").removeClass('control-group error');
+				$("#from_error > em").text(" Por favor, ingrese un origen valido");
+				$("#from_error").show();
+			}
+		} else{
+		//	$("#origin_span").removeClass('control-group error');
 		}
+		
 		if(!containsDestination){
 			$("#destination_span").addClass('control-group error');
-		}else{
-			$("#destination_span").removeClass('control-group error');
+			if($("#to").val()=="") {
+				$("#destination_error > em").text(" Por favor, ingrese un destino");
+				$("#destination_error").show();
+			} else {
+				$("#destination_error > em").text(" Por favor, ingrese un destino valido");
+				$("#destination_error").show();
+			}
+		} else{
+		//	$("#destination_span").removeClass('control-group error');
 		}
 		if(!containsAirline){
 			$("#airline_span").addClass('control-group error');
-		}else{
+			$("#airline_error").show();
+		} else{
 			$("#airline_span").removeClass('control-group error');
+			$("#airline_error").hide();
 		}
 
 		// crea resumen de errores
