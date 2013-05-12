@@ -5,6 +5,9 @@ var page_size = 5;
 
 $(document).ready(function() {
 
+	// borro el div de resultados default
+	$('#flights_row').empty();
+
 	// muestro un modal incerrable de cargando hasta que termine de buscar el vuelo
 	$('#loading-modal').modal({
 		backdrop: 'static',
@@ -157,6 +160,9 @@ function prepareFilterEffects(){
 }
 
 function loadFields(){
+
+	// instancio el paginado
+	createPagination();
 
 	// creo el objeto query-string para leer la url
 	qs= new QueryString();
@@ -409,6 +415,7 @@ function oneWayFlight(data){
         	for (var j=0;j<data['pageSize'];j++){
         		if( (data['page']-1)*(data['pageSize'])+j < data['total']){
         			console.log((data['page']-1)*(data['pageSize'])+j < data['total']);
+
         			// informacion del vuelo de ida
         			var ob_date = getDateInfo(data['flights'][j]['outboundRoutes'][0]['segments'][0]['departure']['date']);
 					var ob_dep_city = getCity(data['flights'][j]['outboundRoutes'][0]['segments'][0]['departure']['cityName']);
@@ -419,8 +426,14 @@ function oneWayFlight(data){
 					var ob_arr_hr = getDateTime(data['flights'][j]['outboundRoutes'][0]['segments'][0]['arrival']['date'])+"hs";
 					var ob_dur = getDuration(data['flights'][j]['outboundRoutes'][0]['segments'][0]['duration']);
 					var ob_airline_name = data['flights'][j]['outboundRoutes'][0]['segments'][0]['airlineName'];
-					var flight_price = data['flights'][j]['price']['total']['total'];
 					var ob_airline_pic;				
+
+					//info del precio
+					var flight_price = data['flights'][j]['price']['total']['total'];
+					var adult_price;
+					var child_price;
+					var infant_price
+					var taxes_price;
 
 					for (var k=0; k<data['filters'][0]['values'].length; k++) {
 						if (ob_airline_name == data['filters'][0]['values'][k]['name']) {
@@ -429,13 +442,32 @@ function oneWayFlight(data){
 					}
 
 					// tengo que guardarme los datos que voy a usar para mandarle por el href a la compra
-					//creo el div
-					$('#flights_row').append('<div class="well small-bottom-padding clearfix"><div class="span9"><table class="table"><thead><tr><th><i class="icon-circle-arrow-right icon-large"></i> Ida</th><th>'+ob_date+'</th><th>'+ob_dep_city+' ('+ob_dep_ap_id+') <i class="icon-caret-right icon-large"></i> '+ob_arr_city+' ('+ob_arr_ap_id+')</th></tr></thead><tbody><tr><td>'+ob_dep_hr+' <i class="icon-caret-right icon-large"></i> '+ob_arr_hr+'</td><td>('+ob_dur+', Directo)</td><td><img src="'+ob_airline_pic+'" height="25" width="25">'+ob_airline_name+'</td></tr></tbody></table></div><div class="span3"><div class="well remove-bottom-margin remove-top-padding"><h3 class="text-center">$'+flight_price+'</h3><div class="row-fluid"><div class="span12"><button class="btn btn-block" >Ver detalles</button></div></div><br><div class="row-fluid"><div class="span12"><a href="pasajeros.html" type="button" class="btn btn-inverse btn-block thin-font">Comprar</a></div></div></div></div></div>');
-        		}
-        	}
-		}
 
-		
+					//creo el div
+					$('#flights_row').append('<div class="well clearfix"><div class="span9"><table class="table"><thead><tr><th><i class="icon-circle-arrow-right icon-large"></i> '+ob_date+' <div class="pull-right">'+ob_dep_city+' ('+ob_dep_ap_id+') <i class="icon-caret-right icon-large"></i> '+ob_arr_city+' ('+ob_arr_ap_id+')</div></th></tr></thead><tbody><tr><td class="remove-bottom-padding"><ul class="inline small-bottom-margin"><li><b>Sale:</b> '+ob_dep_hr+'</li><li><b>Llega:</b> '+ob_arr_hr+'</li><li><i class="icon-time"></i> '+ob_dur+'</li><li>Directo</li><li><img src="'+ob_airline_pic+'" height="20" width="20"> '+ob_airline_name+'</li></ul></td></tr></tbody></table></div><div class="span3"><div class="well remove-bottom-margin remove-top-padding"><h3 class="text-center">$'+flight_price+'</h3><div class="row-fluid"><div class="span12"><a id="popover'+j+'" rel="popover" class="btn btn-block thin-font" >Ver detalles</a></div></div><br><div class="row-fluid"><div class="span12"><a href="pasajeros.html" type="button" class="btn btn-inverse btn-block thin-font">Comprar</a></div></div></div></div></div>');
+        			
+
+        			// creo el html de los popovers
+        			if (adult_price == null){
+        				adult_price = "-";
+        			}
+        			if (child_price == null){
+        				child_price = "-";
+        			}
+        			if (infant_price == null){
+        				infant_price = "-";
+        			}
+        			if (taxes_price == null){
+        				taxes_price = "-";
+        			}
+
+					var popover_code = 'Precio por adulto: '+adult_price+'<br>Precio por niño: '+child_price+'<br>Precio por infante: '+infant_price+'<br>Precio por impuestos: '+taxes_price;
+					var popover_id = "#popover"+j;
+
+					$(popover_id).popover({ placement: 'left', title: '<h4>Detalle del precio</h4>', content: popover_code, html:true });
+				}
+        	}
+		}		
 	}else{
 		$('#flights_row').append('<div id="flights_row"class="row-fluid"><div class="well clearfix"><div class="span12"><h3 class="text-center"><i class="icon-warning-sign"></i> No pudimos encontrar ningún vuelo!</h3><p class="text-center">Intenta buscando con otros parámetros o quitando filtros si haz aplicado alguno</p></div></div></div>')
         console.log(JSON.stringify(data));
@@ -457,9 +489,51 @@ function roundWayFlight(data){
 		if(data['total'] == 0){
 			$('#flights_row').append('<div class="row-fluid"><div class="well clearfix"><div class="span12"><h3 class="text-center"><i class="icon-warning-sign"></i> No pudimos encontrar ningún vuelo!</h3><p class="text-center">Hubo un error inesperado en la busqueda</p></div></div></div>')
 		}else{
-        	for (var j=0;j<data['total'];j++){
-        		//falta ver como organizamos la inf al final
-        		$('#flights_row').append('')
+        	for (var j=0;j<data['pageSize'];j++){
+        		if( (data['page']-1)*(data['pageSize'])+j < data['total']){
+        			console.log((data['page']-1)*(data['pageSize'])+j < data['total']);
+        			// informacion del vuelo de ida
+        			var ob_date = getDateInfo(data['flights'][j]['outboundRoutes'][0]['segments'][0]['departure']['date']);
+					var ob_dep_city = getCity(data['flights'][j]['outboundRoutes'][0]['segments'][0]['departure']['cityName']);
+					var ob_dep_ap_id = data['flights'][j]['outboundRoutes'][0]['segments'][0]['departure']['airportId'];
+					var ob_arr_city = getCity(data['flights'][j]['outboundRoutes'][0]['segments'][0]['arrival']['cityName']);
+					var ob_arr_ap_id = data['flights'][j]['outboundRoutes'][0]['segments'][0]['arrival']['airportId'];
+					var ob_dep_hr = getDateTime(data['flights'][j]['outboundRoutes'][0]['segments'][0]['departure']['date'])+"hs";
+					var ob_arr_hr = getDateTime(data['flights'][j]['outboundRoutes'][0]['segments'][0]['arrival']['date'])+"hs";
+					var ob_dur = getDuration(data['flights'][j]['outboundRoutes'][0]['segments'][0]['duration']);
+					var ob_airline_name = data['flights'][j]['outboundRoutes'][0]['segments'][0]['airlineName'];
+					var flight_price = data['flights'][j]['price']['total']['total'];
+					var ob_airline_pic;				
+
+					for (var k=0; k<data['filters'][0]['values'].length; k++) {
+						if (ob_airline_name == data['filters'][0]['values'][k]['name']) {
+							ob_airline_pic = data['filters'][0]['values'][k]['logo'];
+						}
+					}
+
+					//ARREGLAR ESTO
+					var ib_date = getDateInfo(data['flights'][j]['outboundRoutes'][0]['segments'][0]['departure']['date']);
+					var ib_dep_city = getCity(data['flights'][j]['outboundRoutes'][0]['segments'][0]['departure']['cityName']);
+					var ib_dep_ap_id = data['flights'][j]['outboundRoutes'][0]['segments'][0]['departure']['airportId'];
+					var ib_arr_city = getCity(data['flights'][j]['outboundRoutes'][0]['segments'][0]['arrival']['cityName']);
+					var ib_arr_ap_id = data['flights'][j]['outboundRoutes'][0]['segments'][0]['arrival']['airportId'];
+					var ib_dep_hr = getDateTime(data['flights'][j]['outboundRoutes'][0]['segments'][0]['departure']['date'])+"hs";
+					var ib_arr_hr = getDateTime(data['flights'][j]['outboundRoutes'][0]['segments'][0]['arrival']['date'])+"hs";
+					var ib_dur = getDuration(data['flights'][j]['outboundRoutes'][0]['segments'][0]['duration']);
+					var ib_airline_name = data['flights'][j]['outboundRoutes'][0]['segments'][0]['airlineName'];
+					var flight_price = data['flights'][j]['price']['total']['total'];
+					var ib_airline_pic;				
+
+					for (var k=0; k<data['filters'][0]['values'].length; k++) {
+						if (ib_airline_name == data['filters'][0]['values'][k]['name']) {
+							ib_airline_pic = data['filters'][0]['values'][k]['logo'];
+						}
+					}
+
+					// tengo que guardarme los datos que voy a usar para mandarle por el href a la compra
+					//creo el div
+					$('#flights_row').append('<div class="well small-bottom-padding clearfix"><div class="span9"><table class="table"><thead><tr><th colspan="3"><i class="icon-circle-arrow-right icon-large"></i> '+ob_date+'<div class="pull-right">'+ob_dep_city+' ('+ob_dep_ap_id+') <i class="icon-caret-right icon-large"></i> '+ob_arr_city+' ('+ob_arr_ap_id+')</div></th></tr></thead><tbody><tr><td>'+ob_dep_hr+' <i class="icon-caret-right icon-large"></i> '+ob_arr_hr+'</td><td>('+ob_dur+', Directo)</td><td><img src="'+ob_airline_pic+'" height="25" width="25">'+ob_airline_name+'</td></tr></tbody></table><table><thead><tr><th colspan="3"><i class="icon-circle-arrow-right icon-large"></i> '+ib_date+'<div class="pull-right">'+ib_dep_city+' ('+ib_dep_ap_id+') <i class="icon-caret-right icon-large"></i> '+ib_arr_city+' ('+ib_arr_ap_id+')</div></th></tr></thead><tbody><tr><td>'+ib_dep_hr+' <i class="icon-caret-right icon-large"></i> '+ib_arr_hr+'</td><td>('+ib_dur+', Directo)</td><td><img src="'+ib_airline_pic+'" height="25" width="25">'+ib_airline_name+'</td></tr></tbody></table></div><div class="span3"><div class="well remove-bottom-margin remove-top-padding"><h3 class="text-center">$'+flight_price+'</h3><div class="row-fluid"><div class="span12"><a class="btn btn-block" >Ver detalles</a></div></div><br><div class="row-fluid"><div class="span12"><a href="pasajeros.html" type="button" class="btn btn-inverse btn-block thin-font">Comprar</a></div></div></div></div></div>');
+        		}
         	}
 		}
 	}else{
@@ -530,26 +604,15 @@ function getDateTime(data){
 
 function getDuration(data){
 	var hrs = data.substring(0,2);
-	var mins = data.substring(4,6);
-
-	var hasHrs = true;
-	var hasMins = true;
-
-	if (hrs == "00"){
-		hasHrs = false;
-	}
-	if (mins = "00"){
-		hasMins = false;
+	var mins = data.substring(3,5);
+	if (hrs.substring(0,1) == "0"){
+		hrs = hrs.substring(1,2);
 	}
 
-	var dur = "-";
-	if (hasHrs){
-		dur = hrs+"h ";
+	if (mins.substring(0,1) == "0"){
+		mins = mins.substring(1,2);
 	}
-	if (hasMins){
-		dur = dur+""+mins+"m";
-	}
-	return dur;
+	return hrs+"h "+mins+"m";
 }
 
 function getCity(data){

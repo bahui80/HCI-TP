@@ -36,6 +36,10 @@ b {
   margin-bottom: -10px !important;
 }
 
+.list-result {
+  display: inline;
+}
+
 .icon-padding {
   padding-top: 3px;
 }
@@ -58,12 +62,20 @@ b {
   color: #ffffff;
 }
 
+.small-bottom-margin {
+  margin-bottom: 6px !important;
+}
+
 .remove-bottom-padding {
   padding-bottom: 0 !important;
 }
 
+.reduce-bottom-padding {
+  padding-bottom: -5px !important;
+}
+
 .small-bottom-padding {
-  padding-bottom: 8px !important;
+  padding-bottom: 10px !important;
 }
 
 .remove-top-padding {
@@ -912,8 +924,9 @@ ul.inline > li,
 ol.inline > li {
   display: inline-block;
   *display: inline;
-  padding-right: 5px;
-  padding-left: 5px;
+  padding-right: 15px;
+  padding-left: 0px;
+  margin-bottom: 0px !important;
   *zoom: 1;
 }
 
