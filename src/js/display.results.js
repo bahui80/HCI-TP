@@ -1,7 +1,13 @@
-//Variables globales
+// Variables globales del paginado
 var cur_page;
-var total_pages;
 var page_size = 5;
+// Variables globales de las monedas
+var cur_currency = "Dolares";
+var cur_ratio = 1;
+var currencies_desc_array = new Array();
+var currencies_ratio_array = new Array();
+var currencies_symbol_array = new Array();
+var cur_flights_price = new Array();
 
 $(document).ready(function() {
 
@@ -22,17 +28,77 @@ $(document).ready(function() {
 
 	// eventos de click de filtros
 	filterEvents();
-
-	// eventos de cambio de moneda -> se cambian a mano, alta paja!
-	//coinChange();
 });
 
+function coinUpdate(from, to){
+	if (from == to){
+		return;
+	}
+	var new_val;
+	var new_sym;
+	var new_ratio;
+	var new_text;
+
+	// Busco la nueva moneda
+	for(var j=0; j< currencies_desc_array.length; j++){
+		if(currencies_desc_array[j] == to){
+			cur_currency = currencies_desc_array[j];
+			new_sym = currencies_symbol_array[j];
+			new_ratio = currencies_ratio_array[j];
+		}
+	}
+
+	// Updateo los precios
+	var cur_val_selector;
+	var cur_sym_selector;
+	for (var j=0; j<cur_flights_price.length;j++){		
+		new_val = parseInt((cur_flights_price[j])/new_ratio);
+		new_text = new_sym+""+new_val;
+		cur_val_selector= "#cur_val_"+j;
+		$(cur_val_selector).text(new_text);
+	}
+	cur_ratio = new_ratio;
+}
 
 function filterEvents(){
 
-	//function del slider
+	// function de las monedas
+	$("#currencies").change(function(){
+		coinUpdate(cur_currency, $("#currencies").val());
+		cur_currency = $("#currencies").val();
+
+		// borro el slider viejo
+		$(".noUiSlider").empty();
+		$("#min").text("Sin mínimo");
+		$("#max").text("Sin máximo");
+
+		var newMax = parseFloat(5000/cur_ratio).toFixed(2);
+		var newStep = newMax/10;
+		$(".noUiSlider").noUiSlider({
+			range : [ 0, newMax ],
+			start : [ 0, newMax ],
+			step : newStep,
+			slide: function(){
+
+				var values = $(this).val();
+				if (values[0] == 0) {
+					values[0] = "";
+					$("#min").text("Sin mínimo");
+				} else {
+					$("#min").text(parseInt(values[0]));
+				}
+				if (values[1] == newMax) {
+					values[1] = "";
+					$("#max").text("Sin máximo");
+				} else {
+					$("#max").text(parseInt(values[1]));
+				}			
+			}
+		});
+	});
+
+	// function del slider inicial
 	$(".noUiSlider").noUiSlider({
-		//configuro
 		range : [ 0, 5000 ],
 		start : [ 0, 5000 ],
 		step : 500,
@@ -293,6 +359,10 @@ function loadCurrencies(data){
         	} else {
         		$('#currencies').append('<option>'+data['currencies'][j]['description'] +'</option>');
         	}
+
+        	currencies_desc_array[j] = data['currencies'][j]['description'];
+        	currencies_ratio_array[j] = data['currencies'][j]['ratio'];
+        	currencies_symbol_array[j] = data['currencies'][j]['symbol'];
         }
 	}else{
         console.log(JSON.stringify(data));
@@ -316,8 +386,8 @@ function searchFlights(page){
 
 	// cosas variblaes
 	var sliders_val = $(".noUiSlider").val();
-	var min_price = sliders_val[0];
-	var max_price = sliders_val[1];
+	var min_price = sliders_val[0]*cur_ratio;
+	var max_price = sliders_val[1]*cur_ratio;
 	var cabin_type = $("input[name='cabin_group']:checked").val();
 	var dep_time = $("input[name='dep_group']:checked").val();
 	var ret_time = $("input[name='ret_group']:checked").val();
@@ -406,6 +476,7 @@ function oneWayFlight(data){
 
 	// limpio por si cambio de pagina
 	$('#flights_row').empty();
+	cur_flights_price = new Array();
 
 	// si no hubo error imprime
 	if(!data.hasOwnProperty("error")){
@@ -414,7 +485,6 @@ function oneWayFlight(data){
 		}else{
         	for (var j=0;j<data['pageSize'];j++){
         		if( (data['page']-1)*(data['pageSize'])+j < data['total']){
-        			console.log((data['page']-1)*(data['pageSize'])+j < data['total']);
 
         			// informacion del vuelo de ida
         			var ob_date = getDateInfo(data['flights'][j]['outboundRoutes'][0]['segments'][0]['departure']['date']);
@@ -429,7 +499,7 @@ function oneWayFlight(data){
 					var ob_airline_pic;				
 
 					//info del precio
-					var flight_price = data['flights'][j]['price']['total']['total'];
+					var flight_price = cur_flights_price[j] = parseInt(data['flights'][j]['price']['total']['total']);
 					var adult_price;
 					var child_price;
 					var infant_price
@@ -444,8 +514,7 @@ function oneWayFlight(data){
 					// tengo que guardarme los datos que voy a usar para mandarle por el href a la compra
 
 					//creo el div
-					$('#flights_row').append('<div class="well clearfix"><div class="span9"><table class="table"><thead><tr><th><i class="icon-circle-arrow-right icon-large"></i> '+ob_date+' <div class="pull-right">'+ob_dep_city+' ('+ob_dep_ap_id+') <i class="icon-caret-right icon-large"></i> '+ob_arr_city+' ('+ob_arr_ap_id+')</div></th></tr></thead><tbody><tr><td class="remove-bottom-padding"><ul class="inline small-bottom-margin"><li><b>Sale:</b> '+ob_dep_hr+'</li><li><b>Llega:</b> '+ob_arr_hr+'</li><li><i class="icon-time"></i> '+ob_dur+'</li><li>Directo</li><li><img src="'+ob_airline_pic+'" height="20" width="20"> '+ob_airline_name+'</li></ul></td></tr></tbody></table></div><div class="span3"><div class="well remove-bottom-margin remove-top-padding"><h3 class="text-center">$'+flight_price+'</h3><div class="row-fluid"><div class="span12"><a id="popover'+j+'" rel="popover" class="btn btn-block thin-font" >Ver detalles</a></div></div><br><div class="row-fluid"><div class="span12"><a href="pasajeros.html" type="button" class="btn btn-inverse btn-block thin-font">Comprar</a></div></div></div></div></div>');
-        			
+					$('#flights_row').append('<div class="well clearfix"><div class="span9"><table class="table"><thead><tr><th><i class="icon-circle-arrow-right icon-large"></i> '+ob_date+' <div class="pull-right">'+ob_dep_city+' ('+ob_dep_ap_id+') <i class="icon-caret-right icon-large"></i> '+ob_arr_city+' ('+ob_arr_ap_id+')</div></th></tr></thead><tbody><tr><td class="remove-bottom-padding"><ul class="inline small-bottom-margin"><li><b>Sale:</b> '+ob_dep_hr+'</li><li><b>Llega:</b> '+ob_arr_hr+'</li><li><i class="icon-time"></i> '+ob_dur+'</li><li>Directo</li><li><img src="'+ob_airline_pic+'" height="20" width="20"> '+ob_airline_name+'</li></ul></td></tr></tbody></table></div><div class="span3"><div class="well remove-bottom-margin remove-top-padding"><h3 class="text-center"><div id="cur_val_'+j+'">U$S'+flight_price+'</div></h3><div class="row-fluid"><div class="span12"><a id="popover'+j+'" rel="popover" class="btn btn-block thin-font" >Ver detalles</a></div></div><br><div class="row-fluid"><div class="span12"><a href="pasajeros.html" type="button" class="btn btn-inverse btn-block thin-font">Comprar</a></div></div></div></div></div>');
 
         			// creo el html de los popovers
         			if (adult_price == null){
@@ -472,6 +541,9 @@ function oneWayFlight(data){
 		$('#flights_row').append('<div id="flights_row"class="row-fluid"><div class="well clearfix"><div class="span12"><h3 class="text-center"><i class="icon-warning-sign"></i> No pudimos encontrar ningún vuelo!</h3><p class="text-center">Intenta buscando con otros parámetros o quitando filtros si haz aplicado alguno</p></div></div></div>')
         console.log(JSON.stringify(data));
 	}
+
+	// Si la moenda actual es otra cambio	
+	coinUpdate("Dolares",$("#currencies").val());
 
 	// creo el paginador con los resultados
 	createPagination(data['total'], data['pageSize'], data['page']);
@@ -521,7 +593,7 @@ function roundWayFlight(data){
 					var ib_arr_hr = getDateTime(data['flights'][j]['outboundRoutes'][0]['segments'][0]['arrival']['date'])+"hs";
 					var ib_dur = getDuration(data['flights'][j]['outboundRoutes'][0]['segments'][0]['duration']);
 					var ib_airline_name = data['flights'][j]['outboundRoutes'][0]['segments'][0]['airlineName'];
-					var flight_price = data['flights'][j]['price']['total']['total'];
+					var flight_price = parseInt(data['flights'][j]['price']['total']['total']);
 					var ib_airline_pic;				
 
 					for (var k=0; k<data['filters'][0]['values'].length; k++) {
