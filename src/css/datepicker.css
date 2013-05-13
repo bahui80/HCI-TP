@@ -68,11 +68,17 @@
   }
 
 .datepicker td.day:hover {
+  color: #ffffff;
   background: #999999;
   cursor: pointer;
 }
 .datepicker td.day.disabled {
   color: #999999;
+}
+
+.datepicker td.day.disabled:hover {
+  background: #ffffff;
+  cursor: default;
 }
 .datepicker td.old,
 .datepicker td.new {
