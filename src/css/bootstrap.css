@@ -781,6 +781,7 @@ a.text-warning:focus {
 
 a.text-error:hover,
 a.text-error:focus {
+  margin-top: -10px !important;
   color: #953b39;
 }
 
@@ -6255,9 +6256,4 @@ a.badge:focus {
 
 .affix {
   position: fixed;
-}
-
-.neg-margin {
-	margin = -20px;	
-}
 }

@@ -9,11 +9,11 @@
 		<link href="css/datepicker.css" rel="stylesheet">
 		<link href="css/simplePagination.css" rel="stylesheet">
 		<script src="js/jquery-1.9.1.js"></script>
+		<script src="js/jquery.simplePagination.js"></script>
+		<script src="js/jquery.nouislider.js"></script>
+		<script src="js/jquery.cookie.js"></script>
 		<script src="js/bootstrap.js"></script>
 		<script src="js/datepicker.js"></script>
-		<script src="js/jquery.nouislider.js"></script>
-		<script src="js/query.string.js"></script>
-		<script src="js/jquery.simplePagination.js"></script>
 		<script src="js/search.field.js"></script>
 		<script src="js/display.results.js"></script>
 	</head>
@@ -88,27 +88,31 @@
 								</div>
 							</div>				
 							<div class="row-fluid">
-								<div id="from_span" class="span12">
+								<div id="origin_span" class="span12">
 									<label>Origen</label>
 									<input id="from" class="span12" type="text" placeholder="Ingrese ciudad de origen">
+									<p id="from_error" class="text-error"><i class="icon-remove"></i><small id="from_error_text"> Ingrese un origen</small></p>
 								</div>
 							</div>
 							<div class="row-fluid">
-								<div id="to_span" class="span12">
+								<div id="destination_span" class="span12">
 									<label>Destino</label>
 									<input id="to" class="span12" type="text" placeholder="Ingrese ciudad de destino">
+									<p id="destination_error" class="text-error"><i class="icon-remove"></i><small id="to_error_text"> Ingrese un destino</small></p>
 								</div>
 							</div>
 							<div class="row-fluid">
-								<div class="span12">
+								<div id="depart_span" class="span12">
 									<label>Fecha de ida</label>
 									<input id="dep_date" class="span12" type="text" placeholder="Ingrese fecha de ida">
+									<p id="depart_date_error" class="text-error"><i class="icon-remove"></i><small id="dep_date_error_text"> Ingrese una fecha de ida</small></p>
 								</div>
 							</div>
 							<div id="ret_date_div" class="row-fluid">
-								<div class="span12">
+								<div id="return_span" class="span12">
 									<label>Fecha de vuelta</label>
 									<input id="ret_date" class="span12" type="text" placeholder="Ingrese fecha de vuelta">
+									<p id="return_date_error" class="text-error"><i class="icon-remove"></i><small id="ret_date_error_text"> Ingrese una fecha de vuelta</small></p>
 								</div>
 							</div>
 							<div class="row-fluid push-bottom-margin">
@@ -256,16 +260,13 @@
 						<div id="cabin_type_filter_div" class="row-fluid">
 							<div class="span12">
 								<label class="radio label-font-fix">
-									<input type="radio" value="" name="cabin_group" checked>
-									Todas las clases </label>
-								<label class="radio label-font-fix">
-									<input type="radio" value="ECONOMY" name="cabin_group" >
+									<input id="economy_cabin" type="radio" value="ECONOMY" name="cabin_group" checked>
 									Turista </label>
 								<label class="radio label-font-fix">
-									<input type="radio" value="BUSINESS" name="cabin_group">
+									<input id="business_cabin" type="radio" value="BUSINESS" name="cabin_group">
 									Ejecutiva </label>
 								<label class="radio label-font-fix">
-									<input type="radio" value="FIRST_CLASS" name="cabin_group">
+									<input id="first_class_cabin" type="radio" value="FIRST_CLASS" name="cabin_group">
 									Primera clase </label>
 							</div>
 						</div>
@@ -277,7 +278,7 @@
 						<div id="airline_filter_div" class="row-fluid">
 							<div id="airline-div" class="span12">
 								<label class="radio label-font-fix">
-									<input type="radio" name="airlines_group">
+									<input type="radio" name="airlines_group" checked>
 									Todas las aerolíneas </label>
 							</div>
 						</div>

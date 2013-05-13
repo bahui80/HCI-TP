@@ -20,14 +20,16 @@ $(document).ready(function() {
 		keyboard: false
 	})
 
+	// prepara eventos de click de filtros
+	filterEvents();
+
 	// preparara los efectos de filtro
 	prepareFilterEffects();
 
 	// cargo las opciones de busqueda y hago la busqueda
 	loadFields();
 
-	// eventos de click de filtros
-	filterEvents();
+
 });
 
 function coinUpdate(from, to){
@@ -230,40 +232,36 @@ function loadFields(){
 	// instancio el paginado
 	createPagination();
 
-	// creo el objeto query-string para leer la url
-	qs= new QueryString();
-
 	// datos de la busqueda del home
-	var flight_type = qs.value('flight_type');
-	var from = qs.value('from');
-	var to = qs.value('to');
-	var dep_date = qs.value('dep_date');
-	var ret_date = qs.value('ret_date');
-	var min_price = qs.value('min_price');
-	var max_price = qs.value('max_price');
-	var cabin_type = qs.value('cabin_type');
-	var dep_time = qs.value('dep_time');
-	var ret_time = qs.value('ret_time');
+	var flight_type = $.cookie('flight_type');
+	var from = $.cookie('from');
+	var to = $.cookie('to');
+	var dep_date = changeDateFormatBack($.cookie('dep_date'));
+	var ret_date = changeDateFormatBack($.cookie('ret_date'));
+	var min_price = $.cookie('min_price');
+	var max_price = $.cookie('max_price');
+	var cabin_type = $.cookie('cabin_type');
+	var dep_time = $.cookie('dep_time');
+	var ret_time = $.cookie('ret_time');
 
 	// cargar parametros de busqueda
 	$('#from').val(from);
 	$('#to').val(to);
-	$('#dep').val(dep_date);
+	$('#dep_date').val(dep_date);
 	$('#adults').val(adults);
 	$('#children').val(children);
 	$('#infants').val(infants);
 
 	// cargar ida/vuelta
-	if (flight_type =="oneWay"){
+	if (flight_type =="one_way"){
 		$("#oneway_trip").addClass('active');
 		$("#round_trip").removeClass('active');
-
 		$("#ret_date_div").hide();
 	}else{
 		$("#round_trip_trip").addClass('active');
 		$("#oneWay_trip").removeClass('active');
 		$("#ret_date_div").show();
-		$('#ret').val(ret_date);
+		$('#ret_date').val(ret_date);
 	}
 
 	// cargar los filtros
@@ -283,7 +281,7 @@ function loadFields(){
 	}
 
 	// tratado de las preferencias horarias
-	if(flight_type == "oneWay"){
+	if(flight_type == "one_way"){
 		// escondo el div de horario de retorno
 		$(".ret_time_filter").hide();
 	}else{
@@ -302,7 +300,13 @@ function loadFields(){
 	}
 
 	// seteo fijo la clase
-	$('#cabin_type').val(cabin_type);
+	if(cabin_type == "ECONOMY"){
+		$('#economy_cabin').attr('checked',true);
+	} else if (cabin_type == "BUSINESS"){
+		$('#business_cabin').attr('checked',true);
+	} else if (cabin_type == "FIRST_CLASS"){
+		$('#first_class_cabin').attr('checked',true);
+	}
 
 	// cargo las aerolineas de la db
 	$.ajax({
@@ -319,11 +323,11 @@ function loadAirlines(data){
         for (var j=0;j<data['total'];j++){
 
         	//crea los radio btn de cada aerolinea con su imagen y id
-        	$('#airline-div').append('<label class="radio label-font-fix"><input type="radio" value="'+data['airlines'][j]['airlineId']+'" name="airlines_group"><img src="'+data['airlines'][j]['logo']+'" height="20" width="20"> '+data['airlines'][j]['name']+'</label>')
+        	$('#airline-div').append('<label class="radio label-font-fix"><input type="radio" id="'+data['airlines'][j]['airlineId']+'-rd-box" value="'+data['airlines'][j]['airlineId']+'" name="airlines_group"><img src="'+data['airlines'][j]['logo']+'" height="20" width="20"> '+data['airlines'][j]['name']+'</label>')
         }
 
         // saca la aerolinea de preferencia del qstring
-        var airline_id = qs.value('airline_id');
+        var airline_id = $.cookie('airline');
 
         // chkea el radio btn de la aerolinea preferida
         if (airline_id != null) {
@@ -376,13 +380,13 @@ function searchFlights(page){
 
 	$('#loading-modal').modal('show');
 	// cargadas por url unicamente
-	var flight_type = qs.value('flight_type');
-	var from = qs.value('from_code');
-	var to = qs.value('to_code');
-	var dep_date = qs.value('dep_date');
-	var adults = qs.value('adults');
-	var children = qs.value('children');
-	var infants = qs.value('infants');
+	var flight_type = $.cookie('flight_type');
+	var from = $.cookie('from_code');
+	var to = $.cookie('to_code');
+	var dep_date = $.cookie('dep_date');
+	var adults = $.cookie('adults');
+	var children = $.cookie('children');
+	var infants = $.cookie('infants');
 
 	// cosas variblaes
 	var sliders_val = $(".noUiSlider").val();
@@ -457,7 +461,7 @@ function searchFlights(page){
 		sort_order = "desc"
 	}
 
-	if(flight_type == "oneWay"){
+	if(flight_type == "one_way"){
 		$.ajax({
 			url: "http://eiffel.itba.edu.ar/hci/service2/Booking.groovy?method=GetOneWayFlights&from="+from+"&to="+to+"&dep_date="+dep_date+"&adults="+adults+"&children="+children+"&infants="+infants+"&airline_id="+airline_id+"&min_price="+min_price+"&max_price="+max_price+"&cabin_type="+cabin_type+"&min_dep_time="+min_dep_time+"&max_dep_time="+max_dep_time+"&page="+page+"&page_size="+page_size+"&sort_key="+sort_key+"&sort_order="+sort_order,
         	dataType: "jsonp",
@@ -481,7 +485,7 @@ function oneWayFlight(data){
 	// si no hubo error imprime
 	if(!data.hasOwnProperty("error")){
 		if(data['total'] == 0){
-			$('#flights_row').append('<div id="flights_row"class="row-fluid"><div class="well clearfix"><div class="span12"><h3 class="text-center"><i class="icon-warning-sign"></i> No pudomos encontrar ningún vuelo!</h3><p class="text-center">Intenta buscando con otros parámetros o quitando filtros si haz aplicado alguno</p></div></div></div>')
+			$('#flights_row').append('<div id="flights_row"class="row-fluid"><div class="well clearfix"><div class="span12"><h3 class="text-center"><i class="icon-warning-sign"></i> No pudimos encontrar ningún vuelo!</h3><p class="text-center">Intenta buscando con otros parámetros o quitando filtros si haz aplicado alguno</p></div></div></div>')
 		}else{
         	for (var j=0;j<data['pageSize'];j++){
         		if( (data['page']-1)*(data['pageSize'])+j < data['total']){
@@ -695,4 +699,13 @@ function getCity(data){
 function getAirport(data){
 	var regex = /[a-zA-Z\s]*/;
 	return regex.exec(data);
+}
+
+function changeDateFormatBack(date){
+	if (date != null){
+		var day = date.substring(8,10);
+		var month = date.substring(5,7);
+		var year = date.substring(0,4);
+		return day+"/"+month+"/"+year;
+	}
 }
