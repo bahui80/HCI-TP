@@ -9,6 +9,11 @@ var currencies_ratio_array = new Array();
 var currencies_symbol_array = new Array();
 var cur_flights_price = new Array();
 
+// Variables globales del precio max y min
+var max_results_price;
+var min_results_price;
+var reset_slider = true;
+
 $(document).ready(function() {
 
 	// borro el div de resultados default
@@ -28,12 +33,11 @@ $(document).ready(function() {
 
 	// cargo las opciones de busqueda y hago la busqueda
 	loadFields();
-
-
 });
 
-function coinUpdate(from, to){
+function coinUpdate(from, to, min, max){
 	if (from == to){
+		minMaxUpdate(min, max);
 		return;
 	}
 	var new_val;
@@ -62,88 +66,73 @@ function coinUpdate(from, to){
 	cur_ratio = new_ratio;
 }
 
+function minMaxUpdate(min, max){
+	if (!reset_slider){
+		return
+	}
+	$(".noUiSlider").empty();
+	var step = parseFloat((max-min)/10).toFixed(2);
+	$(".noUiSlider").noUiSlider({
+		range : [ min, max ],
+		start : [ min, max ],
+		step : step,
+		slide: function(){
+			var values = $(this).val();
+			$("#min").text(values[0]);
+			$("#max").text(values[1]);		
+		}
+	});
+	var values = $(".noUiSlider").val();
+	$("#min").text(values[0]);
+	$("#max").text(values[1]);	
+	$(".noUiSlider").noUiSlider("disabled", false);
+}
+
 function filterEvents(){
 
 	// function de las monedas
 	$("#currencies").change(function(){
-		coinUpdate(cur_currency, $("#currencies").val());
-		cur_currency = $("#currencies").val();
 
-		// borro el slider viejo
-		$(".noUiSlider").empty();
-		$("#min").text("Sin mínimo");
-		$("#max").text("Sin máximo");
-
-		var newMax = parseFloat(5000/cur_ratio).toFixed(2);
-		var newStep = newMax/10;
-		$(".noUiSlider").noUiSlider({
-			range : [ 0, newMax ],
-			start : [ 0, newMax ],
-			step : newStep,
-			slide: function(){
-
-				var values = $(this).val();
-				if (values[0] == 0) {
-					values[0] = "";
-					$("#min").text("Sin mínimo");
-				} else {
-					$("#min").text(parseInt(values[0]));
-				}
-				if (values[1] == newMax) {
-					values[1] = "";
-					$("#max").text("Sin máximo");
-				} else {
-					$("#max").text(parseInt(values[1]));
-				}			
-			}
-		});
 	});
 
 	// function del slider inicial
 	$(".noUiSlider").noUiSlider({
 		range : [ 0, 5000 ],
 		start : [ 0, 5000 ],
-		step : 500,
-		slide: function(){
-
-			var values = $(this).val();
-			if (values[0] == 0) {
-				values[0] = "";
-				$("#min").text("Sin mínimo");
-			} else {
-				$("#min").text(values[0]);
-			}
-			if (values[1] == 5000) {
-				values[1] = "";
-				$("#max").text("Sin máximo");
-			} else {
-				$("#max").text(values[1]);
-			}
-			
-		}
+		step : 500
 	});
+	$("#min").text("Sin mínimo");
+	$("#max").text("Sin máximo");
+	$(".noUiSlider").noUiSlider("disabled", true);
 
 	$(".noUiSlider").mouseup(function(){
-		searchFlights(cur_page);
+		reset_slider = false;
+		if (!$(".noUiSlider").hasClass("disabled")){
+			searchFlights(cur_page);
+		}
 	});
 
 	// function de la clase
 	$("input[name=cabin_group]").change(function () {
+		reset_slider = true;
 		searchFlights(cur_page);
 	});
 
 	// function de tiempo de partida
 	$("input[name=dep_group]").change(function () {
+		reset_slider = true;
 		searchFlights(cur_page);
 	});
 
 	//function de tiempo de regreso
 	$("input[name=ret_group]").change(function () {
+		reset_slider = true;
 		searchFlights(cur_page);
 	});
 
 	// function del cambio de ordenamiento
 	$("#sort_type").change(function () {
+		reset_slider = true;
 		searchFlights(cur_page);
 	});
 }
@@ -238,8 +227,6 @@ function loadFields(){
 	var to = $.cookie('to');
 	var dep_date = changeDateFormatBack($.cookie('dep_date'));
 	var ret_date = changeDateFormatBack($.cookie('ret_date'));
-	var min_price = $.cookie('min_price');
-	var max_price = $.cookie('max_price');
 	var cabin_type = $.cookie('cabin_type');
 	var dep_time = $.cookie('dep_time');
 	var ret_time = $.cookie('ret_time');
@@ -263,9 +250,6 @@ function loadFields(){
 		$("#ret_date_div").show();
 		$('#ret_date').val(ret_date);
 	}
-
-	// cargar los filtros
-	$("#minMaxSlider").val([min_price, max_price]);
 
 	// cargar horarios de retorno
 	if(dep_time == "Morning"){
@@ -462,10 +446,36 @@ function searchFlights(page){
 	}
 
 	if(flight_type == "one_way"){
+		//saco el precio min y max
 		$.ajax({
-			url: "http://eiffel.itba.edu.ar/hci/service2/Booking.groovy?method=GetOneWayFlights&from="+from+"&to="+to+"&dep_date="+dep_date+"&adults="+adults+"&children="+children+"&infants="+infants+"&airline_id="+airline_id+"&min_price="+min_price+"&max_price="+max_price+"&cabin_type="+cabin_type+"&min_dep_time="+min_dep_time+"&max_dep_time="+max_dep_time+"&page="+page+"&page_size="+page_size+"&sort_key="+sort_key+"&sort_order="+sort_order,
-        	dataType: "jsonp",
-        	jsonpCallback: "oneWayFlight"
+			url: "http://eiffel.itba.edu.ar/hci/service2/Booking.groovy?method=GetOneWayFlights&from="+from+"&to="+to+"&dep_date="+dep_date+"&adults="+adults+"&children="+children+"&infants="+infants+"&airline_id="+airline_id+"&min_price="+min_price+"&max_price="+max_price+"&cabin_type="+cabin_type+"&min_dep_time="+min_dep_time+"&max_dep_time="+max_dep_time+"&page=1&page_size=1&sort_key=total&sort_order=asc",
+       		dataType: "jsonp",
+    	}).done(function(data) {
+    		if(!data.hasOwnProperty("error")){
+				if(data['total'] == 0){
+					min_results_price = "";
+				} else{
+					min_results_price = data['flights'][0]['price']['total']['total'];
+					$.ajax({
+						url: "http://eiffel.itba.edu.ar/hci/service2/Booking.groovy?method=GetOneWayFlights&from="+from+"&to="+to+"&dep_date="+dep_date+"&adults="+adults+"&children="+children+"&infants="+infants+"&airline_id="+airline_id+"&min_price="+min_price+"&max_price="+max_price+"&cabin_type="+cabin_type+"&min_dep_time="+min_dep_time+"&max_dep_time="+max_dep_time+"&page=1&page_size=1&sort_key=total&sort_order=desc",
+       					dataType: "jsonp",
+    				}).done(function(data) {
+    					if(!data.hasOwnProperty("error")){
+							if(data['total'] == 0){
+								max_results_price = "";
+							} else{
+								max_results_price = data['flights'][0]['price']['total']['total'];
+								// ya tengo precio min y max, busco los vuelos
+								$.ajax({
+									url: "http://eiffel.itba.edu.ar/hci/service2/Booking.groovy?method=GetOneWayFlights&from="+from+"&to="+to+"&dep_date="+dep_date+"&adults="+adults+"&children="+children+"&infants="+infants+"&airline_id="+airline_id+"&min_price="+min_price+"&max_price="+max_price+"&cabin_type="+cabin_type+"&min_dep_time="+min_dep_time+"&max_dep_time="+max_dep_time+"&page="+page+"&page_size="+page_size+"&sort_key="+sort_key+"&sort_order="+sort_order,
+        							dataType: "jsonp",
+        							jsonpCallback: "oneWayFlight"
+    							});
+							}
+						}
+					});
+    			}
+			}
     	});
 	} else {
 	$.ajax({
@@ -547,7 +557,7 @@ function oneWayFlight(data){
 	}
 
 	// Si la moenda actual es otra cambio	
-	coinUpdate("Dolares",$("#currencies").val());
+	coinUpdate("Dolares",$("#currencies").val(), min_results_price, max_results_price);
 
 	// creo el paginador con los resultados
 	createPagination(data['total'], data['pageSize'], data['page']);
