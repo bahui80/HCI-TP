@@ -292,16 +292,11 @@ function searchFlight(){
 		$.cookie('cabin_type', $("#cabin_type").val(), { path: '/' });
 		$.cookie('dep_time', $("#dep_time").val(), { path: '/' });
 		$.cookie('ret_time', $("#ret_time").val(), { path: '/' });
-		slider = $("#min_max_slider").val();
-		$.cookie('min_price', slider[0], { path: '/' });
-		$.cookie('max_price', slider[1], { path: '/' });
 	} else {
 		$.cookie('airline', "", { path: '/' });
 		$.cookie('cabin_type', "", { path: '/' });
 		$.cookie('dep_time', "", { path: '/' });
 		$.cookie('ret_time', "", { path: '/' });
-		$.cookie('min_price', "0", { path: '/' });
-		$.cookie('max_price', "5000", { path: '/' });	
 	}
 	document.location.href="results.html";
 }

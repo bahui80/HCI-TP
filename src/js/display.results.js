@@ -43,6 +43,7 @@ function coinUpdate(from, to){
 		return;
 	}
 	var new_val;
+	var new_cur
 	var new_sym;
 	var new_ratio;
 	var new_text;
@@ -50,7 +51,7 @@ function coinUpdate(from, to){
 	// Busco la nueva moneda
 	for(var j=0; j< currencies_desc_array.length; j++){
 		if(currencies_desc_array[j] == to){
-			cur_currency = currencies_desc_array[j];
+			new_cur = currencies_desc_array[j];
 			new_sym = currencies_symbol_array[j];
 			new_ratio = currencies_ratio_array[j];
 		}
@@ -65,7 +66,6 @@ function coinUpdate(from, to){
 		cur_val_selector= "#cur_val_"+j;
 		$(cur_val_selector).text(new_text);
 	}
-	cur_ratio = new_ratio;
 }
 
 function minMaxUpdate(min, max){
@@ -73,20 +73,19 @@ function minMaxUpdate(min, max){
 		$(".noUiSlider").noUiSlider("disabled", true);
 	}
 	$(".noUiSlider").empty();
-	var step = parseFloat((max-min)/10).toFixed(2);
 	$(".noUiSlider").noUiSlider({
 		range : [ min, max ],
 		start : [ min, max ],
-		step : step,
+		handles: 2,
 		slide: function(){
 			var values = $(this).val();
-			$("#min").text(parseInt(values[0]));
-			$("#max").text(parseInt(values[1]));		
+			$("#min").text("U$S"+parseInt(values[0]));
+			$("#max").text("U$S"+parseInt(values[1]));		
 		}
 	});
 	var values = $(".noUiSlider").val();
-	$("#min").text(parseInt(values[0]));
-	$("#max").text(parseInt(values[1]));	
+	$("#min").text("U$S"+parseInt(values[0]));
+	$("#max").text("U$S"+parseInt(values[1]));	
 	$(".noUiSlider").noUiSlider("disabled", false);
 }	
 
@@ -94,14 +93,62 @@ function filterEvents(){
 
 	// function de las monedas
 	$("#currencies").change(function(){
+		
+		// primero actualizo el slider
+		var new_cur;
+		var new_sym;
+		var new_ratio;
+		// Busco la nueva moneda
+		for(var j=0; j< currencies_desc_array.length; j++){
+			if(currencies_desc_array[j] == $("#currencies").val()){
+				new_cur = currencies_desc_array[j];
+				new_sym = currencies_symbol_array[j];
+				new_ratio = currencies_ratio_array[j];
+			}
+		}
 
+		//me guardo el valor viejo para transformarlo
+		var old_cur = $(".noUiSlider").val();
+		var old_min_cur = old_cur[0];
+		var old_max_cur = old_cur[1];		
+
+		var new_min_cur = (old_min_cur*cur_ratio)/new_ratio;		
+		var new_max_cur = (old_max_cur*cur_ratio)/new_ratio;
+
+		// nuevo slider
+		$(".noUiSlider").empty();
+		var new_min = min_results_price/new_ratio;
+		var new_max = max_results_price/new_ratio;
+
+		if (new_min_cur < new_min){
+			new_min_cur = new_min;
+		}
+		if (new_max_cur > new_max){
+			new_max_cur = new_max;
+		}
+		$(".noUiSlider").noUiSlider({
+			range : [ new_min, new_max ],
+			handles: 2,
+			start : [ new_min_cur, new_max_cur ],
+			slide: function(){
+				var values = $(this).val();
+				$("#min").text(new_sym+parseInt(values[0]));
+				$("#max").text(new_sym+parseInt(values[1]));		
+			}
+		});	
+		$("#min").text(new_sym+parseInt(new_min_cur));
+		$("#max").text(new_sym+parseInt(new_max_cur));
+
+		coinUpdate(cur_currency,$("#currencies").val());
+		cur_currency = new_cur;
+		cur_ratio = new_ratio;
 	});
 
 	// function del slider inicial
 	$(".noUiSlider").noUiSlider({
-		range : [ 0, 5000 ],
-		start : [ 0, 5000 ],
-		step : 500
+		range : [ 0, 1000 ],
+		start : [ 0, 1000 ],
+		handles: 2
 	});
 	$("#min").text("Sin mínimo");
 	$("#max").text("Sin máximo");
@@ -371,9 +418,8 @@ function searchFlights(page){
 
 	// cosas variblaes
 	var sliders_val = $(".noUiSlider").val();
-	var min_price = ""
-	var max_price = ""
-
+	var min_price = "";
+	var max_price = "";	
 	if(!first_search){
 		min_price = sliders_val[0]*cur_ratio;
 		max_price = sliders_val[1]*cur_ratio;
@@ -570,7 +616,7 @@ function oneWayFlight(data){
 	}
 
 	// Si la moenda actual es otra cambio	
-	coinUpdate("Dolares",$("#currencies").val(), min_results_price, max_results_price);
+	coinUpdate("Dolares",$("#currencies").val());
 
 	// creo el paginador con los resultados
 	createPagination(data['total'], data['pageSize'], data['page']);
@@ -669,28 +715,40 @@ function getDateInfo(data){
 	switch(month){
 		case "01":
 			monthName ="enero";
+			break;
 		case "02":
 			monthName ="febrero";
+			break;
 		case "03":
 			monthName ="marzo";
+			break;
 		case "04":
 			monthName ="abril";
+			break;
 		case "05":
 			monthName ="mayo";
+			break;
 		case "06":
 			monthName ="junio";
+			break;
 		case "07":
 			monthName ="julio";
+			break;
 		case "08":
 			monthName ="agosto";
+			break;
 		case "09":
 			monthName ="septiembre";
+			break;
 		case "10":
 			monthName ="octubre";
+			break;
 		case "11":
 			monthName ="noviembre";
+			break;
 		case "12":
 			monthName ="diciembre";
+			break;
 	} 
 	return day+" de "+monthName+" de "+year;
 }
