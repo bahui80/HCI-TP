@@ -29,7 +29,7 @@
 	}
 	.noUiSlider.horizontal a {
 		height: 100%;
-		right: 0;
+		right: 5px;
 	}
 
 	.noUiSlider {
@@ -47,7 +47,7 @@
 	}
 	.noUiSlider.disabled,
 	.noUiSlider.disabled.connect.lower a {
-		background: #ccc;
+		background: transparent;
 		box-shadow: none;
 	}
 	.noUiSlider div {
@@ -59,7 +59,7 @@
 
 	border: 1px solid #AAA;
 	min-width: 14px;
-	padding: 0 7px;
+	padding: 0 0px;
 	background: #efefef; /* Old browsers */
 	background: -moz-linear-gradient(top, #ffffff 0%, #efefef 100%); /* FF3.6+ */
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#efefef)); /* Chrome,Safari4+ */
@@ -70,12 +70,12 @@
 
 	}
 	.noUiSlider.disabled div {
-		background: transparent;
+		background: #f5f5f5;
 	}
 	.noUiSlider.horizontal {
 		width: 170px;
 		height: 10px;
 	}
 	.noUiSlider.horizontal div {
-		margin: -5px 0 0 -5px;
+		margin: -5px 0 0 -7px;
 	}
