@@ -133,7 +133,12 @@ $(document).ready(function() {
 			
 			state = "pasajeros"
 		} else if(state == "confirmacion") { //pasamos al estado de pago
-			//chequear que no haya algun campo sin guardar
+			//chequeo que no haya algun campo sin guardar
+			if(totalEdits != 0) {
+
+			}
+			
+			
 			//oculto los botones de editar de la tarjeta
 			$("#edit_credit_card_span").hide();
 			$("#edit_contact_information_span").hide();
