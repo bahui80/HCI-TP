@@ -187,7 +187,7 @@ function fillAirportsArray(data){
 			$("#origin_span").addClass('control-group error');
 			$("#destination_span").addClass('control-group error');
 			$("#from_error_text").text(" Mismo origen y destino");
-			$("#destination_error_text").text(" Mismo origen y destino");
+			$("#to_error_text").text(" Mismo origen y destino");
 			$("#from_error").show();
 			$("#destination_error").show();
 		}
@@ -207,10 +207,10 @@ function fillAirportsArray(data){
 		if(!containsDestination){
 			$("#destination_span").addClass('control-group error');
 			if($("#to").val()=="") {
-				$("#destination_error_text").text(" Ingrese un destino");
+				$("#to_error_text").text(" Ingrese un destino");
 				$("#destination_error").show();
 			} else {
-				$("#destination_error_text").text(" Ingrese un destino valido");
+				$("#to_error_text").text(" Ingrese un destino valido");
 				$("#destination_error").show();
 			}
 		} 
@@ -226,14 +226,14 @@ function fillAirportsArray(data){
 			$("#depart_date_error").show();
 		} else if(!validDate($("#dep_date").val())) {
 			$("#depart_span").addClass('control-group error');
-			$("#depart_date_error_text").text(" Ingrese una fecha de ida valida");
+			$("#dep_date_error_text").text(" Ingrese una fecha de ida valida");
 			$("#depart_date_error").show();
 		} else {
 			var nowTemp = new Date();
 			var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
 			if(now > stringToDate($("#dep_date").val())) {
 				$("#depart_span").addClass('control-group error');
-				$("#depart_date_error_text").text(" Ingrese una fecha de ida posterior");
+				$("#dep_date_error_text").text(" Ingrese una fecha de ida posterior");
 				$("#depart_date_error").show();
 			}
 		}
@@ -241,15 +241,15 @@ function fillAirportsArray(data){
 		if(round_trip) {
 			if($("#ret_date").val() == "") {
 				$("#return_span").addClass('control-group error');
-				$("#return_date_error_text").text(" Ingrese una fecha de vuelta");
+				$("#ret_date_error_text").text(" Ingrese una fecha de vuelta");
 				$("#return_date_error").show();
 			} else if(!validDate($("#ret_date").val())) {
 				$("#return_span").addClass('control-group error');
-				$("#return_date_error_text").text(" Ingrese una fecha de vuelta valida");
+				$("#ret_date_error_text").text(" Ingrese una fecha de vuelta valida");
 				$("#return_date_error").show();
 			} else if(stringToDate($("#dep_date").val()) >= stringToDate($("#ret_date").val())) {
 				$("#return_span").addClass('control-group error');
-				$("#return_date_error_text").text(" Ingrese una fecha posterior a la de origen");
+				$("#ret_date_error_text").text(" Ingrese una fecha posterior a la de origen");
 				$("#return_date_error").show();
 			}
 		}
@@ -298,7 +298,7 @@ function searchFlight(){
 		$.cookie('dep_time', "", { path: '/' });
 		$.cookie('ret_time', "", { path: '/' });
 	}
-	document.location.href="results.html";
+//	document.location.href="results.html";
 }
 
 function changeDateFormat(date){
@@ -321,7 +321,7 @@ function validDate(date) {
 	dtDay = dtArray[1];
     dtMonth= dtArray[3];
     dtYear = dtArray[5];
-
+    
 	if (dtMonth < 1 || dtMonth > 12) {
 		return false;
 	} else if (dtDay < 1 || dtDay> 31) {
@@ -330,7 +330,7 @@ function validDate(date) {
 		return false;
 	} else if (dtMonth == 2) {
 		var isleap = (dtYear % 4 == 0 && (dtYear % 100 != 0 || dtYear % 400 == 0));
-		if (dtDay> 29 || (dtDay ==29 && !isleap)) {
+		if (dtDay> 29 || (dtDay == 29 && !isleap)) {
 			return false;
 		}
 	}
