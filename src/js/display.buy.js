@@ -37,6 +37,7 @@ $(document).ready(function() {
 	
 	$("#next_button").click(function() {
 		if(state == "pasajeros") { //pasamos al pago
+			//if valida todo pasa lo de abajo
 			state = "tarjeta";
 			
 			//animacion para que suba todo y baje lo nuevo
@@ -107,7 +108,27 @@ $(document).ready(function() {
 			
 			firstTime = 0;
 		} else {
-			$("#myModal").modal();
+			//chequeo que no haya algun campo sin guardar
+			if(totalEdits != 0) {
+				$("#modalError").modal();
+				$("#modalError_button").click(function() {
+					$("#modalError").modal("hide");
+				});
+				for(var i = 0; i < adults; i++) {
+					showError("#well_passenger_adults_" + (i + 1), "#edit_passenger_adults_" + (i + 1));
+				}
+				for(var i = 0; i < children; i++) {
+					showError("#well_passenger_children_" + (i + 1), "#edit_passenger_children_" + (i + 1));
+				}
+				for(var i = 0; i < infants; i++) {
+					showError("#well_passenger_infants_" + (i + 1), "#edit_passenger_infants_" + (i + 1));
+				}
+				showError("#well_credit_card","#edit_credit_card");
+				showError("#well_titular_information", "#edit_titular_information");
+				showError("#well_contact_information", "#edit_contact_information");
+			} else {
+				$("#myModal").modal();
+			}
 		}
 	});
 		
@@ -133,10 +154,6 @@ $(document).ready(function() {
 			
 			state = "pasajeros"
 		} else if(state == "confirmacion") { //pasamos al estado de pago
-			//chequeo que no haya algun campo sin guardar
-			if(totalEdits != 0) {
-
-			}
 			
 			
 			//oculto los botones de editar de la tarjeta
@@ -184,16 +201,24 @@ $(document).ready(function() {
 
 function enableButtons(idWell, idButton) {
 	$(idButton).click(function() {
+		//falta la validacion 
+		//si paso la validacion
+		$(idWell).removeClass("well-group-error");
+		$(idButton).removeClass("btn-danger");
+		//hasta aca si la paso
+		
 		if($($(idWell).find("input")[0]).attr("disabled")) {
 			$(idWell).find("input").removeAttr("disabled");
 			$(idWell).find("select").removeAttr("disabled");
-			$(idButton).text(" Guardar"); //AGREGAR TAMBIEN LA IMAGEN
+			$(idButton).text(" Guardar ");
+			$(idButton).append('<i class="icon-save"></i>');
 			totalEdits++;
 			console.log(totalEdits);
 		} else {
 			$(idWell).find("input").attr("disabled",true);
 			$(idWell).find("select").attr("disabled",true);
-			$(idButton).text(" Editar"); //AGREGAR TAMBIEN LA IMAGEN
+			$(idButton).text(" Editar ");
+			$(idButton).append('<i class="icon-pencil"></i>');
 			totalEdits--;
 			console.log(totalEdits);
 			// !!!!!!!!!!!!!!!!!!!!!!!FLATA VALIDAR BIEN!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -205,4 +230,11 @@ function enableButtons(idWell, idButton) {
 function enableInputs(idWell) {
 	$(idWell).find("input").removeAttr("disabled");
 	$(idWell).find("select").removeAttr("disabled");
+}
+
+function showError(idWell, idButton) {
+	if(!$($(idWell).find("input")[0]).attr("disabled")) {
+		$(idWell).addClass("well-group-error");
+		$(idButton).addClass("btn-danger");
+	}
 }

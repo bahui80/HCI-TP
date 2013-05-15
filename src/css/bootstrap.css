@@ -6258,3 +6258,10 @@ a.badge:focus {
 .affix {
   position: fixed;
 }
+
+.well-group-error {
+  border-color: #b94a48;
+	-webkit-box-shadow: 0 0 5px#b94a48;
+  		-moz-box-shadow: 0 0 5px #b94a48;
+			box-shadow: 0 0 5px #b94a48;
+}

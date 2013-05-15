@@ -498,11 +498,12 @@ function searchFlights(page){
 	if(flight_type == "one_way"){
 		//saco el precio min y max
 		if (first_search){
+			alert("http://eiffel.itba.edu.ar/hci/service2/Booking.groovy?method=GetOneWayFlights&from="+from+"&to="+to+"&dep_date="+dep_date+"&adults="+adults+"&children="+children+"&infants="+infants+"&airline_id="+airline_id+"&min_price="+min_price+"&max_price="+max_price+"&cabin_type="+cabin_type+"&min_dep_time="+min_dep_time+"&max_dep_time="+max_dep_time+"&page=1&page_size=1&sort_key=total&sort_order=asc");
 			$.ajax({
 				url: "http://eiffel.itba.edu.ar/hci/service2/Booking.groovy?method=GetOneWayFlights&from="+from+"&to="+to+"&dep_date="+dep_date+"&adults="+adults+"&children="+children+"&infants="+infants+"&airline_id="+airline_id+"&min_price="+min_price+"&max_price="+max_price+"&cabin_type="+cabin_type+"&min_dep_time="+min_dep_time+"&max_dep_time="+max_dep_time+"&page=1&page_size=1&sort_key=total&sort_order=asc",
 	       		dataType: "jsonp",
 	    	}).done(function(data) {
-	    		if(!data.hasOwnProperty("error")){
+				if(!data.hasOwnProperty("error")){
 					if(data['total'] == 0){
 						min_results_price = "";
 					} else{
@@ -528,6 +529,8 @@ function searchFlights(page){
 							}
 						});
 	    			}
+				} else {
+						/////marcar error de que no se recibio nada y cortar la carga
 				}
 	    	});
 		} else{
@@ -548,7 +551,6 @@ function searchFlights(page){
 }
 
 function oneWayFlight(data){
-
 	// limpio por si cambio de pagina
 	$('#flights_row').empty();
 	cur_flights_price = new Array();

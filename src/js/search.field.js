@@ -1,3 +1,10 @@
+///////////////AGREGAR EL BOTON DEL ALENDARIO????????????????????????///////////////////////////////////
+
+
+
+
+
+
 // Variables globales
 var citiesAirportsArray = new Array();
 var citiesAirportsCodeArray = new Array();
@@ -13,7 +20,6 @@ var airline_code;
 var i=0;
 var curTotal=0;
 var advanced_options_on = false;
-var error_on = false;
 var round_trip = true;
 
 $(document).ready(function() {
@@ -39,6 +45,12 @@ $(document).ready(function() {
 		if(advanced_options_on){
 			$(".advanced_options_div").slideUp(1000);
 			$("#advanced_options_icon").toggleClass('icon-minus-sign icon-plus-sign');
+			$("#dep_time").val("");
+			$("#ret_time").val("");
+			$("#cabin_type").val("ECONOMY");
+			$("#airline_error").hide();
+			$("#airline_span").removeClass('control-group error');
+			$("#airline").val("");
 			advanced_options_on = false;
 		}else{
 			$(".advanced_options_div").slideDown(1000);
@@ -60,6 +72,10 @@ $(document).ready(function() {
 		$("#oneway_trip").addClass('active');
 		$("#round_trip").removeClass('active');
 		round_trip = false;
+		$("#return_span").removeClass("control-group error");
+		$("#return_date_error").hide();
+		$("#ret_date").val("");
+		$("#ret_time").val("");
 	});
 	
 	$("#round_trip").click(function () {
@@ -126,42 +142,44 @@ function fillAirportsArray(data){
 		minLength : 3
 	});
 	
-	$("#from").click(function() {
-		$("#from").select();
+	$("#from").focusout(function() {
+	//	$("#from").select();
 		$("#origin_span").removeClass('control-group error');
 		$("#from_error").hide();
 	});
 	
-	$("#to").click(function() {
-		$("#to").select();
+	$("#to").focusout(function() {
+//		$("#to").select();
 		$("#destination_span").removeClass('control-group error');
 		$("#destination_error").hide();
 	});
 	
-	$("#airline").click(function() {
-		$("#airline").select();
+	$("#airline").focusout(function() {
+//		$("#airline").select();
 		$("#airline_span").removeClass('control-group error');
 		$("#airline_error").hide();
 	});
 	
-	$("#dep_date").click(function() {
-		$("#dep_date").select();
+	$("#dep_date").focusout(function() {
+//		$("#dep_date").select();
 		$("#depart_span").removeClass('control-group error');
 		$("#depart_date_error").hide();
 	});
 	
-	$("#ret_date").click(function() {
-		$("#ret_date").select();
+	$("#ret_date").focusout(function() {
+//		$("#ret_date").select();
 		$("#return_span").removeClass('control-group error');
 		$("#return_date_error").hide();
 	});
 	
 	$("#search_button").click(function () {
-
+		
+		
 		var containsOrigin = false;
 		var containsDestination = false;
 		var containsAirline = false;
-
+		var error_on = false;
+		
 		for(var k=0; k < citiesAirportsArray.length; k++){
 			if(citiesAirportsArray[k]==$("#from").val()){
 				containsOrigin = true;
@@ -190,6 +208,7 @@ function fillAirportsArray(data){
 			$("#to_error_text").text(" Mismo origen y destino");
 			$("#from_error").show();
 			$("#destination_error").show();
+			error_on = true;
 		}
 		
 		
@@ -198,9 +217,11 @@ function fillAirportsArray(data){
 			if($("#from").val()=="") {
 				$("#from_error_text").text(" Ingrese un origen");
 				$("#from_error").show();
+				error_on = true;
 			} else {
 				$("#from_error_text").text(" Ingrese un origen valido");
 				$("#from_error").show();
+				error_on = true;
 			}
 		}
 		
@@ -209,25 +230,30 @@ function fillAirportsArray(data){
 			if($("#to").val()=="") {
 				$("#to_error_text").text(" Ingrese un destino");
 				$("#destination_error").show();
+				error_on = true;
 			} else {
 				$("#to_error_text").text(" Ingrese un destino valido");
 				$("#destination_error").show();
+				error_on = true;
 			}
 		} 
 		
 		if(!containsAirline){
 			$("#airline_span").addClass('control-group error');
 			$("#airline_error").show();
+			error_on = true;
 		}
 		
 		if($("#dep_date").val() == "") {
 			$("#depart_span").addClass('control-group error');
 			$("#depart_date_error_text").text(" Ingrese una fecha de ida");
 			$("#depart_date_error").show();
+			error_on = true;
 		} else if(!validDate($("#dep_date").val())) {
 			$("#depart_span").addClass('control-group error');
 			$("#dep_date_error_text").text(" Ingrese una fecha de ida valida");
 			$("#depart_date_error").show();
+			error_on = true;
 		} else {
 			var nowTemp = new Date();
 			var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
@@ -235,6 +261,7 @@ function fillAirportsArray(data){
 				$("#depart_span").addClass('control-group error');
 				$("#dep_date_error_text").text(" Ingrese una fecha de ida posterior");
 				$("#depart_date_error").show();
+				error_on = true;
 			}
 		}
 		
@@ -243,18 +270,21 @@ function fillAirportsArray(data){
 				$("#return_span").addClass('control-group error');
 				$("#ret_date_error_text").text(" Ingrese una fecha de vuelta");
 				$("#return_date_error").show();
+				error_on = true;
 			} else if(!validDate($("#ret_date").val())) {
 				$("#return_span").addClass('control-group error');
 				$("#ret_date_error_text").text(" Ingrese una fecha de vuelta valida");
 				$("#return_date_error").show();
+				error_on = true;
 			} else if(stringToDate($("#dep_date").val()) >= stringToDate($("#ret_date").val())) {
 				$("#return_span").addClass('control-group error');
 				$("#ret_date_error_text").text(" Ingrese una fecha posterior a la de origen");
 				$("#return_date_error").show();
+				error_on = true;
 			}
 		}
-		if(containsAirline && containsDestination && containsOrigin){
-			searchFlight();	
+		if(containsAirline && containsDestination && containsOrigin && !error_on){
+			searchFlight();
 		}
 	});	
 }
@@ -298,7 +328,7 @@ function searchFlight(){
 		$.cookie('dep_time', "", { path: '/' });
 		$.cookie('ret_time', "", { path: '/' });
 	}
-//	document.location.href="results.html";
+	document.location.href="results.html";
 }
 
 function changeDateFormat(date){
