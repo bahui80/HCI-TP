@@ -23,6 +23,7 @@ var advanced_options_on = false;
 var round_trip = true;
 
 $(document).ready(function() {
+
 	$.ajax({
 		url: "http://eiffel.itba.edu.ar/hci/service2/Geo.groovy?method=GetCities&page_size=40",
         dataType: "jsonp",
@@ -174,7 +175,7 @@ function fillAirportsArray(data){
 	
 	$("#search_button").click(function () {
 		
-		
+		round_trip = $("#round_trip").hasClass("active");
 		var containsOrigin = false;
 		var containsDestination = false;
 		var containsAirline = false;
