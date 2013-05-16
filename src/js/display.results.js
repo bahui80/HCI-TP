@@ -566,7 +566,7 @@ function searchFlights(page){
 		sort_order = "desc"
 	}
 
-
+	//hago espacio para los resultados
 	$('#flights_row').empty();
 	if(flight_type == "one_way"){
 		//saco el precio min y max
@@ -578,6 +578,11 @@ function searchFlights(page){
 				if(!data.hasOwnProperty("error")){
 					if(data['total'] == 0){
 						min_results_price = "";
+						$('#flights_row').append('<div id="flights_row"class="row-fluid"><div class="well clearfix"><div class="span12"><h3 class="text-center"><i class="icon-warning-sign"></i> No pudimos encontrar ningún vuelo!</h3><p class="text-center">Intenta buscando con otros parámetros o quitando filtros si haz aplicado alguno</p></div></div></div>')
+							//termino de cargar
+						$('#loading-modal').modal('hide');
+						first_search = false;
+						return;
 					} else{
 						min_results_price = data['flights'][0]['price']['total']['total'];
 						$.ajax({
@@ -585,9 +590,6 @@ function searchFlights(page){
 	       					dataType: "jsonp",
 	    				}).done(function(data) {
 	    					if(!data.hasOwnProperty("error")){
-								if(data['total'] == 0){
-									max_results_price = "";
-								} else{
 									max_results_price = data['flights'][0]['price']['total']['total'];
 									minMaxUpdate(min_results_price, max_results_price);
 									// ya tengo precio min y max, busco los vuelos
@@ -596,7 +598,6 @@ function searchFlights(page){
 	        							dataType: "jsonp",
 	        							jsonpCallback: "oneWayFlight"
 	    							});
-								}
 							} else {
 								$('#flights_row').append('<div id="flights_row"class="row-fluid"><div class="well clearfix"><div class="span12"><h3 class="text-center"><i class="icon-warning-sign"></i> No pudimos encontrar ningún vuelo!</h3><p class="text-center">Hubo un error inesperado en la busqueda</p></div></div></div>')
 			        			console.log(JSON.stringify(data));
