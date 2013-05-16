@@ -9,11 +9,11 @@ var currencies_ratio_array = new Array();
 var currencies_symbol_array = new Array();
 var cur_flights_price = new Array();
 
-// Variables globales del precio max y min
+// Variables globales de la primer busqueda
+var first_search = true;
 var max_results_price;
 var min_results_price;
-
-var first_search = true;
+var first_time_matrix = true;
 
 $(document).ready(function() {
 
@@ -25,6 +25,10 @@ $(document).ready(function() {
 		backdrop: 'static',
 		keyboard: false
 	})
+	$("#results_num_div").hide();
+
+	// prepara evento de creacion de matriz comparativa
+
 
 	// prepara eventos de click de filtros
 	filterEvents();
@@ -37,6 +41,65 @@ $(document).ready(function() {
 
 
 });
+
+function matrixEvent(){
+
+	var matrix_on = false;
+
+	//configuro el carrusel
+    $('#airline-table').carousel({
+		interval: false,
+	});
+
+	//configuro para que no sea una lista cliclica
+	$("#left-control").hide();
+	$('#airline-table').bind('slid',function(){
+        if($('#airline-table .active').index('#airline-table .item') == 1){
+        	$("#left-control").slideDown(200);
+        	$("#right-control").slideDown(200);
+        }
+        if($('#airline-table .active').index('#airline-table .item') == 2){
+        	$("#left-control").slideDown(200);
+        }
+		 if($('#airline-table .active').index('#airline-table .item') == 0){
+        	$("#right-control").slideDown(200);
+        }
+    });
+
+    $('#airline-table').bind('slide',function(){
+        if($('#airline-table .active').index('#airline-table .item') == 1){
+        	$("#left-control").slideUp(50);
+        	$("#right-control").slideUp(50);
+        }
+        if($('#airline-table .active').index('#airline-table .item') == 2){
+        	$("#left-control").slideUp(50);
+        	$("#right-control").slideUp(50);
+        }
+		 if($('#airline-table .active').index('#airline-table .item') == 0){
+        	$("#left-control").slideUp(50);
+        	$("#right-control").slideUp(50);
+        }
+    });
+
+	//apertura cerrado de matriz
+	$("#compare-airlines").click(function(){
+		if(matrix_on){
+			$("#airline-well").slideUp(500);
+			$("#compare-airlines").text("Mostrar matriz comparativa");
+			matrix_on = false;
+		} else {
+			
+			if(first_time_matrix){
+				//crea el contenido
+			}
+			$("#compare-airlines").text("Ocultar matriz comparativa");
+			$("#airline-well").slideDown(500);
+			matrix_on = true;
+		}
+	});
+
+
+}
 
 function coinUpdate(from, to){
 	if (from == to){
@@ -90,6 +153,8 @@ function minMaxUpdate(min, max){
 }	
 
 function filterEvents(){
+
+	$("#airline-well").hide();
 
 	// function de las monedas
 	$("#currencies").change(function(){
@@ -407,6 +472,8 @@ function loadCurrencies(data){
 function searchFlights(page){
 
 	$('#loading-modal').modal('show');
+	$("#results_num_div").slideUp(500);
+
 	// cargadas por url unicamente
 	var flight_type = $.cookie('flight_type');
 	var from = $.cookie('from_code');
@@ -495,10 +562,11 @@ function searchFlights(page){
 	}
 
 
+	$('#flights_row').empty();
 	if(flight_type == "one_way"){
 		//saco el precio min y max
 		if (first_search){
-			alert("http://eiffel.itba.edu.ar/hci/service2/Booking.groovy?method=GetOneWayFlights&from="+from+"&to="+to+"&dep_date="+dep_date+"&adults="+adults+"&children="+children+"&infants="+infants+"&airline_id="+airline_id+"&min_price="+min_price+"&max_price="+max_price+"&cabin_type="+cabin_type+"&min_dep_time="+min_dep_time+"&max_dep_time="+max_dep_time+"&page=1&page_size=1&sort_key=total&sort_order=asc");
+			alert(max_dep_time);
 			$.ajax({
 				url: "http://eiffel.itba.edu.ar/hci/service2/Booking.groovy?method=GetOneWayFlights&from="+from+"&to="+to+"&dep_date="+dep_date+"&adults="+adults+"&children="+children+"&infants="+infants+"&airline_id="+airline_id+"&min_price="+min_price+"&max_price="+max_price+"&cabin_type="+cabin_type+"&min_dep_time="+min_dep_time+"&max_dep_time="+max_dep_time+"&page=1&page_size=1&sort_key=total&sort_order=asc",
 	       		dataType: "jsonp",
@@ -526,11 +594,17 @@ function searchFlights(page){
 	    							});
 	    							first_search = false;
 								}
+							} else {
+								$('#flights_row').append('<div id="flights_row"class="row-fluid"><div class="well clearfix"><div class="span12"><h3 class="text-center"><i class="icon-warning-sign"></i> No pudimos encontrar ningún vuelo!</h3><p class="text-center">Hubo un error inesperado en la busqueda</p></div></div></div>')
+			        			console.log(JSON.stringify(data));
+			        			return;
 							}
 						});
 	    			}
 				} else {
-						/////marcar error de que no se recibio nada y cortar la carga
+					$('#flights_row').append('<div id="flights_row"class="row-fluid"><div class="well clearfix"><div class="span12"><h3 class="text-center"><i class="icon-warning-sign"></i> No pudimos encontrar ningún vuelo!</h3><p class="text-center">Hubo un error inesperado en la busqueda</p></div></div></div>')
+        			console.log(JSON.stringify(data));
+        			return;
 				}
 	    	});
 		} else{
@@ -541,8 +615,8 @@ function searchFlights(page){
 			});
 		}
 	} else {
-		alert("http://eiffel.itba.edu.ar/hci/service2/Booking.groovy?method=GetRoundTripFlights&from="+from+"&to="+to+"&dep_date="+dep_date+"&ret_date="+ret_date+"&adults="+adults+"&children="+children+"&infants="+infants+"&airline_id="+airline_id+"&min_price="+min_price+"&max_price="+max_price+"&cabin_type="+cabin_type+"&min_dep_time="+min_dep_time+"&max_dep_time="+max_dep_time+"&min_ret_time="+min_ret_time+"&max_ret_time="+max_ret_time+"&page="+page+"&page_size="+page_size+"&sort_key="+sort_key+"&sort_order="+sort_order);
-	$.ajax({
+		// FALTA IMPLEMENTAR
+		$.ajax({
 			url: "http://eiffel.itba.edu.ar/hci/service2/Booking.groovy?method=GetRoundTripFlights&from="+from+"&to="+to+"&dep_date="+dep_date+"&ret_date="+ret_date+"&adults="+adults+"&children="+children+"&infants="+infants+"&airline_id="+airline_id+"&min_price="+min_price+"&max_price="+max_price+"&cabin_type="+cabin_type+"&min_dep_time="+min_dep_time+"&max_dep_time="+max_dep_time+"&min_ret_time="+min_ret_time+"&max_ret_time="+max_ret_time+"&page="+page+"&page_size="+page_size+"&sort_key="+sort_key+"&sort_order="+sort_order,
         	dataType: "jsonp",
         	jsonpCallback: "roundWayFlight"
@@ -551,8 +625,7 @@ function searchFlights(page){
 }
 
 function oneWayFlight(data){
-	// limpio por si cambio de pagina
-	$('#flights_row').empty();
+
 	cur_flights_price = new Array();
 
 	// si no hubo error imprime
@@ -560,6 +633,9 @@ function oneWayFlight(data){
 		if(data['total'] == 0){
 			$('#flights_row').append('<div id="flights_row"class="row-fluid"><div class="well clearfix"><div class="span12"><h3 class="text-center"><i class="icon-warning-sign"></i> No pudimos encontrar ningún vuelo!</h3><p class="text-center">Intenta buscando con otros parámetros o quitando filtros si haz aplicado alguno</p></div></div></div>')
 		}else{
+			//attacheo evento a la matriz creada
+			matrixEvent();
+			//ahora agrego los vuelos
         	for (var j=0;j<data['pageSize'];j++){
         		if( (data['page']-1)*(data['pageSize'])+j < data['total']){
 
@@ -624,6 +700,14 @@ function oneWayFlight(data){
 	}else{
 		$('#flights_row').append('<div id="flights_row"class="row-fluid"><div class="well clearfix"><div class="span12"><h3 class="text-center"><i class="icon-warning-sign"></i> No pudimos encontrar ningún vuelo!</h3><p class="text-center">Hubo un error inesperado en la busqueda</p></div></div></div>')
         console.log(JSON.stringify(data));
+        return;
+	}
+
+	// actualizo la leyendea de cant de vuelos actuales
+	$("#found_num").text(data['total']);
+
+	if(first_search && data['total'] == 0){
+		$("#compare-airlines").addClass("disabled");
 	}
 
 	// Si la moenda actual es otra cambio	
@@ -634,6 +718,7 @@ function oneWayFlight(data){
 
 	//termino de cargar
 	$('#loading-modal').modal('hide');
+	$("#results_num_div").slideDown(500);
 }
 
 function roundWayFlight(data){
@@ -645,7 +730,6 @@ function roundWayFlight(data){
 		if(data['total'] == 0){
 			$('#flights_row').append('<div class="row-fluid"><div class="well clearfix"><div class="span12"><h3 class="text-center"><i class="icon-warning-sign"></i> No pudimos encontrar ningún vuelo!</h3><p class="text-center"> No pudimos encontrar ningún vuelo!</h3><p class="text-center">Intenta buscando con otros parámetros o quitando filtros si haz aplicado alguno</p></div></div></div>')
 		}else{
-			console.log(data['total']);
         	for (var j=0;j<data['pageSize'];j++){
         		if( (data['page']-1)*(data['pageSize'])+j < data['total']){
         			console.log(data['flights']);
