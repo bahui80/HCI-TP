@@ -156,7 +156,7 @@ function fillReviews(data){
 
         			//me guardo la data del comentario
         			var airline_id = data['reviews'][j]['airlineId'];
-        			var flight_number = data['reviews'][j]['FlightNumber'];
+        			var flight_number = data['reviews'][j]['flightNumber'];
         			var rating = data['reviews'][j]['overallRating'];
         			var friendliness = "Amabilidad: "+data['reviews'][j]['friendlinessRating']+"<br>";
         			var food = "Comida: "+data['reviews'][j]['foodRating']+"<br>";
