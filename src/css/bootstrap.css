@@ -923,7 +923,7 @@ ol.inline {
 
 ul.inline > li,
 ol.inline > li {
-  display: inline-block;
+  display: inline;
   *display: inline;
   padding-right: 15px;
   padding-left: 0px;
@@ -6273,4 +6273,37 @@ a.badge:focus {
 .slide-btn-td {
   width: 40px;
   background: #dadada !important;
+}
+
+.text-area{
+  resize: none;
+  margin-bottom: 20px;
+  height: 70px;
+}
+
+.search-btns{
+  margin-bottom: 135px;
+}
+
+.expand-top-margin{
+  margin-top: 135px;
+}
+
+.after-comment{
+  margin-top: 157px;
+  margin-bottom: 158px;
+}
+
+.rating{
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.extra-margin{
+  margin-top: 6px;
+}
+
+.max-width-table{
+  word-wrap: break-word;
+  max-width: 470px;
 }
