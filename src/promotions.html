@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Quiero viajar! - Compra tu pasaje online</title>
+		<meta charset="utf-8">
+		<link href="css/bootstrap.css" rel="stylesheet">
+		<link href="css/font-awesome.css" rel="stylesheet">
+		<link href="css/datepicker.css" rel="stylesheet">
+		<link href="css/nouislider-larger.css" rel="stylesheet">
+		<script src="js/jquery-1.9.1.js"></script>
+		<script src="js/jquery.cookie.js"></script>
+		<script src="js/bootstrap.js"></script>
+		<script src="js/promotions.js"></script>
+		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTU0aUmLT7PKhMVNy76M_-ltjokaGlstA&sensor=false">
+    	</script>
+	</head>
+	<body>
+		<div class="navbar navbar-inverse navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<ul class="nav">
+						<a class="brand" href="index.html">Quiero viajar!</a>
+						<li class="disabled-link">
+							<p>
+								<i class="icon-search"></i> Resultados
+							</p>
+						</li>
+						<li class="disabled-link">
+							<i class="icon-angle-right"></i>
+						</li>
+						<li class="disabled-link">
+							<p>
+								<i class="icon-group"></i> Pasajeros
+							</p>
+						</li>
+						<li class="disabled-link">
+							<i class="icon-angle-right"></i>
+						</li>
+						<li class="disabled-link">
+							<p>
+								<i class="icon-shopping-cart"></i> Pago
+							</p>
+						</li>
+						<li class="disabled-link">
+							<i class="icon-angle-right"></i>
+						</li>
+						<li class="disabled-link">
+							<p>
+								<i class="icon-plane"></i> Confirmación
+							</p>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<br>
+		<br>
+		<div class="container">
+			<div class="row-fluid">
+				<div class="span12">
+					<h3><i class="icon-chevron-right"></i> Ofertas</h3>
+				</div>
+			</div>
+			<div class="row-fluid">
+				<div class="span12">
+					<div id="map"class="img-polaroid map-cont">
+						<h3 id="map-text" class="text-center">Busque alguna ciudad de origen para mostrar ofertas</h3>
+					</div>
+				</div>
+			</div>
+			<div class="row-fluid">
+				<div class="span12">
+					<br>
+					<div class="well small-bottom-padding">
+						<div class="row-fluid">
+    						<div class="pull-left">
+   								<input id="city_offers" type="text" class="input" placeholder="Ingrese ciudad de origen">
+    						</div>
+							<a id="search_offers" class="btn btn-inverse thin-font pull-right">Buscar</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

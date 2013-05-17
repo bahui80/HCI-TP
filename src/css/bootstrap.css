@@ -6307,3 +6307,15 @@ a.badge:focus {
   word-wrap: break-word;
   max-width: 470px;
 }
+
+.map-cont{
+  height:400px !important;
+}
+
+#map img {
+  max-width: none;
+}
+
+#map-text{
+  margin-top: 175px;
+}
