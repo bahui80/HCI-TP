@@ -755,6 +755,9 @@ function searchFlights(page){
 		sort_order = "desc"
 	}
 
+	//hago espacio para los resultados
+	$('#flights_row').empty();
+
 	if(flight_type == "one_way"){
 		//saco el precio min y max
 		if (first_search){
