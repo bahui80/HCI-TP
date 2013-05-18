@@ -34,6 +34,9 @@ var first_time_matrix = true;
 
 $(document).ready(function() {
 
+	//hago espacio para los resultados
+	$('#flights_row').empty();
+
 	// muestro un modal incerrable de cargando hasta que termine de buscar el vuelo
 	$('#loading-modal').modal({
 		backdrop: 'static',
@@ -183,7 +186,7 @@ function searchCheapestAndDraw(){
 		max_dep_time = "18:00";
 	} else if (dep_time == "Night"){
 	 	min_dep_time = "18:00";
-		max_dep_time = "24:00";		
+		max_dep_time = "23:59";		
 	}
 
 	var min_ret_time = "";
@@ -200,7 +203,7 @@ function searchCheapestAndDraw(){
 		max_ret_time = "18:00";
 	}else if(ret_time == "Night"){
 		min_ret_time = "18:00";
-		max_ret_time = "00:00";
+		max_ret_time = "23:59";
 	}
 
 	if(flight_type == "one_way"){
@@ -273,7 +276,7 @@ function coinUpdate(from, to){
 		new_infants_val = parseInt((cur_flights_infants_price[j])/new_ratio);
 		new_tax_val = parseInt((cur_flights_tax_price[j])/new_ratio);
 
-		new_text = new_sym+""+new_val;
+		new_text = '<div class="thin-font">'+new_sym+'<div class="thick-font">'+new_val+'</div></div>';
 		new_adults_val = new_sym+""+new_adults_val;
 		new_children_val = new_sym+""+new_children_val;
 		new_infants_val = new_sym+""+new_infants_val;
@@ -281,7 +284,8 @@ function coinUpdate(from, to){
 
 		cur_val_selector= "#cur_val_"+j;
 
-		$(cur_val_selector).text(new_text);
+	$(cur_val_selector).empty();
+		$(cur_val_selector).append(new_text);
 
 		// para cambiar el precio en los popovers necesito borrarlos y crearlos de nuevo
 		// por eso me guardo las vars globales de la cantidad y el precio
@@ -702,7 +706,7 @@ function searchFlights(page){
 		max_dep_time = "18:00";
 	} else if (dep_time == "Night"){
 	 	min_dep_time = "18:00";
-		max_dep_time = "24:00";		
+		max_dep_time = "23:59";		
 	}
 
 	var min_ret_time = "";
@@ -719,7 +723,7 @@ function searchFlights(page){
 		max_ret_time = "18:00";
 	}else if(ret_time == "Night"){
 		min_ret_time = "18:00";
-		max_ret_time = "00:00";
+		max_ret_time = "23:59";
 	}
 
 	var sort_type = $("#sort_type").val();
@@ -752,8 +756,6 @@ function searchFlights(page){
 		sort_order = "desc"
 	}
 
-	//hago espacio para los resultados
-	$('#flights_row').empty();
 	if(flight_type == "one_way"){
 		//saco el precio min y max
 		if (first_search){

@@ -1,0 +1,241 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Quiero viajar! - Compra tu pasaje online</title>
+		<meta charset="utf-8">
+		<link href="css/bootstrap.css" rel="stylesheet">
+		<link href="css/font-awesome.css" rel="stylesheet">
+		<link href="css/datepicker.css" rel="stylesheet">
+		<link href="css/nouislider-larger.css" rel="stylesheet">
+		<script src="js/jquery-1.9.1.js"></script>
+		<script src="js/jquery.cookie.js"></script>
+		<script src="js/bootstrap.js"></script>
+		<script src="js/datepicker.js"></script>
+		<script src="js/search.field.js"></script>
+		<script src="js/promotions.js"></script>
+		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTU0aUmLT7PKhMVNy76M_-ltjokaGlstA&sensor=false&language=ES">
+    	</script>
+	</head>
+	<body>
+		<div class="navbar navbar-inverse navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<ul class="nav">
+						<a class="brand" href="index.html">Quiero viajar!</a>
+						<li class="disabled-link">
+							<p>
+								<i class="icon-search"></i> Resultados
+							</p>
+						</li>
+						<li class="disabled-link">
+							<i class="icon-angle-right"></i>
+						</li>
+						<li class="disabled-link">
+							<p>
+								<i class="icon-group"></i> Pasajeros
+							</p>
+						</li>
+						<li class="disabled-link">
+							<i class="icon-angle-right"></i>
+						</li>
+						<li class="disabled-link">
+							<p>
+								<i class="icon-shopping-cart"></i> Pago
+							</p>
+						</li>
+						<li class="disabled-link">
+							<i class="icon-angle-right"></i>
+						</li>
+						<li class="disabled-link">
+							<p>
+								<i class="icon-plane"></i> Confirmación
+							</p>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<br>
+		<br>
+		<br>
+		<div class="container">
+			<div class="row-fluid">
+				<div id="myCarousel" class="carousel slide">
+					<div class="span12 img-polaroid">
+						<div class="carousel-inner">
+							<div class="active item">
+								<div id="map" class="map-cont"></div>
+								<div class="carousel-caption">
+									<h4 id="offer_name">Oferta 1</h4>
+									<p id="offer_desc">
+										Descubrí nuestras ofertas especiales
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row-fluid">
+				<div class="span7">
+					<h3><i class="icon-chevron-right icon-x2"></i> Buscar vuelo</h3>
+					<div class="well">
+						<div class="btn-group">
+  							<button id="round_trip" class="btn active">Ida y vuelta</button>
+  							<button id="oneway_trip" class="btn">Solo ida</button>
+  							<button id="offers_trip" class="btn">Ofertas</button>
+						</div>
+						<form>
+							<div class="row-fluid">
+								<div id="origin_span" class="span6">
+									<label>Origen</label>
+									<input id="from" class="span12" type="text" placeholder="Ingrese ciudad o aeropuerto de origen">
+									<p id="from_error" class="text-error"><i class="icon-remove"></i><small id="from_error_text"> Ingrese un origen</small></p>
+								</div>
+								<div id="destination_span" class="span6">
+									<label>Destino</label>
+									<input id="to" class="span12" type="text" placeholder="Ingrese ciudad o aeropuerto de destino">
+									<p id="destination_error" class="text-error"><i class="icon-remove"></i><small id="to_error_text"> Ingrese un destino</small></p>
+								</div>
+							</div>
+							<div class="row-fluid">
+								<div id="depart_span" class="span6">
+									<label>Fecha de ida</label>
+									<input id="dep_date" class="span12 error" type="text" placeholder="Ingrese fecha de ida (dd/mm/aaaa)">
+									<p id="depart_date_error" class="text-error"><i class="icon-remove"></i><small id="dep_date_error_text"> Ingrese una fecha de ida</small></p>
+								</div>
+								<div id="return_span" class="span6">
+									<label>Fecha de vuelta</label>
+									<input id="ret_date" class="span12" type="text" placeholder="Ingrese fecha de vuelta (dd/mm/aaaa)">
+									<p id="return_date_error" class="text-error"><i class="icon-remove"></i><small id="ret_date_error_text"> Ingrese una fecha de vuelta</small></p>
+								</div>
+							</div>
+							<div class="row-fluid advanced_options_div">
+								<div id="airline_span" class="span6">
+									<label>Aerolinea</label>
+									<input id="airline" class="span12" type="text" placeholder="Ingrese aerolínea de preferencia">
+									<p id="airline_error" class="text-error"><i class="icon-remove"></i><small id="airline_error_text"> Ingrese una aerolínea válida</small></p>
+								</div>
+								<div class="span6">
+									<label>Clase</label>
+									<select id="cabin_type" class="span12">
+										<option value="ECONOMY">Turista</option>
+										<option value="BUSINESS">Ejecutiva</option>
+										<option value="FIRST_CLASS">Primera clase</option>
+									</select>
+								</div>
+
+							</div>
+							<div class="row-fluid advanced_options_div">
+								<div class="span6">
+									<label>Horario de partida</label>
+									<select id="dep_time" class="span12">
+										<option value="">Indistinto</option>
+										<option value="Morning">Madrugada  (12 PM - 6 AM)</option>
+										<option value="Noon">Mañana  (6 AM - 12 AM)</option>
+										<option value="Afternoon">Tarde  (12 AM - 6 PM)</option>
+										<option value="Night">Noche  (6 PM - 12 PM)</option>
+									</select>
+								</div>
+								<div id="return_hour" class="span6">
+									<label>Horario de retorno</label>
+									<select id="ret_time" class="span12">
+										<option value="">Indistinto</option>
+										<option value="Morning">Madrugada  (12 PM - 6 AM)</option>
+										<option value="Noon">Mañana  (6 AM - 12 AM)</option>
+										<option value="Afternoon">Tarde  (12 AM - 6 PM)</option>
+										<option value="Night">Noche  (6 PM - 12 PM)</option>
+									</select>
+								</div>
+							</div>
+							<div class="row-fluid">
+								<div class="span2">
+									<label>Adultos</label>
+									<select id="adults" class="span12">
+										<option value="1" selected>1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+										<option value="4">4</option>
+										<option value="5">5</option>
+										<option value="6">6</option>
+										<option value="7">7</option>
+										<option value="8">8</option>
+										<option value="9">9</option>
+										<option value="10">10</option>
+									</select>
+									<small>(11+ años)</small>
+								</div>
+								<div class="span2">
+									<label>Niños</label>
+									<select id="children" class="span12">
+										<option value="0" selected>0</option>
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+										<option value="4">4</option>
+										<option value="5">5</option>
+										<option value="6">6</option>
+										<option value="7">7</option>
+										<option value="8">8</option>
+										<option value="9">9</option>
+										<option value="10">10</option>
+									</select>
+									<small>(2 a 11 años)</small>
+								</div>
+								<div class="span2">
+									<label>Infantes</label>
+									<select id="infants" class="span12">
+										<option value="0" selected>0</option>
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+										<option value="4">4</option>
+										<option value="5">5</option>
+										<option value="6">6</option>
+										<option value="7">7</option>
+										<option value="8">8</option>
+										<option value="9">9</option>
+										<option value="10">10</option>
+									</select>
+									<small>(0 a 2 años)</small>
+								</div>
+							</div>
+						</form>
+						<div id="button_section">
+							<div id="error-div"></div>
+							<a id="advanced_options_button" type="button" class="btn thin-font">Búsqueda avanzada <i id="advanced_options_icon"class="icon-plus-sign"></i></a>
+							<a id="search_button" class="btn btn-inverse thin-font pull-right">Buscar</a>
+						</div>
+					</div>
+				</div>
+				<div class="span5">
+					<h3><i class="icon-chevron-right icon-x2"></i> Opiniones</h3>
+					<blockquote>
+						<p>
+							Una página muy bien organizada y recomendable. Siempre compro en Quiero viajar!
+						</p>
+						<small>Michael Jackson</small>
+					</blockquote>
+					<blockquote>
+						<p>
+							Tiene los mejores precios y es muy simple el uso de la página.
+						</p>
+						<small>Bob Marley</small>
+					</blockquote>
+					<blockquote>
+						<p>
+							Compre todos mis pasajes por Quiero viajar! y nunca tuve ningún problema.
+						</p>
+						<small>Lionel Messi</small>
+					</blockquote>
+					<blockquote>
+						<p>
+							El vuelo del atentado lo contraté por Quiero viajar! debido a su excelente precio.
+						</p>
+						<small>Osama Bin Laden</small>
+					</blockquote>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

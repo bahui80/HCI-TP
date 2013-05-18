@@ -86,6 +86,11 @@ b {
   font-weight: 300 !important;
 }
 
+.thick-font {
+  font-weight: 400 !important;
+}
+
+
 #push-top-padding {
   padding-top: 10px;
 }
@@ -6309,7 +6314,7 @@ a.badge:focus {
 }
 
 .map-cont{
-  height:400px !important;
+  height:300px !important;
 }
 
 #map img {

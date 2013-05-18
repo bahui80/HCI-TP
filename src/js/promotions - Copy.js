@@ -1,3 +1,6 @@
+var from;
+var from_id;
+
 $(document).ready(function() {
 		$.ajax({
             url: "http://eiffel.itba.edu.ar/hci/service2/Geo.groovy?method=GetCities&page_size=40",
@@ -25,14 +28,15 @@ function fillCitiesArray(data){
 	});
 	
 	//$("#search_offers").click(function() {
-
+		$("#map-container").empty();
+		$("#map-text").empty();
+		$("#map-text").append('<i class="icon-spinner icon-spin"></i> Cargando');
 		var origin = $("#city_offers").val();	
 
 		origin = Math.floor(Math.random()*(myCities.length-1));
-		$("#offer_name").text("Ofertas desde "+myCities[origin]);
-		var my_lat = data['cities'][origin]['longitude'];
-		var my_long = data['cities'][origin]['longitude'];	
-		var origin_id = myCitiesId[origin];
+		var my_lat = data['cities'][myCities.indexOf(origin)]['longitude'];
+		var my_long = data['cities'][myCities.indexOf(origin)]['longitude'];	
+		var origin_id = myCitiesId[myCities.indexOf(origin)];
 
 		$.ajax({
             url: "http://eiffel.itba.edu.ar/hci/service2/Booking.groovy?method=GetFlightDeals&from="+origin_id,
