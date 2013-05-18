@@ -2,6 +2,8 @@
 var airline_id_arr = new Array();
 var airline_logo_arr = new Array();
 var airline_name_arr = new Array();
+var airline_cheapest_flight_price_arr = new Array();
+var airline_cheapest_flight_dur_arr = new Array();
 
 // Variables globales del paginado
 var cur_page;
@@ -94,49 +96,144 @@ function matrixEvent(){
 
 	//apertura cerrado de matriz
 	$("#compare-airlines").click(function(){
-		if(matrix_on){
-			$("#airline-well").slideUp(500);
-			$("#compare-airlines").text("Mostrar matriz comparativa");
-			matrix_on = false;
-		} else {
-			var table = "";
-			if(first_time_matrix){
-
-				//creo dinamicamente la matriz
-				$("#carousel-container").empty();
-
-				var airlines_per_table = 5;
-				//crea el contenido de la matriz dinamicamente
-				for(var j=0; j<airline_name_arr.length/airlines_per_table; j++){
-					var active;
-					if(j == 0){
-						active ="active";
-					}else{
-						active = "";
-					}
-					$("#carousel-container").append('<div class="'+active+' item"><table class="table table-bordered airline-compare-table"><tr><td rowspan="3" class="slide-btn-td"></td><td id="'+j+'-row-1" rowspan="3" class="slide-btn-td"></td></tr><tr id="'+j+'-row-2"></tr><tr id="'+j+'-row-3"></tr></table></div>');
-				}
-				var j = 0;
-				for(var k=0; k<airline_name_arr.length; k++){
-					$('#'+j+'-row-1').before('<th class="data-col"><img src="'+airline_logo_arr[k]+'" height="20" width="20"><br><small>'+airline_name_arr[k]+'</small></th>');
-					$('#'+j+'-row-2').append('<td class="data-col"> U$D 1000</td>');
-					$('#'+j+'-row-3').append('<td class="data-col"><i class="icon-time"></i> 10h 30m</td>');
-					if((k+1)%airlines_per_table == 0){
-						j++;
-					}
-				}
-				alert(j);
-				for(var k=0; k<(airlines_per_table*(j+1))-airline_name_arr.length; k++){
-					$('#'+j+'-row-1').before('<th class="data-col"></th>');
-					$('#'+j+'-row-2').append('<td class="data-col"></td>');
-					$('#'+j+'-row-3').append('<td class="data-col"></td>');
-				}
+		if(first_time_matrix){
+				// busco los precios mas baratos de cada aerolinea
+				searchCheapestAndDraw();
+				$("#compare-airlines").text("Ocultar matriz comparativa");
 				first_time_matrix = false;
+				matrix_on = true;
+		} else {
+			if(matrix_on ){
+				$("#airline-well").slideUp(500);
+				$("#compare-airlines").text("Mostrar matriz comparativa");
+				matrix_on = false;
+			} else {
+				var table = "";
+				$("#compare-airlines").text("Ocultar matriz comparativa");
+				$("#airline-well").slideDown(500);
+				matrix_on = true;
 			}
-			$("#compare-airlines").text("Ocultar matriz comparativa");
-			$("#airline-well").slideDown(500);
-			matrix_on = true;
 		}
+	});
+}
+
+function drawMatrix(){
+
+	//creo dinamicamente la matriz
+	$("#carousel-container").empty();
+	
+	var airlines_per_table = 5;
+	//crea el contenido de la matriz dinamicamente
+	for(var j=0; j<airline_name_arr.length/airlines_per_table; j++){
+		var active;
+		if(j == 0){
+			active ="active";
+		}else{
+			active = "";
+		}
+		$("#carousel-container").append('<div class="'+active+' item"><table class="table table-bordered airline-compare-table"><tr><td rowspan="3" class="slide-btn-td"></td><td id="'+j+'-row-1" rowspan="3" class="slide-btn-td"></td></tr><tr id="'+j+'-row-2"></tr><tr id="'+j+'-row-3"></tr></table></div>');
+	}
+	var j = 0;
+	for(var k=0; k<airline_name_arr.length; k++){
+		$('#'+j+'-row-1').before('<th class="data-col"><img src="'+airline_logo_arr[k]+'" height="20" width="20"><br><small>'+airline_name_arr[k]+'</small></th>');
+		$('#'+j+'-row-2').append('<td class="data-col">'+airline_cheapest_flight_price_arr[k]+'</td>');
+		if(airline_cheapest_flight_dur_arr[k] == "-"){
+			$('#'+j+'-row-3').append('<td class="data-col">'+airline_cheapest_flight_dur_arr[k]+'</td>');
+		} else {
+			$('#'+j+'-row-3').append('<td class="data-col"><i class="icon-time"></i> '+airline_cheapest_flight_dur_arr[k]+'</td>');
+		}
+		if((k+1)%airlines_per_table == 0){
+			j++;
+		}
+	}
+	for(var k=0; k<(airlines_per_table*(j+1))-airline_name_arr.length; k++){
+		$('#'+j+'-row-1').before('<th class="data-col"></th>');
+		$('#'+j+'-row-2').append('<td class="data-col"></td>');
+		$('#'+j+'-row-3').append('<td class="data-col"></td>');
+	}
+	$("#airline-well").slideDown(500);
+}
+
+function searchCheapestAndDraw(){
+
+	// cargadas por cookies unicamente
+	var flight_type = $.cookie('flight_type');
+	var from = $.cookie('from_code');
+	var to = $.cookie('to_code');
+	var dep_date = $.cookie('dep_date');
+	var ret_date = $.cookie('ret_date');
+	var adults = $.cookie('adults');
+	var children = $.cookie('children');
+	var infants = $.cookie('infants');
+	var cabin_type = $.cookie('cabin_type');
+	var dep_time = $.cookie('dep_time');
+	var ret_time = $.cookie('ret_time');
+
+	var min_dep_time = "";
+	var max_dep_time = "";
+
+	if(dep_time == "Morning"){
+	 	min_dep_time = "00:00";
+		max_dep_time = "06:00";
+	} else if (dep_time == "Noon") {
+	 	min_dep_time = "06:00";
+		max_dep_time = "12:00";
+	} else if (dep_time == "Afternoon"){
+	 	min_dep_time = "12:00";
+		max_dep_time = "18:00";
+	} else if (dep_time == "Night"){
+	 	min_dep_time = "18:00";
+		max_dep_time = "24:00";		
+	}
+
+	var min_ret_time = "";
+	var max_ret_time = "";
+
+	if(ret_time == "Morning"){
+		min_ret_time = "00:00";
+		max_ret_time = "06:00";
+	}else if(ret_time == "Noon"){
+		min_ret_time = "06:00";
+		max_ret_time = "12:00";
+	}else if(ret_time == "Afternoon"){
+		min_ret_time = "12:00";
+		max_ret_time = "18:00";
+	}else if(ret_time == "Night"){
+		min_ret_time = "18:00";
+		max_ret_time = "00:00";
+	}
+
+	if(flight_type == "one_way"){
+		$('#loading-modal').modal();
+		recursiveOneWayFlightSearch(0, airline_id_arr.length, from, to, dep_date, adults, children, infants, cabin_type, min_dep_time, max_dep_time);
+	}
+}
+
+function recursiveOneWayFlightSearch(i,j, from, to, dep_date, adults, children, infants, cabin_type, min_dep_time, max_dep_time){
+	if (i == j){
+		//cierro el modal
+		$('#loading-modal').modal('hide');
+		$("#loading-text").text("Por favor espere mientras buscamos los mejores precios");
+		drawMatrix();
+		return
+	}
+	$("#loading-text").text("Buscando el mejor precio de "+airline_name_arr[i] );
+	$.ajax({
+		url: "http://eiffel.itba.edu.ar/hci/service2/Booking.groovy?method=GetOneWayFlights&from="+from+"&to="+to+"&dep_date="+dep_date+"&adults="+adults+"&children="+children+"&infants="+infants+"&airline_id="+airline_id_arr[i]+"&min_price=&max_price=&cabin_type="+cabin_type+"&min_dep_time="+min_dep_time+"&max_dep_time="+max_dep_time+"&page=1&page_size=1&sort_key=total&sort_order=asc",
+   		dataType: "jsonp",
+	}).done(function(data) {
+		if(!data.hasOwnProperty("error")){
+			if(data['total'] == 0){
+				airline_cheapest_flight_price_arr[i] = "-";
+				airline_cheapest_flight_dur_arr[i] = "-";
+			}else{
+				airline_cheapest_flight_price_arr[i] = "U$D "+parseInt(data['flights'][0]['price']['total']['total']);
+				airline_cheapest_flight_dur_arr[i] = getDuration(data['flights'][0]['outboundRoutes'][0]['segments'][0]['duration']);
+			}
+		} else {
+			console.log(JSON.stringify(data));
+		}
+		recursiveOneWayFlightSearch(i+1,j, from, to, dep_date, adults, children, infants, cabin_type, min_dep_time, max_dep_time);
 	});
 }
 
