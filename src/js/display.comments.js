@@ -158,18 +158,22 @@ function fillReviews(data){
         			var airline_id = data['reviews'][j]['airlineId'];
         			var flight_number = data['reviews'][j]['flightNumber'];
         			var rating = data['reviews'][j]['overallRating'];
-        			var friendliness = "Amabilidad: "+data['reviews'][j]['friendlinessRating']+"<br>";
-        			var food = "Comida: "+data['reviews'][j]['foodRating']+"<br>";
-        			var punctuality = "Puntualidad: "+data['reviews'][j]['punctualityRating']+"<br>";
-        			var comfort = "Confort: "+data['reviews'][j]['comfortRating']+"<br>";
-        			var quality_price = "Precio/calidad: "+data['reviews'][j]['qualityPriceRating']+"<br>";
+        			var friendliness = '<div class="pull-left"><b>Amabilidad: </b></div><div class="pull-right">'+numberToStars(data['reviews'][j]['friendlinessRating'])+'</div><br>';
+        			var food = '<div class="pull-left"><b>Comida: </b></div><div class="pull-right">'+numberToStars(data['reviews'][j]['foodRating'])+'</div><br>';
+        			var punctuality = '<div class="pull-left"><b>Puntualidad: </b></div><div class="pull-right">'+numberToStars(data['reviews'][j]['punctualityRating'])+'</div><br>';
+        			var comfort = '<div class="pull-left"><b>Confort: </b></div><div class="pull-right">'+numberToStars(data['reviews'][j]['comfortRating'])+'</div><br>';
+        			var quality_price = '<div class="pull-left"><b>Precio/calidad: </b></div><div class="pull-right">'+numberToStars(data['reviews'][j]['qualityPriceRating'])+'</div><br>';
         			var recommend = data['reviews'][j]['yesRecommend'];
         			var comments = data['reviews'][j]['comments'];
 
-        			if (recommend == "1"){
-        				recommend = "Recomienda: Si";
+        			if (recommend == 1){
+        				recommend = '<div class="pull-left"><b>Recomienda: </b></div><div class="pull-right"><i class="icon-ok"></i></div><br>';
         			} else {
-        				recommend = "Recomienda: No";
+        				recommend = '<div class="pull-left"><b>Recomienda: </b></div><div class="pull-right"><i class="icon-remove"></i></div><br>';
+        			}
+
+        			if (comments == null){
+        				comments = "Opinión sin comentarios"
         			}
 
         			var airline_pic;
@@ -184,12 +188,12 @@ function fillReviews(data){
 
         			var stars_code = numberToStars(rating);
 
-        			$("#comments_row").append('<div class="well remove-bottom-padding clearfix"><div class="span9"><table class="table"><thead><tr><th><img src="'+airline_pic+'" height="20" width="20"> '+airline_name+' <div class="pull-right">Vuelo: #'+flight_number+'</div></th></tr></thead><tbody><tr><td class="remove-bottom-padding max-width-table"><ul class="inline small-bottom-margin"><li>'+comments+'</li></ul></td></tr></tbody></table></div><div class="span3 well remove-top-padding"><h4 class="text-center">'+stars_code+'</h4><div class="row-fluid"><div class="span12"><a id="popover'+j+'" rel="popover" class="btn btn-block btn-inverse thin-font">Ver detalles</a></div></div></div></div>')
+        			$("#comments_row").append('<div class="well remove-bottom-padding clearfix"><div class="span9"><table class="table"><thead><tr><th><img src="'+airline_pic+'" height="20" width="20"> '+airline_name+' <div class="pull-right">Vuelo: #'+flight_number+'</div></th></tr></thead><tbody><tr><td class="remove-bottom-padding max-width-table"><ul class="inline small-bottom-margin"><li>'+comments+'</li></ul></td></tr></tbody></table></div><div class="span3 well remove-top-padding"><h4 class="text-center">'+rating+'/10</h4><h4 class="text-center">'+stars_code+'</h4><div class="row-fluid"><div class="span12"><a id="popover'+j+'" rel="popover" class="btn btn-block btn-inverse thin-font">Ver detalles</a></div></div></div></div>')
 
 					var popover_code = friendliness+food+punctuality+comfort+quality_price+recommend;
 					var popover_id = "#popover"+j;
 
-					$(popover_id).popover({ placement: 'left', title: '<h4>Detalle de la opinión</h4>', content: popover_code, html:true });
+					$(popover_id).popover({ placement: 'left', title: '<h4>Detalles de la opinión</h4>', content: popover_code, html:true });
         		}
         	}
 		}

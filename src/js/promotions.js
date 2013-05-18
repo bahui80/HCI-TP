@@ -54,7 +54,8 @@ function offer_search(data){
 	var mapOptions = {
 		zoom: 2,
 		center: new google.maps.LatLng(0, 0),
-		mapTypeId: google.maps.MapTypeId.ROADMAP
+		mapTypeId: google.maps.MapTypeId.ROADMAP,
+		disableDefaultUI: true,
 	};
 	var map = new google.maps.Map(document.getElementById("map"), mapOptions);
 	
@@ -69,13 +70,13 @@ function offer_search(data){
 		var moneda = data['currencyId'];
 		var content = '<p><b>'+cityName+':</b> U$D '+price+'</p><a id="search_offer_btn'+i+'" data-from="'+from+' data-from-id="'+from_id+' data-to="'+cityName+'" data-to-id="'+cityId+'" data-price="'+price+'" class="btn btn-inverse thin-font btn-block">Buscar vuelo</a>'
 		if(price >0 && price<200){
-			marker[i] = createMarker(new google.maps.LatLng(offer_lat, offer_long), content, map, 'http://img194.imageshack.us/img194/715/verycheap.png');
+			marker[i] = createMarker(new google.maps.LatLng(offer_lat, offer_long), content, map, 'http://imageshack.us/a/img716/715/verycheap.png');
 		} else if (price >= 200 && price < 400){
-			marker[i] = createMarker(new google.maps.LatLng(offer_lat, offer_long), content, map, 'http://img822.imageshack.us/img822/9140/cheapf.png');
+			marker[i] = createMarker(new google.maps.LatLng(offer_lat, offer_long), content, map, 'http://imageshack.us/a/img832/6568/cheapt.png');
 		} else if (price >=400 && price < 1000){
-			marker[i] = createMarker(new google.maps.LatLng(offer_lat, offer_long), content, map, 'http://img138.imageshack.us/img138/918/normalwy.png');
+			marker[i] = createMarker(new google.maps.LatLng(offer_lat, offer_long), content, map, 'http://imageshack.us/a/img812/5279/normalik.png');
 		} else if (price >= 1000){
-			marker[i] = createMarker(new google.maps.LatLng(offer_lat, offer_long), content, map, 'http://img706.imageshack.us/img706/9034/expensivew.png');
+			marker[i] = createMarker(new google.maps.LatLng(offer_lat, offer_long), content, map, 'http://imageshack.us/a/img59/4734/expensivep.png');
 		}
 
 		$("#search_offer_btn"+i).click(function (){

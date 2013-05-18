@@ -1,13 +1,28 @@
+// Variables globales para la matriz comparativa
+var airline_id_arr = new Array();
+var airline_logo_arr = new Array();
+var airline_name_arr = new Array();
+
 // Variables globales del paginado
 var cur_page;
 var page_size = 5;
-// Variables globales de las monedas
+
+// Variables globales de las monedas -> por el cambio de moneda
 var cur_currency = "Dolares";
 var cur_ratio = 1;
 var currencies_desc_array = new Array();
 var currencies_ratio_array = new Array();
 var currencies_symbol_array = new Array();
+
+// Variables globales de los valores actuales de vuelo -> por el cambio de moneda
 var cur_flights_price = new Array();
+var cur_flights_adult_price = new Array();
+var cur_flights_children_price = new Array();
+var cur_flights_infants_price = new Array();
+var cur_flights_tax_price = new Array();
+var cur_flights_adult_quant = new Array();
+var cur_flights_children_quant = new Array();
+var cur_flights_infants_quant = new Array();
 
 // Variables globales de la primer busqueda
 var first_search = true;
@@ -17,18 +32,12 @@ var first_time_matrix = true;
 
 $(document).ready(function() {
 
-	// borro el div de resultados default
-	$('#flights_row').empty();
-
 	// muestro un modal incerrable de cargando hasta que termine de buscar el vuelo
 	$('#loading-modal').modal({
 		backdrop: 'static',
 		keyboard: false
 	})
 	$("#results_num_div").hide();
-
-	// prepara evento de creacion de matriz comparativa
-
 
 	// prepara eventos de click de filtros
 	filterEvents();
@@ -90,24 +99,54 @@ function matrixEvent(){
 			$("#compare-airlines").text("Mostrar matriz comparativa");
 			matrix_on = false;
 		} else {
-			
+			var table = "";
 			if(first_time_matrix){
-				//crea el contenido
+
+				//creo dinamicamente la matriz
+				$("#carousel-container").empty();
+
+				var airlines_per_table = 5;
+				//crea el contenido de la matriz dinamicamente
+				for(var j=0; j<airline_name_arr.length/airlines_per_table; j++){
+					var active;
+					if(j == 0){
+						active ="active";
+					}else{
+						active = "";
+					}
+					$("#carousel-container").append('<div class="'+active+' item"><table class="table table-bordered airline-compare-table"><tr><td rowspan="3" class="slide-btn-td"></td><td id="'+j+'-row-1" rowspan="3" class="slide-btn-td"></td></tr><tr id="'+j+'-row-2"></tr><tr id="'+j+'-row-3"></tr></table></div>');
+				}
+				var j = 0;
+				for(var k=0; k<airline_name_arr.length; k++){
+					$('#'+j+'-row-1').before('<th class="data-col"><img src="'+airline_logo_arr[k]+'" height="20" width="20"><br><small>'+airline_name_arr[k]+'</small></th>');
+					$('#'+j+'-row-2').append('<td class="data-col"> U$D 1000</td>');
+					$('#'+j+'-row-3').append('<td class="data-col"><i class="icon-time"></i> 10h 30m</td>');
+					if((k+1)%airlines_per_table == 0){
+						j++;
+					}
+				}
+				alert(j);
+				for(var k=0; k<(airlines_per_table*(j+1))-airline_name_arr.length; k++){
+					$('#'+j+'-row-1').before('<th class="data-col"></th>');
+					$('#'+j+'-row-2').append('<td class="data-col"></td>');
+					$('#'+j+'-row-3').append('<td class="data-col"></td>');
+				}
+				first_time_matrix = false;
 			}
 			$("#compare-airlines").text("Ocultar matriz comparativa");
 			$("#airline-well").slideDown(500);
 			matrix_on = true;
 		}
 	});
-
-
 }
 
 function coinUpdate(from, to){
-	if (from == to){
-		return;
-	}
+
 	var new_val;
+	var new_adults_val;
+	var new_children_val;
+	var new_infants_val;
+	var new_tax_val;
 	var new_cur
 	var new_sym;
 	var new_ratio;
@@ -124,12 +163,54 @@ function coinUpdate(from, to){
 
 	// Updateo los precios
 	var cur_val_selector;
+	var cur_adults_val_selector;
+	var cur_children_val_selector;
+	var cur_infants_val_selector;
+	var cur_tax_val_selector;
 	var cur_sym_selector;
+
 	for (var j=0; j<cur_flights_price.length;j++){		
 		new_val = parseInt((cur_flights_price[j])/new_ratio);
+		new_adults_val = parseInt((cur_flights_adult_price[j])/new_ratio);
+		new_children_val = parseInt((cur_flights_children_price[j])/new_ratio);
+		new_infants_val = parseInt((cur_flights_infants_price[j])/new_ratio);
+		new_tax_val = parseInt((cur_flights_tax_price[j])/new_ratio);
+
 		new_text = new_sym+""+new_val;
+		new_adults_val = new_sym+""+new_adults_val;
+		new_children_val = new_sym+""+new_children_val;
+		new_infants_val = new_sym+""+new_infants_val;
+		new_tax_val = new_sym+""+new_tax_val;
+
 		cur_val_selector= "#cur_val_"+j;
+
 		$(cur_val_selector).text(new_text);
+
+		// para cambiar el precio en los popovers necesito borrarlos y crearlos de nuevo
+		// por eso me guardo las vars globales de la cantidad y el precio
+		var adult_price = "";
+		var child_price = "";
+		var infant_price = "";
+		var taxes_price = "";
+
+		var popover_id = "#popover"+j;
+
+		$(popover_id).popover('destroy');
+
+		if(cur_flights_adult_quant[j] > 0){
+			adult_price = '<p class="pull-left"><b>Adultos ('+cur_flights_adult_quant[j]+'):</b> <p class="pull-right">'+new_adults_val+'</p></p><br>';
+		}
+		if(cur_flights_children_quant[j] > 0){
+			child_price = '<p class="pull-left"><b>Niños ('+cur_flights_children_quant[j]+'):</b> <p class="pull-right">'+new_children_val+'</p></p><br>';
+		}
+		if(cur_flights_infants_quant[j] > 0){
+			infant_price = '<p class="pull-left"><b>Infantes ('+cur_flights_infants_quant[j]+'):</b> <p class="pull-right">'+new_infants_val+'</p></p><br>';
+		}
+		taxes_price = '<p class="pull-left"><b>Impuestos:</b> <p class="pull-right">'+new_tax_val+'</p></p>';
+
+        // creo el html de los popovers
+		var popover_code = adult_price+child_price+infant_price+taxes_price;
+		$(popover_id).popover({ placement: 'left', title: '<h4>Detalles del precio</h4>', content: popover_code, html:true });
 	}
 }
 
@@ -419,6 +500,10 @@ function loadAirlines(data){
 	$('#airline-div').append('<label class="radio label-font-fix"><input value="" type="radio" name="airlines_group" checked>Todas las aerolíneas</label>')
 	if(!data.hasOwnProperty("error")){
         for (var j=0;j<data['total'];j++){
+        	// me lo guardo pa la matriz comparativa
+        	airline_id_arr[j] = data['airlines'][j]['airlineId'];
+        	airline_logo_arr[j] = data['airlines'][j]['logo'];
+        	airline_name_arr[j] = data['airlines'][j]['name'];
 
         	//crea los radio btn de cada aerolinea con su imagen y id
         	$('#airline-div').append('<label class="radio label-font-fix"><input type="radio" id="'+data['airlines'][j]['airlineId']+'-rd-box" value="'+data['airlines'][j]['airlineId']+'" name="airlines_group"><img src="'+data['airlines'][j]['logo']+'" height="20" width="20"> '+data['airlines'][j]['name']+'</label>')
@@ -472,6 +557,9 @@ function loadCurrencies(data){
 
 	// hago la busqueda inicial con los campos que llene
 	searchFlights(1);
+
+	//ya puede preparar el evento de la matriz comparativa
+    matrixEvent();
 }
 
 function searchFlights(page){
@@ -494,8 +582,9 @@ function searchFlights(page){
 	var min_price = "";
 	var max_price = "";	
 	if(!first_search){
-		min_price = sliders_val[0]*cur_ratio;
-		max_price = sliders_val[1]*cur_ratio;
+		// el +1 y el -1 son para arreglar la posible impresicion por cambio de moneda
+		min_price = (sliders_val[0]-1)*cur_ratio;
+		max_price = (sliders_val[1]+1)*cur_ratio;
 	}
 	var cabin_type = $("input[name='cabin_group']:checked").val();
 	var dep_time = $("input[name='dep_group']:checked").val();
@@ -637,8 +726,6 @@ function oneWayFlight(data){
 		if(data['total'] == 0){
 			$('#flights_row').append('<div id="flights_row"class="row-fluid"><div class="well clearfix"><div class="span12"><h3 class="text-center"><i class="icon-warning-sign"></i> No pudimos encontrar ningún vuelo!</h3><p class="text-center">Intenta buscando con otros parámetros o quitando filtros si haz aplicado alguno</p></div></div></div>')
 		}else{
-			//attacheo evento a la matriz creada
-			matrixEvent();
 			//ahora agrego los vuelos
         	for (var j=0;j<data['pageSize'];j++){
         		if( (data['page']-1)*(data['pageSize'])+j < data['total']){
@@ -656,29 +743,35 @@ function oneWayFlight(data){
 					var ob_airline_pic;				
 
 					//info del precio
-					var flight_price = cur_flights_price[j] = parseInt(data['flights'][j]['price']['total']['total']);
+					var flight_price = cur_flights_price[j] = data['flights'][j]['price']['total']['total'];
 					var adult_price;
 					var child_price;
 					var infant_price
 					var taxes_price;
 
         			if (data['flights'][j]['price']['adults'] == null){
-        				adult_price = "-";
+        				cur_flights_adult_price[j] = 0;
+        				cur_flights_adult_quant[j] = 0;
         			} else {
-        				adult_price = data['flights'][j]['price']['adults']['baseFare']+" x"+data['flights'][j]['price']['adults']['quantity'];
+        				cur_flights_adult_quant[j] = data['flights'][j]['price']['adults']['quantity'];
+        				cur_flights_adult_price[j] = data['flights'][j]['price']['adults']['baseFare']*data['flights'][j]['price']['adults']['quantity'];
         			}
         			if (data['flights'][j]['price']['children'] == null){
-        				child_price = "-";
+        				cur_flights_children_price[j] = 0;
+        				cur_flights_children_quant[j] = 0;
         			} else {
-        				child_price = data['flights'][j]['price']['children']['baseFare']+" x"+data['flights'][j]['price']['children']['quantity'];
+        				cur_flights_children_quant[j] = data['flights'][j]['price']['children']['quantity'];
+        				cur_flights_children_price[j] = data['flights'][j]['price']['children']['baseFare']*data['flights'][j]['price']['children']['quantity'];
         			}
         			if (data['flights'][j]['price']['infants'] == null){
-        				infant_price = "-";
+        				cur_flights_infants_price[j] = 0;
+        				cur_flights_infants_quant[j] = 0;
         			} else {
-        				infant_price = data['flights'][j]['price']['infants']['baseFare']+" x"+data['flights'][j]['price']['infants']['quantity'];
+        				cur_flights_infants_quant[j] = data['flights'][j]['price']['infants']['quantity'];
+        				cur_flights_infants_price[j] = data['flights'][j]['price']['infants']['baseFare']*data['flights'][j]['price']['infants']['quantity'];
         			}
-        			
-        			taxes_price = parseInt(data['flights'][j]['price']['total']['taxes']+data['flights'][j]['price']['total']['charges']);
+
+        			cur_flights_tax_price[j] = data['flights'][j]['price']['total']['taxes']+data['flights'][j]['price']['total']['charges'];
 
 					for (var k=0; k<data['filters'][0]['values'].length; k++) {
 						if (ob_airline_name == data['filters'][0]['values'][k]['name']) {
@@ -686,18 +779,8 @@ function oneWayFlight(data){
 						}
 					}
 
-					// tengo que guardarme los datos que voy a usar para mandarle por el href a la compra
-
 					//creo el div
 					$('#flights_row').append('<div class="well clearfix"><div class="span9"><table class="table"><thead><tr><th><i class="icon-circle-arrow-right icon-large"></i> '+ob_date+' <div class="pull-right">'+ob_dep_city+' ('+ob_dep_ap_id+') <i class="icon-caret-right icon-large"></i> '+ob_arr_city+' ('+ob_arr_ap_id+')</div></th></tr></thead><tbody><tr><td class="remove-bottom-padding"><ul class="inline small-bottom-margin"><li><b>Sale:</b> '+ob_dep_hr+'</li><li><b>Llega:</b> '+ob_arr_hr+'</li><li><i class="icon-time"></i> '+ob_dur+'</li><li>Directo</li><li><img src="'+ob_airline_pic+'" height="20" width="20"> '+ob_airline_name+'</li></ul></td></tr></tbody></table></div><div class="span3"><div class="well remove-bottom-margin remove-top-padding"><h3 class="text-center"><div id="cur_val_'+j+'">U$S'+flight_price+'</div></h3><div class="row-fluid"><div class="span12"><a id="popover'+j+'" rel="popover" class="btn btn-block thin-font" >Ver detalles</a></div></div><br><div class="row-fluid"><div class="span12"><a href="pasajeros.html" type="button" class="btn btn-inverse btn-block thin-font">Comprar</a></div></div></div></div></div>');
-
-        			// creo el html de los popovers
-
-
-					var popover_code = 'Precio por adulto: '+adult_price+'<br>Precio por niño: '+child_price+'<br>Precio por infante: '+infant_price+'<br>Precio por impuestos: '+taxes_price;
-					var popover_id = "#popover"+j;
-
-					$(popover_id).popover({ placement: 'left', title: '<h4>Detalle del precio</h4>', content: popover_code, html:true });
 				}
         	}
 		}		

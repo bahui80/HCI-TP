@@ -289,8 +289,8 @@
 						<div class=" remove-bottom-padding">	
 							<div class="span12">
 								<div id="airline-table" class="carousel slide">
-								    <!-- Carousel items -->
-								    <div class="carousel-inner">
+								    <!-- Esto despues vuela, es todo dinamico -->
+								    <div id="carousel-container" class="carousel-inner">
 								    	<div class="active item">
 											<table class="table table-bordered airline-compare-table">
 												<tr>
@@ -512,14 +512,12 @@
 								<p class="text-right">
 									Ordenar por:
 									<select id="sort_type" class="span6">
-										<option value="total-asc">Precio final (Ascendente)</option>
-										<option value="total-desc">Precio final (Descendente)</option>
-										<option value="fare-asc">Precio base (Ascendente)</option>
-										<option value="fare-desc">Precio base (Descendente)</option>
 										<option value="airline-asc">Aerolinea (Ascendente)</option>
 										<option value="airline-desc">Aerolinea (Descendente)</option>
 										<option value="duration-asc">Duración (Ascendente)</option>
 										<option value="duration-desc">Duración (Descendente)</option>
+										<option value="total-asc" selected="selected">Precio final (Ascendente)</option>
+										<option value="total-desc">Precio final (Descendente)</option>
 									</select>
 								</p>
 							</div>
