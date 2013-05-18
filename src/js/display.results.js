@@ -276,7 +276,7 @@ function coinUpdate(from, to){
 		new_infants_val = parseInt((cur_flights_infants_price[j])/new_ratio);
 		new_tax_val = parseInt((cur_flights_tax_price[j])/new_ratio);
 
-		new_text = '<div class="thin-font">'+new_sym+'<div class="thick-font">'+new_val+'</div></div>';
+		new_text = new_sym+""+new_val;
 		new_adults_val = new_sym+""+new_adults_val;
 		new_children_val = new_sym+""+new_children_val;
 		new_infants_val = new_sym+""+new_infants_val;
@@ -284,8 +284,7 @@ function coinUpdate(from, to){
 
 		cur_val_selector= "#cur_val_"+j;
 
-	$(cur_val_selector).empty();
-		$(cur_val_selector).append(new_text);
+		$(cur_val_selector).text(new_text);
 
 		// para cambiar el precio en los popovers necesito borrarlos y crearlos de nuevo
 		// por eso me guardo las vars globales de la cantidad y el precio

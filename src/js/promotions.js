@@ -2,11 +2,11 @@ $(document).ready(function() {
 		$.ajax({
             url: "http://eiffel.itba.edu.ar/hci/service2/Geo.groovy?method=GetCities&page_size=40",
 			dataType: "jsonp",
-			jsonpCallback: "fillCitiesArray",
+			jsonpCallback: "fillCities",
         });
 }); 
 
-function fillCitiesArray(data){
+function fillCities(data){
 	var myCities = new Array();
 	var myCitiesId = new Array();
 	var mapState = false;
