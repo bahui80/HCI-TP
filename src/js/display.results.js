@@ -139,7 +139,11 @@ function drawMatrix(){
 	var j = 0;
 	for(var k=0; k<airline_name_arr.length; k++){
 		$('#'+j+'-row-1').before('<th class="data-col"><img src="'+airline_logo_arr[k]+'" height="20" width="20"><br><small>'+airline_name_arr[k]+'</small></th>');
-		$('#'+j+'-row-2').append('<td class="data-col">'+airline_cheapest_flight_price_arr[k]+'</td>');
+		if(airline_cheapest_flight_dur_arr[k] == "-"){
+			$('#'+j+'-row-2').append('<td class="data-col">-</td>');
+		} else {
+			$('#'+j+'-row-2').append('<td class="data-col" id="airline_cheapest_price_'+k+'">U$S '+airline_cheapest_flight_price_arr[k]+'</td>');
+		}		
 		if(airline_cheapest_flight_dur_arr[k] == "-"){
 			$('#'+j+'-row-3').append('<td class="data-col">'+airline_cheapest_flight_dur_arr[k]+'</td>');
 		} else {
@@ -218,6 +222,7 @@ function recursiveOneWayFlightSearch(i,j, from, to, dep_date, adults, children, 
 		$('#loading-modal').modal('hide');
 		$("#loading-text").text("Por favor espere mientras buscamos los mejores precios");
 		drawMatrix();
+		coinUpdate("Dolares",$("#currencies").val());
 		return
 	}
 	$("#loading-text").text("Buscando el mejor precio de "+airline_name_arr[i] );
@@ -230,7 +235,7 @@ function recursiveOneWayFlightSearch(i,j, from, to, dep_date, adults, children, 
 				airline_cheapest_flight_price_arr[i] = "-";
 				airline_cheapest_flight_dur_arr[i] = "-";
 			}else{
-				airline_cheapest_flight_price_arr[i] = "U$D "+parseInt(data['flights'][0]['price']['total']['total']);
+				airline_cheapest_flight_price_arr[i] = parseInt(data['flights'][0]['price']['total']['total']);
 				airline_cheapest_flight_dur_arr[i] = getDuration(data['flights'][0]['outboundRoutes'][0]['segments'][0]['duration']);
 			}
 		} else {
@@ -276,7 +281,7 @@ function coinUpdate(from, to){
 		new_infants_val = parseInt((cur_flights_infants_price[j])/new_ratio);
 		new_tax_val = parseInt((cur_flights_tax_price[j])/new_ratio);
 
-		new_text = new_sym+""+new_val;
+		new_text = '<div class="thin-font">'+new_sym+' <b>'+new_val+'</b></div>';
 		new_adults_val = new_sym+""+new_adults_val;
 		new_children_val = new_sym+""+new_children_val;
 		new_infants_val = new_sym+""+new_infants_val;
@@ -284,7 +289,8 @@ function coinUpdate(from, to){
 
 		cur_val_selector= "#cur_val_"+j;
 
-		$(cur_val_selector).text(new_text);
+		$(cur_val_selector).empty();
+		$(cur_val_selector).append(new_text);
 
 		// para cambiar el precio en los popovers necesito borrarlos y crearlos de nuevo
 		// por eso me guardo las vars globales de la cantidad y el precio
@@ -312,6 +318,16 @@ function coinUpdate(from, to){
 		var popover_code = adult_price+child_price+infant_price+taxes_price;
 		$(popover_id).popover({ placement: 'left', title: '<h4>Detalles del precio</h4>', content: popover_code, html:true });
 	}
+	// cambio los valores de la matriz de precios
+	if(!first_time_matrix){
+		for (var j=0; j<airline_cheapest_flight_price_arr.length; j++){
+			if(airline_cheapest_flight_price_arr[j] != "-"){
+				var new_cheapest_price = new_sym+" "+parseInt((airline_cheapest_flight_price_arr[j])/new_ratio);
+				$("#airline_cheapest_price_"+j).empty();
+				$("#airline_cheapest_price_"+j).append(new_cheapest_price);
+			}
+		}
+	}
 }
 
 function minMaxUpdate(min, max){
@@ -326,13 +342,13 @@ function minMaxUpdate(min, max){
 		handles: 2,
 		slide: function(){
 			var values = $(this).val();
-			$("#min").text("U$S"+parseInt(values[0]));
-			$("#max").text("U$S"+parseInt(values[1]));		
+			$("#min").text("U$S "+parseInt(values[0]));
+			$("#max").text("U$S "+parseInt(values[1]));		
 		}
 	});
 	var values = $(".noUiSlider").val();
-	$("#min").text("U$S"+parseInt(values[0]));
-	$("#max").text("U$S"+parseInt(values[1]));	
+	$("#min").text("U$S "+parseInt(values[0]));
+	$("#max").text("U$S "+parseInt(values[1]));	
 	$(".noUiSlider").noUiSlider("disabled", false);
 }	
 
@@ -382,12 +398,12 @@ function filterEvents(){
 				start : [ new_min_cur, new_max_cur ],
 				slide: function(){
 					var values = $(this).val();
-					$("#min").text(new_sym+parseInt(values[0]));
-					$("#max").text(new_sym+parseInt(values[1]));		
+					$("#min").text(new_sym+" "+parseInt(values[0]));
+					$("#max").text(new_sym+" "+parseInt(values[1]));		
 				}
 			});	
-			$("#min").text(new_sym+parseInt(new_min_cur));
-			$("#max").text(new_sym+parseInt(new_max_cur));
+			$("#min").text(new_sym+" "+parseInt(new_min_cur));
+			$("#max").text(new_sym+" "+parseInt(new_max_cur));
 		}
 
 		coinUpdate(cur_currency,$("#currencies").val());
