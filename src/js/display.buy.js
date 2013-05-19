@@ -1,4 +1,7 @@
 var totalEdits = 0;
+var adults = 1;
+var children = 0;
+var infants = 0;
 
 $(document).ready(function() {
 //	var adults = $.cookie('adults');
@@ -6,9 +9,6 @@ $(document).ready(function() {
 //	var infants = $.cookie('infants');
 	
 	var state = "pasajeros";
-	var adults = 1;
-	var children = 1;
-	var infants = 1;
 	var firstTime = 1; // variable que me dice si ya se creo el evento para los botones editar
 	
 	$(".credit_card").hide();
@@ -19,42 +19,62 @@ $(document).ready(function() {
 	
 	//revisar que no deja espacio entre dia mes y anio
 	for(var i = 0; i < adults; i++) {
-		$("#content_div").append('<div id="well_passenger_adults_' + (i + 1) + '" class="well clearfix passenger"><div class="span12"><legend><i class="icon-user"></i> Pasajero ' + (i + 1) + ' (Adulto)</legend><div class="row-fluid"><div class="span6"><label>Nombre</label><input class="fill_in span12" type="text" placeholder="Ingrese el nombre del pasajero"></div><div class="span6"><label>Apellido</label><input class="fill_in span12" type="text" placeholder="Ingrese el apellido del pasajero"></div></div><div class="row-fluid"><div class="span6"><label>DNI</label><input class="fill_in span12" type="text" placeholder="Ingrese el DNI del pasajero"></div><div class="span6"><label>Sexo</label><select class="fill_in span12"><option>Masculino</option><option>Femenino</option></select></div></div><div class="row-fluid"><div class="span6"><label>Fecha de nacimiento</label><input type="text" placeholder="dd" class="fill_in span3"><input type="text" placeholder="mm" class="fill_in span3"><input type="text" placeholder="aaaa" class="fill_in span3"></div></div></div><div class="row-fluid"><div id="edit_passenger_adults_' + (i + 1) + '_span" class="span12"><a id="edit_passenger_adults_' + (i + 1) + '" type="button" class="btn pull-right thin-font">Editar <i class="icon-pencil"></i></a></div></div></div>');
+		$("#content_div").append('<div id="well_passenger_adults_' + (i + 1) + '" class="well clearfix passenger"><div class="span12"><legend><i class="icon-user"></i> Pasajero ' + (i + 1) + ' (Adulto)</legend><div class="row-fluid"><div id="passenger_adults_' + (i + 1) + '_name_span" class="span6"><label>Nombre</label><input id="passenger_adults_' + (i + 1) + '_name" class="fill_in span12" type="text" placeholder="Ingrese el nombre del pasajero"><p id="passenger_adults_' + (i + 1) + '_name_error" class="text-error"><i class="icon-remove"></i><small id="passenger_adults_' + (i + 1) + '_name_error_text"> Ingrese el nombre del pasajero</small></p></div><div id="passenger_adults_' + (i + 1) + '_surname_span" class="span6"><label>Apellido</label><input id="passenger_adults_' + (i + 1) + '_surname" class="fill_in span12" type="text" placeholder="Ingrese el apellido del pasajero"><p id="passenger_adults_' + (i + 1) + '_surname_error" class="text-error"><i class="icon-remove"></i><small id="passenger_adults_' + (i + 1) + '_surname_error_text"> Ingrese el apellido del pasajero</small></p></div></div><div class="row-fluid"><div id="passenger_adults_' + (i + 1) + '_dni_span" class="span6"><label>DNI</label><input id="passenger_adults_' + (i + 1) + '_dni" class="fill_in span12" type="text" placeholder="Ingrese el DNI del pasajero"><p id="passenger_adults_' + (i + 1) + '_dni_error" class="text-error"><i class="icon-remove"></i><small id="passenger_adults_' + (i + 1) + '_dni_error_text"> Ingrese el DNI del pasajero</small></p></div><div class="span6"><label>Sexo</label><select class="fill_in span12"><option>Masculino</option><option>Femenino</option></select></div></div><div class="row-fluid"><div id="passenger_adults_' + (i + 1) + '_date_span" class="span6"><label>Fecha de nacimiento</label><input id="passenger_adults_' + (i + 1) + '_day" type="text" placeholder="dd" class="fill_in span3"><input id="passenger_adults_' + (i + 1) + '_month" type="text" placeholder="mm" class="fill_in span3"><input id="passenger_adults_' + (i + 1) + '_year" type="text" placeholder="aaaa" class="fill_in span3"><p id="passenger_adults_' + (i + 1) + '_date_error" class="text-error"><i class="icon-remove"></i><small id="passenger_adults_' + (i + 1) + '_date_error_text"> Ingrese la fecha de nacimiento del pasajero</small></p></div></div></div><div class="row-fluid"><div id="edit_passenger_adults_' + (i + 1) + '_span" class="span12"><a id="edit_passenger_adults_' + (i + 1) + '" type="button" class="btn pull-right thin-font">Editar <i class="icon-pencil"></i></a></div></div></div>');
+		focusOutField("#passenger_adults_" + (i + 1) + "_name", "#passenger_adults_" + (i + 1) + "_name_span", "#passenger_adults_" + (i + 1 ) + "_name_error");
+		focusOutField("#passenger_adults_" + (i + 1) + "_surname", "#passenger_adults_" + (i + 1) + "_surname_span", "#passenger_adults_" + (i + 1 ) + "_surname_error");
+		focusOutField("#passenger_adults_" + (i + 1) + "_dni", "#passenger_adults_" + (i + 1) + "_dni_span", "#passenger_adults_" + (i + 1 ) + "_dni_error");
 		$("#edit_passenger_adults_" + (i + 1) + "_span").hide();
+		$("#passenger_adults_" + (i + 1) + "_name_error").hide();
+		$("#passenger_adults_" + (i + 1) + "_surname_error").hide();
+		$("#passenger_adults_" + (i + 1) + "_dni_error").hide();
+		$("#passenger_adults_" + (i + 1) + "_date_error").hide();
 	}
 	
 	for(var i = 0; i < children; i++) {
-		$("#content_div").append('<div id="well_passenger_children_' + (i + 1) + '" class="well clearfix passenger"><div class="span12"><legend><i class="icon-user"></i> Pasajero ' + (i + adults + 1) + ' (Niño)</legend><div class="row-fluid"><div class="span6"><label>Nombre</label><input class="fill_in span12" type="text" placeholder="Ingrese el nombre del pasajero"></div><div class="span6"><label>Apellido</label><input class="fill_in span12" type="text" placeholder="Ingrese el apellido del pasajero"></div></div><div class="row-fluid"><div class="span6"><label>DNI</label><input class="fill_in span12" type="text" placeholder="Ingrese el DNI del pasajero"></div><div class="span6"><label>Sexo</label><select class="fill_in span12"><option>Masculino</option><option>Femenino</option></select></div></div><div class="row-fluid"><div class="span6"><label>Fecha de nacimiento</label><input type="text" placeholder="dd" class="fill_in span3"><input type="text" placeholder="mm" class="fill_in span3"><input type="text" placeholder="aaaa" class="fill_in span3"></div></div><div class="row-fluid"><div id="edit_passenger_children_' + (i + 1) + '_span" class="span12"><a id="edit_passenger_children_' + (i + 1) + '" type="button" class="btn pull-right thin-font">Editar <i class="icon-pencil"></i></a></div></div></div></div>');
+		$("#content_div").append('<div id="well_passenger_children_' + (i + 1) + '" class="well clearfix passenger"><div class="span12"><legend><i class="icon-user"></i> Pasajero ' + (i + adults + 1) + ' (Ni&#241;o)</legend><div class="row-fluid"><div id="passenger_children_' + (i + 1) + '_name_span" class="span6"><label>Nombre</label><input id="passenger_children_' + (i + 1) + '_name" class="fill_in span12" type="text" placeholder="Ingrese el nombre del pasajero"><p id="passenger_children_' + (i + 1) + '_name_error" class="text-error"><i class="icon-remove"></i><small id="passenger_children_' + (i + 1) + '_name_error_text"> Ingrese el nombre del pasajero</small></p></div><div id="passenger_children_' + (i + 1) + '_surname_span" class="span6"><label>Apellido</label><input id="passenger_children_' + (i + 1) + '_surname" class="fill_in span12" type="text" placeholder="Ingrese el apellido del pasajero"><p id="passenger_children_' + (i + 1) + '_surname_error" class="text-error"><i class="icon-remove"></i><small id="passenger_children_' + (i + 1) + '_surname_error_text"> Ingrese el apellido del pasajero</small></p></div></div><div class="row-fluid"><div id="passenger_children_' + (i + 1) + '_dni_span" class="span6"><label>DNI</label><input id="passenger_children_' + (i + 1) + '_dni" class="fill_in span12" type="text" placeholder="Ingrese el DNI del pasajero"><p id="passenger_children_' + (i + 1) + '_dni_error" class="text-error"><i class="icon-remove"></i><small id="passenger_children_' + (i + 1) + '_dni_error_text"> Ingrese el DNI del pasajero</small></p></div><div class="span6"><label>Sexo</label><select class="fill_in span12"><option>Masculino</option><option>Femenino</option></select></div></div><div class="row-fluid"><div id="passenger_children_' + (i + 1) + '_date_span" class="span6"><label>Fecha de nacimiento</label><input id="passenger_children_' + (i + 1) + '_day" type="text" placeholder="dd" class="fill_in span3"><input id="passenger_children_' + (i + 1) + '_month" type="text" placeholder="mm" class="fill_in span3"><input id="passenger_children_' + (i + 1) + '_year" type="text" placeholder="aaaa" class="fill_in span3"><p id="passenger_children_' + (i + 1) + '_date_error" class="text-error"><i class="icon-remove"></i><small id="passenger_children_' + (i + 1) + '_date_error_text"> Ingrese la fecha de nacimiento del pasajero</small></p></div></div><div class="row-fluid"><div id="edit_passenger_children_' + (i + 1) + '_span" class="span12"><a id="edit_passenger_children_' + (i + 1) + '" type="button" class="btn pull-right thin-font">Editar <i class="icon-pencil"></i></a></div></div></div></div>');
+		focusOutField("#passenger_children_" + (i + 1) + "_name", "#passenger_children_" + (i + 1) + "_name_span", "#passenger_children_" + (i + 1 ) + "_name_error");
+		focusOutField("#passenger_children_" + (i + 1) + "_surname", "#passenger_children_" + (i + 1) + "_surname_span", "#passenger_children_" + (i + 1 ) + "_surname_error");
+		focusOutField("#passenger_children_" + (i + 1) + "_dni", "#passenger_children_" + (i + 1) + "_dni_span", "#passenger_children_" + (i + 1 ) + "_dni_error");
 		$("#edit_passenger_children_" + (i + 1) + "_span").hide();
+		$("#passenger_children_" + (i + 1) + "_name_error").hide();
+		$("#passenger_children_" + (i + 1) + "_surname_error").hide();
+		$("#passenger_children_" + (i + 1) + "_dni_error").hide();
+		$("#passenger_children_" + (i + 1) + "_date_error").hide();
 	}
 	
 	for(var i = 0; i < infants; i++) {
-		$("#content_div").append('<div id="well_passenger_infants_' + (i + 1) + '" class="well clearfix passenger"><div class="span12"><legend><i class="icon-user"></i> Pasajero ' + (i + adults + children + 1) + ' (Infante)</legend><div class="row-fluid"><div class="span6"><label>Nombre</label><input class="fill_in span12" type="text" placeholder="Ingrese el nombre del pasajero"></div><div class="span6"><label>Apellido</label><input class="fill_in span12" type="text" placeholder="Ingrese el apellido del pasajero"></div></div><div class="row-fluid"><div class="span6"><label>DNI</label><input class="fill_in span12" type="text" placeholder="Ingrese el DNI del pasajero"></div><div class="span6"><label>Sexo</label><select class="fill_in span12"><option>Masculino</option><option>Femenino</option></select></div></div><div class="row-fluid"><div class="span6"><label>Fecha de nacimiento</label><input type="text" placeholder="dd" class="fill_in span3"><input type="text" placeholder="mm" class="fill_in span3"><input type="text" placeholder="aaaa" class="fill_in span3"></div></div><div class="row-fluid"><div id="edit_passenger_infants_' + (i + 1) + '_span" class="span12"><a id="edit_passenger_infants_' + (i + 1) + '" type="button" class="btn pull-right thin-font">Editar <i class="icon-pencil"></i></a></div></div></div></div>');
+		$("#content_div").append('<div id="well_passenger_infants_' + (i + 1) + '" class="well clearfix passenger"><div class="span12"><legend><i class="icon-user"></i> Pasajero ' + (i + adults + children + 1) + ' (Infante)</legend><div class="row-fluid"><div id="passenger_infants_' + (i + 1) + '_name_span" class="span6"><label>Nombre</label><input id="passenger_infants_' + (i + 1) + '_name" class="fill_in span12" type="text" placeholder="Ingrese el nombre del pasajero"><p id="passenger_infants_' + (i + 1) + '_name_error" class="text-error"><i class="icon-remove"></i><small id="passenger_infants_' + (i + 1) + '_name_error_text"> Ingrese el nombre del pasajero</small></p></div><div id="passenger_infants_' + (i + 1) + '_surname_span" class="span6"><label>Apellido</label><input id="passenger_infants_' + (i + 1) + '_surname" class="fill_in span12" type="text" placeholder="Ingrese el apellido del pasajero"><p id="passenger_infants_' + (i + 1) + '_surname_error" class="text-error"><i class="icon-remove"></i><small id="passenger_infants_' + (i + 1) + '_surname_error_text"> Ingrese el apellido del pasajero</small></p></div></div><div class="row-fluid"><div id="passenger_infants_' + (i + 1) + '_dni_span" class="span6"><label>DNI</label><input id="passenger_infants_' + (i + 1) + '_dni" class="fill_in span12" type="text" placeholder="Ingrese el DNI del pasajero"><p id="passenger_infants_' + (i + 1) + '_dni_error" class="text-error"><i class="icon-remove"></i><small id="passenger_infants_' + (i + 1) + '_dni_error_text"> Ingrese el DNI del pasajero</small></p></div><div class="span6"><label>Sexo</label><select class="fill_in span12"><option>Masculino</option><option>Femenino</option></select></div></div><div class="row-fluid"><div id="passenger_infants_' + (i + 1) + '_date_span" class="span6"><label>Fecha de nacimiento</label><input id="passenger_infants_' + (i + 1) + '_day" type="text" placeholder="dd" class="fill_in span3"><input id="passenger_infants_' + (i + 1) + '_month" type="text" placeholder="mm" class="fill_in span3"><input id="passenger_infants_' + (i + 1) + '_year" type="text" placeholder="aaaa" class="fill_in span3"><p id="passenger_infants_' + (i + 1) + '_date_error" class="text-error"><i class="icon-remove"></i><small id="passenger_infants_' + (i + 1) + '_date_error_text"> Ingrese la fecha de nacimiento del pasajero</small></p></div></div><div class="row-fluid"><div id="edit_passenger_infants_' + (i + 1) + '_span" class="span12"><a id="edit_passenger_infants_' + (i + 1) + '" type="button" class="btn pull-right thin-font">Editar <i class="icon-pencil"></i></a></div></div></div></div>');
+		focusOutField("#passenger_infants_" + (i + 1) + "_name", "#passenger_infants_" + (i + 1) + "_name_span", "#passenger_infants_" + (i + 1 ) + "_name_error");
+		focusOutField("#passenger_infants_" + (i + 1) + "_surname", "#passenger_infants_" + (i + 1) + "_surname_span", "#passenger_infants_" + (i + 1 ) + "_surname_error");
+		focusOutField("#passenger_infants_" + (i + 1) + "_dni", "#passenger_infants_" + (i + 1) + "_dni_span", "#passenger_infants_" + (i + 1 ) + "_dni_error");
 		$("#edit_passenger_infants_" + (i + 1) + "_span").hide();
+		$("#passenger_infants_" + (i + 1) + "_name_error").hide();
+		$("#passenger_infants_" + (i + 1) + "_surname_error").hide();
+		$("#passenger_infants_" + (i + 1) + "_dni_error").hide();
+		$("#passenger_infants_" + (i + 1) + "_date_error").hide();
 	}
-	
-	
 	
 	$("#next_button").click(function() {
 		if(state == "pasajeros") { //pasamos al pago
-			//if valida todo pasa lo de abajo
-			state = "tarjeta";
-			
-			//animacion para que suba todo y baje lo nuevo
-			$(".passenger").slideUp(500);
-			$(".credit_card").show();
-			$(".credit_card").slideUp(500);
-			$(".credit_card").slideDown(500);
-			
-			//cambia los titulos y los botones
-			$("#title_text").text(" Informacion de pago");
-			$("#prev_button_text").text(" Pasajeros");
-			$("#next_button_text").text("Confirmacion ");
-			
-			//cambiamos imagen y barra
-			$("#img_change").attr("src","img/large-2.jpg");
-			$("#bar_passengers_link").empty();
-			$("#bar_passengers_link").append('<a href=""><i class="icon-group"></i> Pasajeros</a>');
+			if(validatePassengers()) {
+				state = "tarjeta";
+				
+				//animacion para que suba todo y baje lo nuevo
+				$(".passenger").slideUp(500);
+				$(".credit_card").show();
+				$(".credit_card").slideUp(500);
+				$(".credit_card").slideDown(500);
+				
+				//cambia los titulos y los botones
+				$("#title_text").text(' Informacion de pago');
+		//		$("#prev_button_text").text(" Pasajeros");
+				$("#next_button_text").text("Confirmacion ");
+				
+				//cambiamos imagen y barra
+				$("#img_change").attr("src","img/large-2.jpg");
+				$("#bar_passengers_link").empty();
+				$("#bar_passengers_link").append('<a href=""><i class="icon-group"></i> Pasajeros</a>');
+			}
 		} else if(state == "tarjeta") { //pasamos a la confirmacion
 			state = "confirmacion";
 			$(".credit_card").slideUp(500);
@@ -84,8 +104,8 @@ $(document).ready(function() {
 			$(".credit_card").slideDown(500);
 			
 			//cambia los titulos, los botones y la imagen
-			$("#title_text").text(" Confirmacion");
-			$("#prev_button_text").text(" Pago");
+			$("#title_text").text(" Confirmación");
+	//		$("#prev_button_text").text(" Pago");
 			$("#next_button_text").text("Confirmar ");
 			$("#img_icon").hide();
 			$("#img_change").attr("src","img/large-4.jpg");
@@ -132,71 +152,71 @@ $(document).ready(function() {
 		}
 	});
 		
-	$("#prev_button").click(function() {
-		if(state == "pasajeros") { //pasamos al paso de pago
-			$("#prev_button").attr("href", "results.html");
-			state = "resutados";
-		} else if(state == "tarjeta") { //pasamos a los pasajeros
-			$("#prev_button").removeAttr("href");
-			$(".credit_card").slideUp(500);
-			$(".passenger").show();
-			$(".passenger").slideUp(500);
-			$(".passenger").slideDown(500);
-			
-			//cambio titulo e imagen
-			$("#title_text").text(" Informacion de pasajeros");
-			$("#img_change").attr("src","img/large-1.jpg");
-			
-			
-			//cambio botones de la barra de abajo
-			$("#prev_button_text").text(" Resultados");
-			$("#next_button_text").text("Pago ");
-			
-			state = "pasajeros"
-		} else if(state == "confirmacion") { //pasamos al estado de pago
-			
-			
-			//oculto los botones de editar de la tarjeta
-			$("#edit_credit_card_span").hide();
-			$("#edit_contact_information_span").hide();
-			$("#edit_titular_information_span").hide();
-			
-			//oculto los botones de editar de los pasajeros
-			for(var i = 0; i < adults; i++) {
-				$("#edit_passenger_adults_" + (i + 1) + "_span").hide();
-				enableInputs("#well_passenger_adults_" + (i + 1));
-				
-			}
-			
-			for(var i = 0; i < children; i++) {
-				$("#edit_passenger_children_" + (i + 1) + "_span").hide();
-				enableInputs("#well_passenger_children_" + (i + 1));
-			}
-			
-			for(var i = 0; i < infants; i++) {
-				$("#edit_passenger_infants_" + (i + 1) + "_span").hide();
-				enableInputs("#well_passenger_infants_" + (i + 1));
-			}
-			
-			//permito la escritura nuevamente de los inputs de la tarjeta
-			enableInputs("#well_credit_card");
-			enableInputs("#well_titular_information");
-			enableInputs("#well_contact_information");
-			
-			$(".credit_card").slideUp(500);
-			$(".passenger").slideUp(500);
-			$(".credit_card").slideDown(500);
-			
-			//cambio titulo imagen y barra de abajo
-			$("#title_text").text(" Informacion de pago");
-			$("#img_change").attr("src","img/large-2.jpg");
-			$("#prev_button_text").text(" Pasajeros");
-			$("#next_button_text").text("Confirmacion ");
-			$("#img_icon").show();
-			
-			state = "tarjeta";
-		}
-	});
+//	$("#prev_button").click(function() {
+//		if(state == "pasajeros") { //pasamos al paso de pago
+//			$("#prev_button").attr("href", "results.html");
+//			state = "resutados";
+//		} else if(state == "tarjeta") { //pasamos a los pasajeros
+//			$("#prev_button").removeAttr("href");
+//			$(".credit_card").slideUp(500);
+//			$(".passenger").show();
+//			$(".passenger").slideUp(500);
+//			$(".passenger").slideDown(500);
+//			
+//			//cambio titulo e imagen
+//			$("#title_text").text(" Informacion de pasajeros");
+//			$("#img_change").attr("src","img/large-1.jpg");
+//			
+//			
+//			//cambio botones de la barra de abajo
+//			$("#prev_button_text").text(" Resultados");
+//			$("#next_button_text").text("Pago ");
+//			
+//			state = "pasajeros"
+//		} else if(state == "confirmacion") { //pasamos al estado de pago
+//			
+//			
+//			//oculto los botones de editar de la tarjeta
+//			$("#edit_credit_card_span").hide();
+//			$("#edit_contact_information_span").hide();
+//			$("#edit_titular_information_span").hide();
+//			
+//			//oculto los botones de editar de los pasajeros
+//			for(var i = 0; i < adults; i++) {
+//				$("#edit_passenger_adults_" + (i + 1) + "_span").hide();
+//				enableInputs("#well_passenger_adults_" + (i + 1));
+//				
+//			}
+//			
+//			for(var i = 0; i < children; i++) {
+//				$("#edit_passenger_children_" + (i + 1) + "_span").hide();
+//				enableInputs("#well_passenger_children_" + (i + 1));
+//			}
+//			
+//			for(var i = 0; i < infants; i++) {
+//				$("#edit_passenger_infants_" + (i + 1) + "_span").hide();
+//				enableInputs("#well_passenger_infants_" + (i + 1));
+//			}
+//			
+//			//permito la escritura nuevamente de los inputs de la tarjeta
+//			enableInputs("#well_credit_card");
+//			enableInputs("#well_titular_information");
+//			enableInputs("#well_contact_information");
+//			
+//			$(".credit_card").slideUp(500);
+//			$(".passenger").slideUp(500);
+//			$(".credit_card").slideDown(500);
+//			
+//			//cambio titulo imagen y barra de abajo
+//			$("#title_text").text(" Informacion de pago");
+//			$("#img_change").attr("src","img/large-2.jpg");
+//			$("#prev_button_text").text(" Pasajeros");
+//			$("#next_button_text").text("Confirmacion ");
+//			$("#img_icon").show();
+//			
+//			state = "tarjeta";
+//		}
+//	});
 });
 
 function enableButtons(idWell, idButton) {
@@ -237,4 +257,303 @@ function showError(idWell, idButton) {
 		$(idWell).addClass("well-group-error");
 		$(idButton).addClass("btn-danger");
 	}
+}
+
+function validatePassengers() {
+	var error1 = false;
+	var error2 = false;
+	var error3 = false;
+
+	for(var i = 0; i < adults; i++) {
+		error1 = validateAdultPassenger("#passenger_adults_" + (i + 1) + "_name_span", $("#passenger_adults_" + (i + 1) + "_name").val(), "#passenger_adults_" + (i + 1) + "_name_error", "#passenger_adults_" + (i + 1) + "_name_error_text", "#passenger_adults_" + (i + 1) + "_surname_span", $("#passenger_adults_" + (i + 1) + "_surname").val(), "#passenger_adults_" + (i + 1) + "_surname_error", "#passenger_adults_" + (i + 1) + "_surname_error_text", "#passenger_adults_" + (i + 1) + "_dni_span", $("#passenger_adults_" + (i + 1) + "_dni").val(), "#passenger_adults_" + (i + 1) + "_dni_error", "#passenger_adults_" + (i + 1) + "_dni_error_text","#passenger_adults_" + (i + 1) + "_date_span", $("#passenger_adults_" + (i + 1) + "_day").val(), $("#passenger_adults_" + (i + 1) + "_month").val(), $("#passenger_adults_" + (i + 1) + "_year").val(), "#passenger_adults_" + (i + 1) + "_date_error", "#passenger_adults_" + (i + 1) + "_date_error_text");
+	}
+	for(var i = 0; i < children; i++) {
+		error2 = validateChildrenPassenger("#passenger_children_" + (i + 1) + "_name_span", $("#passenger_children_" + (i + 1) + "_name").val(), "#passenger_children_" + (i + 1) + "_name_error", "#passenger_children_" + (i + 1) + "_name_error_text", "#passenger_children_" + (i + 1) + "_surname_span", $("#passenger_children_" + (i + 1) + "_surname").val(), "#passenger_children_" + (i + 1) + "_surname_error", "#passenger_children_" + (i + 1) + "_surname_error_text", "#passenger_children_" + (i + 1) + "_dni_span", $("#passenger_children_" + (i + 1) + "_dni").val(), "#passenger_children_" + (i + 1) + "_dni_error", "#passenger_children_" + (i + 1) + "_dni_error_text","#passenger_children_" + (i + 1) + "_date_span", $("#passenger_children_" + (i + 1) + "_day").val(), $("#passenger_children_" + (i + 1) + "_month").val(), $("#passenger_children_" + (i + 1) + "_year").val(), "#passenger_children_" + (i + 1) + "_date_error", "#passenger_children_" + (i + 1) + "_date_error_text");
+	}
+	for(var i = 0; i < infants; i++) {
+		error3 = validateInfantPassenger("#passenger_infants_" + (i + 1) + "_name_span", $("#passenger_infants_" + (i + 1) + "_name").val(), "#passenger_infants_" + (i + 1) + "_name_error", "#passenger_infants_" + (i + 1) + "_name_error_text", "#passenger_infants_" + (i + 1) + "_surname_span", $("#passenger_infants_" + (i + 1) + "_surname").val(), "#passenger_infants_" + (i + 1) + "_surname_error", "#passenger_infants_" + (i + 1) + "_surname_error_text", "#passenger_infants_" + (i + 1) + "_dni_span", $("#passenger_infants_" + (i + 1) + "_dni").val(), "#passenger_infants_" + (i + 1) + "_dni_error", "#passenger_infants_" + (i + 1) + "_dni_error_text","#passenger_infants_" + (i + 1) + "_date_span", $("#passenger_infants_" + (i + 1) + "_day").val(), $("#passenger_infants_" + (i + 1) + "_month").val(), $("#passenger_infants_" + (i + 1) + "_year").val(), "#passenger_infants_" + (i + 1) + "_date_error", "#passenger_infants_" + (i + 1) + "_date_error_text");
+	}
+	console.log(error1);
+	console.log(error2);
+	console.log(error3);
+	return !error1 && !error2 && !error3;
+}
+
+function validateAdultPassenger(passengerNameSpan, passengerName, passengerNameError, passengerNameErrorText, passengerSurnameSpan, passengerSurname, passengerSurnameError, passengerSurnameErrorText, passengerDNISpan, passengerDNI, passengerDNIError, passengerDNIErrorText, passengerDateSpan, passengerDay, passengerMonth, passengerYear, passengerDateError, passengerDateErrorText) {
+	var error = false;
+	
+	if(passengerName == "") {
+		$(passengerNameSpan).addClass("control-group error");
+		$(passengerNameErrorText).text(" Ingrese el nombre del pasajero");
+		$(passengerNameError).show();
+		error = true;
+	} else if(!validateTextField(passengerName)) {
+		$(passengerNameSpan).addClass("control-group error");
+		$(passengerNameErrorText).text(" Ingrese un nombre valido");
+		$(passengerNameError).show();
+		error = true;
+	}
+	
+	if(passengerSurname == "") {
+		$(passengerSurnameSpan).addClass("control-group error");
+		$(passengerSurnameErrorText).text(" Ingrese el apellido del pasajero");
+		$(passengerSurnameError).show();
+		error = true;
+	} else if(!validateTextField(passengerSurname)) {
+		$(passengerSurnameSpan).addClass("control-group error");
+		$(passengerSurnameErrorText).text(" Ingrese un apellido valido");
+		$(passengerSurnameError).show();
+		error = true;
+	}
+	
+	if(passengerDNI == "") {
+		$(passengerDNISpan).addClass("control-group error");
+		$(passengerDNIErrorText).text(" Ingrese el numero de DNI del pasajero");
+		$(passengerDNIError).show();
+		error = true;
+	} else if(!validateDNIField(passengerDNI)) {
+		$(passengerDNISpan).addClass("control-group error");
+		$(passengerDNIErrorText).text(" Ingrese un numero de DNI valido");
+		$(passengerDNIError).show();
+		error = true;
+	}
+	
+	if(passengerDay == "" || passengerMonth == "" || passengerYear == "") {
+		$(passengerDateSpan).addClass("control-group error");
+		$(passengerDateErrorText).text(" Ingrese la fecha de nacimiento del pasajero");
+		$(passengerDateError).show();
+		error = true;
+	} else if(!validateDate(passengerDay, passengerMonth, passengerYear)) {
+		$(passengerDateSpan).addClass("control-group error");
+		$(passengerDateErrorText).text(" Ingrese una fecha de nacimiento valida");
+		$(passengerDateError).show();
+		error = true;
+	} else if(!validateDateAdult(passengerDay, passengerMonth, passengerYear)) {
+		$(passengerDateSpan).addClass("control-group error");
+		$(passengerDateErrorText).text(" La fecha de nacimiento no se corresponde con un adulto");
+		$(passengerDateError).show();
+		error = true;
+	}
+
+	return error;
+}
+
+function validateChildrenPassenger(passengerNameSpan, passengerName, passengerNameError, passengerNameErrorText, passengerSurnameSpan, passengerSurname, passengerSurnameError, passengerSurnameErrorText, passengerDNISpan, passengerDNI, passengerDNIError, passengerDNIErrorText, passengerDateSpan, passengerDay, passengerMonth, passengerYear, passengerDateError, passengerDateErrorText) {
+	var error = false;
+
+	if(passengerName == "") {
+		$(passengerNameSpan).addClass("control-group error");
+		$(passengerNameErrorText).text(" Ingrese el nombre del pasajero");
+		$(passengerNameError).show();
+		error = true;
+	} else if(!validateTextField(passengerName)) {
+		$(passengerNameSpan).addClass("control-group error");
+		$(passengerNameErrorText).text(" Ingrese un nombre valido");
+		$(passengerNameError).show();
+		error = true;
+	}
+	
+	if(passengerSurname == "") {
+		$(passengerSurnameSpan).addClass("control-group error");
+		$(passengerSurnameErrorText).text(" Ingrese el apellido del pasajero");
+		$(passengerSurnameError).show();
+		error = true;
+	} else if(!validateTextField(passengerSurname)) {
+		$(passengerSurnameSpan).addClass("control-group error");
+		$(passengerSurnameErrorText).text(" Ingrese un apellido valido");
+		$(passengerSurnameError).show();
+		error = true;
+	}
+	
+	if(passengerDNI == "") {
+		$(passengerDNISpan).addClass("control-group error");
+		$(passengerDNIErrorText).text(" Ingrese el numero de DNI del pasajero");
+		$(passengerDNIError).show();
+		error = true;
+	} else if(!validateDNIField(passengerDNI)) {
+		$(passengerDNISpan).addClass("control-group error");
+		$(passengerDNIErrorText).text(" Ingrese un numero de DNI valido");
+		$(passengerDNIError).show();
+		error = true;
+	}
+	
+	if(passengerDay == "" || passengerMonth == "" || passengerYear == "") {
+		$(passengerDateSpan).addClass("control-group error");
+		$(passengerDateErrorText).text(" Ingrese la fecha de nacimiento del pasajero");
+		$(passengerDateError).show();
+		error = true;
+	} else if(!validateDate(passengerDay, passengerMonth, passengerYear)) {
+		$(passengerDateSpan).addClass("control-group error");
+		$(passengerDateErrorText).text(" Ingrese una fecha de nacimiento valida");
+		$(passengerDateError).show();
+		error = true;
+	} else if(!validateDateChildren(passengerDay, passengerMonth, passengerYear)) {
+		$(passengerDateSpan).addClass("control-group error");
+		$(passengerDateErrorText).text(" La fecha de nacimiento no se corresponde con un ninio");
+		$(passengerDateError).show();
+		error = true;
+	}
+	
+	return error;	
+}
+
+function validateInfantPassenger(passengerNameSpan, passengerName, passengerNameError, passengerNameErrorText, passengerSurnameSpan, passengerSurname, passengerSurnameError, passengerSurnameErrorText, passengerDNISpan, passengerDNI, passengerDNIError, passengerDNIErrorText, passengerDateSpan, passengerDay, passengerMonth, passengerYear, passengerDateError, passengerDateErrorText) {
+	var error = false;
+	console.log("LLEGO"); 
+	if(passengerName == "") {
+		console.log("LLEGO1"); 
+		$(passengerNameSpan).addClass("control-group error");
+		$(passengerNameErrorText).text(" Ingrese el nombre del pasajero");
+		$(passengerNameError).show();
+		error = true;
+	} else if(!validateTextField(passengerName)) {
+		$(passengerNameSpan).addClass("control-group error");
+		$(passengerNameErrorText).text(" Ingrese un nombre valido");
+		$(passengerNameError).show();
+		error = true;
+	}
+	
+	if(passengerSurname == "") {
+		$(passengerSurnameSpan).addClass("control-group error");
+		$(passengerSurnameErrorText).text(" Ingrese el apellido del pasajero");
+		$(passengerSurnameError).show();
+		error = true;
+	} else if(!validateTextField(passengerSurname)) {
+		$(passengerSurnameSpan).addClass("control-group error");
+		$(passengerSurnameErrorText).text(" Ingrese un apellido valido");
+		$(passengerSurnameError).show();
+		error = true;
+	}
+	
+	if(passengerDNI == "") {
+		$(passengerDNISpan).addClass("control-group error");
+		$(passengerDNIErrorText).text(" Ingrese el numero de DNI del pasajero");
+		$(passengerDNIError).show();
+		error = true;
+	} else if(!validateDNIField(passengerDNI)) {
+		$(passengerDNISpan).addClass("control-group error");
+		$(passengerDNIErrorText).text(" Ingrese un numero de DNI valido");
+		$(passengerDNIError).show();
+		error = true;
+	}
+	
+	if(passengerDay == "" || passengerMonth == "" || passengerYear == "") {
+		$(passengerDateSpan).addClass("control-group error");
+		$(passengerDateErrorText).text(" Ingrese la fecha de nacimiento del pasajero");
+		$(passengerDateError).show();
+		error = true;
+	} else if(!validateDate(passengerDay, passengerMonth, passengerYear)) {
+		$(passengerDateSpan).addClass("control-group error");
+		$(passengerDateErrorText).text(" Ingrese una fecha de nacimiento valida");
+		$(passengerDateError).show();
+		error = true;
+	} else if(!validateDateInfant(passengerDay, passengerMonth, passengerYear)) {
+		$(passengerDateSpan).addClass("control-group error");
+		$(passengerDateErrorText).text(" La fecha de nacimiento no se corresponde con un infante");
+		$(passengerDateError).show();
+		error = true;
+	}
+	
+	return error;	
+}
+
+function validateTextField(text) {
+	var textPattern = /^[A-Za-z ]+$/;
+	return textPattern.test(text);
+}
+
+function validateDNIField(DNI) {
+	var textPattern = /^[0-9 ]{8}$/;
+	return textPattern.test(DNI);
+}
+
+function validateDate(day, month, year) {
+	var dayPattern = /^(\d{1,2})$/;
+	var monthPattern = /^(\d{1,2})$/;
+	var yearPattern = /^(\d{4})$/;
+	var nowTemp = new Date();
+	var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+	var date;
+	
+	if(!dayPattern.test(day) || !monthPattern.test(month) || !yearPattern.test(year)) {
+		return false;
+	}
+	
+	if (month < 1 || month > 12) {
+		return false;
+	} else if (day < 1 || day> 31) {
+		return false;
+	} else if ((month==4 || month==6 || month==9 || month==11) && day ==31) {
+		return false;
+	} else if (month == 2) {
+		var isleap = (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0));
+		if (day> 29 || (day == 29 && !isleap)) {
+			return false;
+		}
+	}
+	
+	date = new Date(year, month - 1, day, 0, 0, 0, 0);
+	if(date > now) {
+		return false;
+	}
+	
+	return true;
+}
+
+function validateDateAdult(day, month, year) {
+	var date = new Date(year, month - 1, day, 0, 0, 0, 0);
+	var nowTemp = new Date();
+	var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+	var age= now.getFullYear() - date.getFullYear();
+	
+	if(now.getMonth() - date.getMonth() < 0) {
+		age = age + 1;
+	} else if(now.getMonth() - date.getMonth() == 0) {
+		if(now.getDate() - date.getDate() <= 0) {
+			age = age + 1;
+		}
+	} 
+
+	return age > 11;
+}
+
+function validateDateChildren(day, month, year) {
+	var date = new Date(year, month - 1, day, 0, 0, 0, 0);
+	var nowTemp = new Date();
+	var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+	var age= now.getFullYear() - date.getFullYear();
+	
+	if(now.getMonth() - date.getMonth() < 0) {
+		age = age + 1;
+	} else if(now.getMonth() - date.getMonth() == 0) {
+		if(now.getDate() - date.getDate() <= 0) {
+			age = age + 1;
+		}
+	} 
+	
+	return age > 2 && age <= 11;
+}
+
+function validateDateInfant(day, month, year) {
+	var date = new Date(year, month - 1, day, 0, 0, 0, 0);
+	var nowTemp = new Date();
+	var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+	var age= now.getFullYear() - date.getFullYear();
+	
+	if(now.getMonth() - date.getMonth() < 0) {
+		age = age + 1;
+	} else if(now.getMonth() - date.getMonth() == 0) {
+		if(now.getDate() - date.getDate() <= 0) {
+			age = age + 1;
+		}
+	} 
+	
+	return age >= 0 && age <= 2;
+}
+
+function focusOutField(passengerField, passengerSpan, passengerError) {
+	$(passengerField).focusout(function() {
+		$(passengerSpan).removeClass('control-group error');
+		$(passengerError).hide();
+	});
 }
