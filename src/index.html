@@ -7,47 +7,24 @@
 		<link href="css/font-awesome.css" rel="stylesheet">
 		<link href="css/datepicker.css" rel="stylesheet">
 		<link href="css/nouislider-larger.css" rel="stylesheet">
+
 		<script src="js/jquery-1.9.1.js"></script>
-		<script src="js/jquery.cookie.js"></script>
+		
 		<script src="js/bootstrap.js"></script>
+		<script src="js/cookies-checker.js"></script>
+		<script src="js/jquery.cookie.js"></script>
 		<script src="js/datepicker.js"></script>
 		<script src="js/search.field.js"></script>
 	</head>
 	<body>
+		<noscript>
+			<div class="navbar navbar-inverse navbar-static-top"><div class="navbar-inner"><div class="container text-center"><a class="brand" href="index.html">Quiero viajar!</a></div></div></div><br><div class="container"><div class="row-fluid"><div class="span12 well"><h1 class="text-center"><i class="icon-warning-sign "></i> Atención:</h1><h3 class="text-center thin-font">El sitio utiliza JavaScript, asegurese de activarlo</h3></div></div></div><style type="text/css">#main-content { display:none; }</style>
+		</noscript>
 		<div class="navbar navbar-inverse navbar-fixed-top">
 			<div class="navbar-inner">
 				<div class="container">
 					<ul class="nav">
 						<a class="brand" href="index.html">Quiero viajar!</a>
-						<li class="disabled-link">
-							<p>
-								<i class="icon-search"></i> Resultados
-							</p>
-						</li>
-						<li class="disabled-link">
-							<i class="icon-angle-right"></i>
-						</li>
-						<li class="disabled-link">
-							<p>
-								<i class="icon-group"></i> Pasajeros
-							</p>
-						</li>
-						<li class="disabled-link">
-							<i class="icon-angle-right"></i>
-						</li>
-						<li class="disabled-link">
-							<p>
-								<i class="icon-shopping-cart"></i> Pago
-							</p>
-						</li>
-						<li class="disabled-link">
-							<i class="icon-angle-right"></i>
-						</li>
-						<li class="disabled-link">
-							<p>
-								<i class="icon-plane"></i> Confirmación
-							</p>
-						</li>
 					</ul>
 				</div>
 			</div>
@@ -55,7 +32,7 @@
 		<br>
 		<br>
 		<br>
-		<div class="container">
+		<div id="main-content"class="container">
 			<div class="row-fluid">
 				<div id="myCarousel" class="carousel slide">
 					<div class="span12 img-polaroid">
@@ -130,12 +107,18 @@
 							<div class="row-fluid">
 								<div id="depart_span" class="span6">
 									<label>Fecha de ida</label>
-									<input id="dep_date" class="span12 error" type="text" placeholder="Ingrese fecha de ida (dd/mm/aaaa)">
+									<div class="input-append">
+										<input id="dep_date" class="span12 fix-width error" type="text" placeholder="Ingrese fecha de ida (dd/mm/aaaa)">
+										<a class="fix-cal-btn btn" type="button"><i class="icon-calendar"></i></a>
+									</div>
 									<p id="depart_date_error" class="text-error"><i class="icon-remove"></i><small id="dep_date_error_text"> Ingrese una fecha de ida</small></p>
 								</div>
 								<div id="return_span" class="span6">
 									<label>Fecha de vuelta</label>
-									<input id="ret_date" class="span12" type="text" placeholder="Ingrese fecha de vuelta (dd/mm/aaaa)">
+									<div class="input-append">
+										<input id="ret_date" class="fix-width span12" type="text" placeholder="Ingrese fecha de vuelta (dd/mm/aaaa)">
+										<a class="fix-cal-btn btn" type="button"><i class="icon-calendar"></i></a>
+									</div>
 									<p id="return_date_error" class="text-error"><i class="icon-remove"></i><small id="ret_date_error_text"> Ingrese una fecha de vuelta</small></p>
 								</div>
 							</div>

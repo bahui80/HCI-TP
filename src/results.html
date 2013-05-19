@@ -9,6 +9,7 @@
 		<link href="css/datepicker.css" rel="stylesheet">
 		<link href="css/simplePagination.css" rel="stylesheet">
 		<script src="js/jquery-1.9.1.js"></script>
+		<script src="js/cookies-checker.js"></script>
 		<script src="js/jquery.simplePagination.js"></script>
 		<script src="js/jquery.nouislider.js"></script>
 		<script src="js/jquery.cookie.js"></script>
@@ -104,14 +105,20 @@
 							<div class="row-fluid">
 								<div id="depart_span" class="span12">
 									<label>Fecha de ida</label>
-									<input id="dep_date" class="span12" type="text" placeholder="Ingrese fecha de ida">
+									<div class="input-append">
+										<input id="dep_date" class="span12 fix-width-2 error" type="text" placeholder="dd/mm/aaaa">
+										<a class="fix-cal-btn btn" type="button"><i class="icon-calendar"></i></a>
+									</div>
 									<p id="depart_date_error" class="text-error"><i class="icon-remove"></i><small id="dep_date_error_text"> Ingrese una fecha de ida</small></p>
 								</div>
 							</div>
 							<div id="ret_date_div" class="row-fluid">
 								<div id="return_span" class="span12">
 									<label>Fecha de vuelta</label>
-									<input id="ret_date" class="span12" type="text" placeholder="Ingrese fecha de vuelta">
+									<div class="input-append">
+										<input id="ret_date" class="span12 fix-width-2" type="text" placeholder="dd/mm/aaaa">
+										<a class="fix-cal-btn btn" type="button"><i class="icon-calendar"></i></a>
+									</div>
 									<p id="return_date_error" class="text-error"><i class="icon-remove"></i><small id="ret_date_error_text"> Ingrese una fecha de vuelta</small></p>
 								</div>
 							</div>

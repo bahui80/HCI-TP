@@ -34,26 +34,24 @@ var first_time_matrix = true;
 
 $(document).ready(function() {
 
-	//hago espacio para los resultados
-	$('#flights_row').empty();
+		//hago espacio para los resultados
+		$('#flights_row').empty();
 
-	// muestro un modal incerrable de cargando hasta que termine de buscar el vuelo
-	$('#loading-modal').modal({
-		backdrop: 'static',
-		keyboard: false
-	})
-	$("#results_num_div").hide();
+		// muestro un modal incerrable de cargando hasta que termine de buscar el vuelo
+		$('#loading-modal').modal({
+			backdrop: 'static',
+			keyboard: false
+		})
+		$("#results_num_div").hide();
 
-	// prepara eventos de click de filtros
-	filterEvents();
+		// prepara eventos de click de filtros
+		filterEvents();
 
-	// preparara los efectos de filtro
-	prepareFilterEffects();
+		// preparara los efectos de filtro
+		prepareFilterEffects();
 
-	// cargo las opciones de busqueda y hago la busqueda
-	loadFields();
-
-
+		// cargo las opciones de busqueda y hago la busqueda
+		loadFields();
 });
 
 function matrixEvent(){
