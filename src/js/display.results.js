@@ -541,6 +541,9 @@ function loadFields(){
 	var cabin_type = $.cookie('cabin_type');
 	var dep_time = $.cookie('dep_time');
 	var ret_time = $.cookie('ret_time');
+	var adults = $.cookie('adults');
+	var children = $.cookie('children');
+	var infants = $.cookie('infants');
 
 	// cargar parametros de busqueda
 	$('#from').val(from);
