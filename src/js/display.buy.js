@@ -1,5 +1,5 @@
 var totalEdits = 0;
-var adults = 1;
+var adults = 0;
 var children = 0;
 var infants = 0;
 
@@ -15,6 +15,25 @@ $(document).ready(function() {
 	$("#edit_credit_card_span").hide();
 	$("#edit_contact_information_span").hide();
 	$("#edit_titular_information_span").hide();
+	$("#number_credit_card_error").hide();
+	$("#expiration_credit_card_error").hide();
+	$("#security_credit_card_error").hide();
+	
+	
+	$("#number_credit_card").focusout(function() {
+		$("#number_credit_card_span").removeClass('control-group error');
+		$("#number_credit_card_error").hide();
+	});
+	
+	$("#expiration_credit_card").focusout(function() {
+		$("#expiration_credit_card_span").removeClass('control-group error');
+		$("#expiration_credit_card_error").hide();
+	});
+	
+	$("#security_credit_card").focusout(function() {
+		$("#security_credit_card_span").removeClass('control-group error');
+		$("#security_credit_card_error").hide();
+	});
 	
 	
 	//revisar que no deja espacio entre dia mes y anio
@@ -76,57 +95,59 @@ $(document).ready(function() {
 				$("#bar_passengers_link").append('<a href=""><i class="icon-group"></i> Pasajeros</a>');
 			}
 		} else if(state == "tarjeta") { //pasamos a la confirmacion
-			state = "confirmacion";
-			$(".credit_card").slideUp(500);
-			$(".fill_in").attr("disabled",true);
-			
-			//muestra los botones editar de la tarjeta
-			$("#edit_credit_card_span").show();
-			$("#edit_contact_information_span").show();
-			$("#edit_titular_information_span").show();
-			
-			//muestra los botontes editar de los pasajeros
-			for(var i = 0; i < adults; i++) {
-				$("#edit_passenger_adults_" + (i + 1) + "_span").show();
-			}
-			for(var i = 0; i < children; i++) {
-				$("#edit_passenger_children_" + (i + 1) + "_span").show();
-			}
-			for(var i = 0; i < infants; i++) {
-				$("#edit_passenger_infants_" + (i + 1) + "_span").show();
-			}
-			
-			//animacion para que suba todo y baje lo nuevo
-			$(".passenger").show();
-			$(".passenger").slideUp(500);
-			$(".credit_card").show();
-			$(".passenger").slideDown(500);
-			$(".credit_card").slideDown(500);
-			
-			//cambia los titulos, los botones y la imagen
-			$("#title_text").text(" Confirmación");
-	//		$("#prev_button_text").text(" Pago");
-			$("#next_button_text").text("Confirmar ");
-			$("#img_icon").hide();
-			$("#img_change").attr("src","img/large-4.jpg");
-			
-			//creamos todos los eventos de los botones editar
-			if(firstTime) {
+			if(validateCreditCard()) {
+				state = "confirmacion";
+				$(".credit_card").slideUp(500);
+				$(".fill_in").attr("disabled",true);
+				
+				//muestra los botones editar de la tarjeta
+				$("#edit_credit_card_span").show();
+				$("#edit_contact_information_span").show();
+				$("#edit_titular_information_span").show();
+				
+				//muestra los botontes editar de los pasajeros
 				for(var i = 0; i < adults; i++) {
-					enableButtons("#well_passenger_adults_" + (i + 1), "#edit_passenger_adults_" + (i + 1));
+					$("#edit_passenger_adults_" + (i + 1) + "_span").show();
 				}
 				for(var i = 0; i < children; i++) {
-					enableButtons("#well_passenger_children_" + (i + 1), "#edit_passenger_children_" + (i + 1));
+					$("#edit_passenger_children_" + (i + 1) + "_span").show();
 				}
 				for(var i = 0; i < infants; i++) {
-					enableButtons("#well_passenger_infants_" + (i + 1), "#edit_passenger_infants_" + (i + 1));
+					$("#edit_passenger_infants_" + (i + 1) + "_span").show();
 				}
-				enableButtons("#well_credit_card","#edit_credit_card");
-				enableButtons("#well_titular_information", "#edit_titular_information");
-				enableButtons("#well_contact_information", "#edit_contact_information");
-			}
 			
-			firstTime = 0;
+				//animacion para que suba todo y baje lo nuevo
+				$(".passenger").show();
+				$(".passenger").slideUp(500);
+				$(".credit_card").show();
+				$(".passenger").slideDown(500);
+				$(".credit_card").slideDown(500);
+				
+				//cambia los titulos, los botones y la imagen
+				$("#title_text").text(" Confirmación");
+		//		$("#prev_button_text").text(" Pago");
+				$("#next_button_text").text("Confirmar ");
+				$("#img_icon").hide();
+				$("#img_change").attr("src","img/large-4.jpg");
+			
+				//creamos todos los eventos de los botones editar
+				if(firstTime) {
+					for(var i = 0; i < adults; i++) {
+						enableButtons("#well_passenger_adults_" + (i + 1), "#edit_passenger_adults_" + (i + 1));
+					}
+					for(var i = 0; i < children; i++) {
+						enableButtons("#well_passenger_children_" + (i + 1), "#edit_passenger_children_" + (i + 1));
+					}
+					for(var i = 0; i < infants; i++) {
+						enableButtons("#well_passenger_infants_" + (i + 1), "#edit_passenger_infants_" + (i + 1));
+					}
+					enableButtons("#well_credit_card","#edit_credit_card");
+					enableButtons("#well_titular_information", "#edit_titular_information");
+					enableButtons("#well_contact_information", "#edit_contact_information");
+				}
+				
+				firstTime = 0;
+			}
 		} else {
 			//chequeo que no haya algun campo sin guardar
 			if(totalEdits != 0) {
@@ -273,9 +294,7 @@ function validatePassengers() {
 	for(var i = 0; i < infants; i++) {
 		error3 = validateInfantPassenger("#passenger_infants_" + (i + 1) + "_name_span", $("#passenger_infants_" + (i + 1) + "_name").val(), "#passenger_infants_" + (i + 1) + "_name_error", "#passenger_infants_" + (i + 1) + "_name_error_text", "#passenger_infants_" + (i + 1) + "_surname_span", $("#passenger_infants_" + (i + 1) + "_surname").val(), "#passenger_infants_" + (i + 1) + "_surname_error", "#passenger_infants_" + (i + 1) + "_surname_error_text", "#passenger_infants_" + (i + 1) + "_dni_span", $("#passenger_infants_" + (i + 1) + "_dni").val(), "#passenger_infants_" + (i + 1) + "_dni_error", "#passenger_infants_" + (i + 1) + "_dni_error_text","#passenger_infants_" + (i + 1) + "_date_span", $("#passenger_infants_" + (i + 1) + "_day").val(), $("#passenger_infants_" + (i + 1) + "_month").val(), $("#passenger_infants_" + (i + 1) + "_year").val(), "#passenger_infants_" + (i + 1) + "_date_error", "#passenger_infants_" + (i + 1) + "_date_error_text");
 	}
-	console.log(error1);
-	console.log(error2);
-	console.log(error3);
+
 	return !error1 && !error2 && !error3;
 }
 
@@ -399,9 +418,8 @@ function validateChildrenPassenger(passengerNameSpan, passengerName, passengerNa
 
 function validateInfantPassenger(passengerNameSpan, passengerName, passengerNameError, passengerNameErrorText, passengerSurnameSpan, passengerSurname, passengerSurnameError, passengerSurnameErrorText, passengerDNISpan, passengerDNI, passengerDNIError, passengerDNIErrorText, passengerDateSpan, passengerDay, passengerMonth, passengerYear, passengerDateError, passengerDateErrorText) {
 	var error = false;
-	console.log("LLEGO"); 
+	
 	if(passengerName == "") {
-		console.log("LLEGO1"); 
 		$(passengerNameSpan).addClass("control-group error");
 		$(passengerNameErrorText).text(" Ingrese el nombre del pasajero");
 		$(passengerNameError).show();
@@ -556,4 +574,82 @@ function focusOutField(passengerField, passengerSpan, passengerError) {
 		$(passengerSpan).removeClass('control-group error');
 		$(passengerError).hide();
 	});
+}
+
+function validateCreditCard() {
+	var error1 = false;
+	var error2 = false;
+	var error3 = false;
+
+	error1 = validateCreditCardInformation();
+	error2 = validateTitularInformation();
+	error3 = validateContactInformation();
+	
+	return !error1 && !error2 && !error3;
+}
+
+function validateCreditCardInformation() {
+	var error = false;
+	
+	if($("#number_credit_card").val() == "" ) {
+		$("#number_credit_card_span").addClass("control-group error");
+		$("#number_credit_card_error_text").text(" Ingrese el numero de la tarjeta");
+		$("#number_credit_card_error").show();
+		error = true;
+	} else if(!validateCreditCardNumber($("#number_credit_card").val())) {
+		$("#number_credit_card_span").addClass("control-group error");
+		$("#number_credit_card_error_text").text(" Ingrese un numero valido de tarjeta");
+		$("#number_credit_card_error").show();
+		error = true;
+	}
+
+	return error;
+}
+
+function validateTitularInformation() {
+	
+}
+
+function validateContactInformation() {
+	
+}
+
+function validateCreditCardNumber(number) {
+	var visa1 = /^4[0-9]{12}$/;
+	var visa2 =  /^4[0-9]{15}$/;
+	var master1 = /^51[0-9]{14}$/;
+	var master2 = /^52[0-9]{14}$/;
+	var master3 = /^53[0-9]{14}$/;
+	var diners = /^36[0-9]{14}$/;
+	var american1 = /^34[0-9]{13}$/;
+	var american2 = /^37[0-9]{13}$/;
+	var correct = true;
+	
+	if($("#type_credit_card").val() == "Visa") {
+		if(!visa1.test(number) && !visa2.test(number)) {
+			console.log("LLEGO");
+			correct = false;
+		}
+	} else if($("#type_credit_card").val() == "Master") {
+		if(!master1.test(number) && !master2.test(number) && !master3.test(number)) {
+			console.log("LLEGO2");
+			correct = false;
+		}
+	} else if($("#type_credit_card").val() == "Diners") {
+		if(!diners.test(number)) {
+			console.log("LLEGO 3");
+			correct = false;
+		}
+	} else if($("#type_credit_card").val() == "American") {
+		if(!american1.test(number) && !american2.test(number) && !american3.test(number)) {
+			console.log("LLEGO 4");
+			correct = false;
+		}
+	}
+	
+	return correct;
+}
+
+function validateCreditCardExpiration(number) {
+	
 }
