@@ -14,27 +14,31 @@
 		<script src="js/jquery.nouislider.js"></script>
 		<script src="js/jquery.cookie.js"></script>
 		<script src="js/bootstrap.js"></script>
+		<script src="js/jquery.datepicker.js"></script>
 		<script src="js/datepicker.js"></script>
 		<script src="js/search.field.js"></script>
 		<script src="js/display.results.js"></script>
 	</head>
 	<body>
-		<div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="navbar navbar-inverse navbar-static-top">
 			<div class="navbar-inner">
 				<div class="container">
-					<ul class="nav">
 						<a class="brand" href="index.html">Quiero viajar!</a>
+					<ul class="nav pull-right">
+						<li><a href="#"><i class="icon-facebook-sign icon-large"></i></a></li>
+						<li><a href="#"><i class="icon-google-plus-sign icon-large"></i></a></li>
+						<li><a href="#"><i class="icon-twitter-sign icon-large"></i></a></li>
 					</ul>
 				</div>
 			</div>
 		</div>
-		<div class="navbar navbar-fixed-top margin-fix">
+<!-- 		<div class="navbar navbar-fixed-top margin-fix">
 			<div class="navbar-inner">
 				<div class="container">
-					<ul class="nav">
+					<ul class="nav thin-font">
 						<li class="enabled-link">
 							<p>
-								<i class="icon-search"></i> <b>Resultados</b>
+								<i class="icon-search"></i> Resultados
 							</p>
 						</li>
 						<li class="disabled-link">
@@ -68,7 +72,7 @@
 		<br>
 		<br>
 <br>
-		<br>
+		<br> -->
 		<br>
 		<!-- Loading modal -->
     	<div id="loading-modal" class="modal hide fade">
@@ -118,7 +122,7 @@
 									<label>Fecha de ida</label>
 									<div class="input-append">
 										<input id="dep_date" class="span12 fix-width-2 error" type="text" placeholder="dd/mm/aaaa">
-										<a class="fix-cal-btn btn" type="button"><i class="icon-calendar"></i></a>
+										<a id="dep_date_btn" class="fix-cal-btn btn" type="button"><i class="icon-calendar"></i></a>
 									</div>
 									<p id="depart_date_error" class="text-error"><i class="icon-remove"></i><small id="dep_date_error_text"> Ingrese una fecha de ida</small></p>
 								</div>
@@ -128,7 +132,7 @@
 									<label>Fecha de vuelta</label>
 									<div class="input-append">
 										<input id="ret_date" class="span12 fix-width-2" type="text" placeholder="dd/mm/aaaa">
-										<a class="fix-cal-btn btn" type="button"><i class="icon-calendar"></i></a>
+										<a id="ret_date_btn" class="fix-cal-btn btn" type="button"><i class="icon-calendar"></i></a>
 									</div>
 									<p id="return_date_error" class="text-error"><i class="icon-remove"></i><small id="ret_date_error_text"> Ingrese una fecha de vuelta</small></p>
 								</div>

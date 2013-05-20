@@ -798,6 +798,8 @@ function searchFlights(page){
 	    					if(!data.hasOwnProperty("error")){
 									max_results_price = data['flights'][0]['price']['total']['total'];
 									minMaxUpdate(min_results_price, max_results_price);
+									min_price = min_results_price;
+									max_price = max_results_price;	
 									// ya tengo precio min y max, busco los vuelos
 									$.ajax({
 										url: "http://eiffel.itba.edu.ar/hci/service2/Booking.groovy?method=GetOneWayFlights&from="+from+"&to="+to+"&dep_date="+dep_date+"&adults="+adults+"&children="+children+"&infants="+infants+"&airline_id="+airline_id+"&min_price="+min_price+"&max_price="+max_price+"&cabin_type="+cabin_type+"&min_dep_time="+min_dep_time+"&max_dep_time="+max_dep_time+"&page="+page+"&page_size="+page_size+"&sort_key="+sort_key+"&sort_order="+sort_order,
