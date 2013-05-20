@@ -1,5 +1,5 @@
 var totalEdits = 0;
-var adults = 0;
+var adults = 1;
 var children = 0;
 var infants = 0;
 
@@ -18,24 +18,21 @@ $(document).ready(function() {
 	$("#number_credit_card_error").hide();
 	$("#expiration_credit_card_error").hide();
 	$("#security_credit_card_error").hide();
+	$("#name_credit_card_error").hide();
+	$("#surname_credit_card_error").hide();
+	$("#dni_credit_card_error").hide();
+	$("#telephone_credit_card_error").hide();
+	$("#email_credit_card_error").hide();
+	focusOutField("#number_credit_card", "#number_credit_card_span", "#number_credit_card_error");
+	focusOutField("#expiration_credit_card", "#expiration_credit_card_span", "#expiration_credit_card_error");
+	focusOutField("#security_credit_card", "#security_credit_card_span", "#security_credit_card_error");
+	focusOutField("#name_credit_card", "#name_credit_card_span", "#name_credit_card_error");
+	focusOutField("#surname_credit_card", "#surname_credit_card_span", "#surname_credit_card_error");
+	focusOutField("#dni_credit_card", "#dni_credit_card_span", "#dni_credit_card_error");
+	focusOutField("#telephone_credit_card", "#telephone_credit_card_span", "#telephone_credit_card_error");
+	focusOutField("#email_credit_card", "#email_credit_card_span", "#email_credit_card_error");
 	
-	
-	$("#number_credit_card").focusout(function() {
-		$("#number_credit_card_span").removeClass('control-group error');
-		$("#number_credit_card_error").hide();
-	});
-	
-	$("#expiration_credit_card").focusout(function() {
-		$("#expiration_credit_card_span").removeClass('control-group error');
-		$("#expiration_credit_card_error").hide();
-	});
-	
-	$("#security_credit_card").focusout(function() {
-		$("#security_credit_card_span").removeClass('control-group error');
-		$("#security_credit_card_error").hide();
-	});
-	
-	
+
 	//revisar que no deja espacio entre dia mes y anio
 	for(var i = 0; i < adults; i++) {
 		$("#content_div").append('<div id="well_passenger_adults_' + (i + 1) + '" class="well clearfix passenger"><div class="span12"><legend><i class="icon-user"></i> Pasajero ' + (i + 1) + ' (Adulto)</legend><div class="row-fluid"><div id="passenger_adults_' + (i + 1) + '_name_span" class="span6"><label>Nombre</label><input id="passenger_adults_' + (i + 1) + '_name" class="fill_in span12" type="text" placeholder="Ingrese el nombre del pasajero"><p id="passenger_adults_' + (i + 1) + '_name_error" class="text-error"><i class="icon-remove"></i><small id="passenger_adults_' + (i + 1) + '_name_error_text"> Ingrese el nombre del pasajero</small></p></div><div id="passenger_adults_' + (i + 1) + '_surname_span" class="span6"><label>Apellido</label><input id="passenger_adults_' + (i + 1) + '_surname" class="fill_in span12" type="text" placeholder="Ingrese el apellido del pasajero"><p id="passenger_adults_' + (i + 1) + '_surname_error" class="text-error"><i class="icon-remove"></i><small id="passenger_adults_' + (i + 1) + '_surname_error_text"> Ingrese el apellido del pasajero</small></p></div></div><div class="row-fluid"><div id="passenger_adults_' + (i + 1) + '_dni_span" class="span6"><label>DNI</label><input id="passenger_adults_' + (i + 1) + '_dni" class="fill_in span12" type="text" placeholder="Ingrese el DNI del pasajero"><p id="passenger_adults_' + (i + 1) + '_dni_error" class="text-error"><i class="icon-remove"></i><small id="passenger_adults_' + (i + 1) + '_dni_error_text"> Ingrese el DNI del pasajero</small></p></div><div class="span6"><label>Sexo</label><select class="fill_in span12"><option>Masculino</option><option>Femenino</option></select></div></div><div class="row-fluid"><div id="passenger_adults_' + (i + 1) + '_date_span" class="span6"><label>Fecha de nacimiento</label><input id="passenger_adults_' + (i + 1) + '_day" type="text" placeholder="dd" class="fill_in span3"><input id="passenger_adults_' + (i + 1) + '_month" type="text" placeholder="mm" class="fill_in span3"><input id="passenger_adults_' + (i + 1) + '_year" type="text" placeholder="aaaa" class="fill_in span3"><p id="passenger_adults_' + (i + 1) + '_date_error" class="text-error"><i class="icon-remove"></i><small id="passenger_adults_' + (i + 1) + '_date_error_text"> Ingrese la fecha de nacimiento del pasajero</small></p></div></div></div><div class="row-fluid"><div id="edit_passenger_adults_' + (i + 1) + '_span" class="span12"><a id="edit_passenger_adults_' + (i + 1) + '" type="button" class="btn pull-right thin-font">Editar <i class="icon-pencil"></i></a></div></div></div>');
@@ -124,13 +121,14 @@ $(document).ready(function() {
 				$(".credit_card").slideDown(500);
 				
 				//cambia los titulos, los botones y la imagen
-				$("#title_text").text(" Confirmación");
+				$("#title_text").text(" Confirmacion");
 		//		$("#prev_button_text").text(" Pago");
 				$("#next_button_text").text("Confirmar ");
 				$("#img_icon").hide();
 				$("#img_change").attr("src","img/large-4.jpg");
 			
 				//creamos todos los eventos de los botones editar
+			///////!!!!!!!!!!!!!!!!!!!!!!!!!!!FIJARME BIEN CCOMO SOLUCIONAR ESTO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!////////////////////
 				if(firstTime) {
 					for(var i = 0; i < adults; i++) {
 						enableButtons("#well_passenger_adults_" + (i + 1), "#edit_passenger_adults_" + (i + 1));
@@ -169,6 +167,29 @@ $(document).ready(function() {
 				showError("#well_contact_information", "#edit_contact_information");
 			} else {
 				$("#myModal").modal();
+				var objJson = {"flightId": 8976, "passengers": [{"firstName": "John","lastName": "Doe","birthdate": "1969-06-02","idType": 1,"idNumber": "17155171"}],"payment": {"installments": 6,"creditCard": {"number": "4567899999888","expiration": "1213","securityCode": "123","firstName": "John","lastName": "Doe"},"billingAddress": {"country": "AR","state": "Buenos Aires","City": "BUE","postalCode": 1435,"street": "Av. Madero 299","floor": "","apartment": ""}},"contact": {"email": "john.doe@hotmail.com","phones": ["555-5555"]}};
+				
+				objJson.airlineId = airline;
+				objJson.flightNumber = parseInt(flight);
+				objJson.friendlinessRating = parseInt(amability);
+				objJson.foodRating = parseInt(food);
+				objJson.punctualityRating = parseInt(punctuality);
+				objJson.mileageProgramRating = parseInt(frequent_passenger);
+				objJson.comfortRating = parseInt(comfort);
+				objJson.qualityPriceRating = parseInt(price_quality);
+				if (recommend == "Si"){
+					objJson.yesRecommend = true;
+				} else{
+					objJson.yesRecommend = false;
+				}
+				objJson.comments = comments;
+				console.log(JSON.stringify(objJson));
+				$.ajax({
+					url: "http://eiffel.itba.edu.ar/hci/service2/Booking.groovy?method=BookFlight2",
+					data: { data: JSON.stringify(objJson) },
+					dataType: "jsonp",
+					contentType: "application/json",
+				});
 			}
 		}
 	});
@@ -240,13 +261,11 @@ $(document).ready(function() {
 //	});
 });
 
-function enableButtons(idWell, idButton) {
+function enableButtons(idWell, idButton, functions) {
 	$(idButton).click(function() {
-		//falta la validacion 
-		//si paso la validacion
+		// if (functions) {
 		$(idWell).removeClass("well-group-error");
 		$(idButton).removeClass("btn-danger");
-		//hasta aca si la paso
 		
 		if($($(idWell).find("input")[0]).attr("disabled")) {
 			$(idWell).find("input").removeAttr("disabled");
@@ -254,17 +273,14 @@ function enableButtons(idWell, idButton) {
 			$(idButton).text(" Guardar ");
 			$(idButton).append('<i class="icon-save"></i>');
 			totalEdits++;
-			console.log(totalEdits);
 		} else {
 			$(idWell).find("input").attr("disabled",true);
 			$(idWell).find("select").attr("disabled",true);
 			$(idButton).text(" Editar ");
 			$(idButton).append('<i class="icon-pencil"></i>');
 			totalEdits--;
-			console.log(totalEdits);
-			// !!!!!!!!!!!!!!!!!!!!!!!FLATA VALIDAR BIEN!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-			
 		}
+		//}
 	});
 }
 
@@ -485,6 +501,16 @@ function validateDNIField(DNI) {
 	return textPattern.test(DNI);
 }
 
+function validateTelephoneField(telephone) {
+	var textPattern = /^\+?\d{1,3}?[- .]?\(?(?:\d{2,3})\)?[- .]?\d\d\d[- .]?\d\d\d\d$/;
+	return textPattern.test(telephone);	
+}
+
+function validateEmailField(email) {
+	var pattern = /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/;
+	return pattern.test(email);	
+}
+
 function validateDate(day, month, year) {
 	var dayPattern = /^(\d{1,2})$/;
 	var monthPattern = /^(\d{1,2})$/;
@@ -602,16 +628,123 @@ function validateCreditCardInformation() {
 		$("#number_credit_card_error").show();
 		error = true;
 	}
+	
+	if($("#expiration_credit_card").val() == "") {
+		$("#expiration_credit_card_span").addClass("control-group error");
+		$("#expiration_credit_card_error_text").text(" Ingrese la fecha de vencimiento de la tarjeta");
+		$("#expiration_credit_card_error").show();
+		error = true;
+	} else if(!validateCreditCardExpiration($("#expiration_credit_card").val())) {
+		$("#expiration_credit_card_span").addClass("control-group error");
+		$("#expiration_credit_card_error_text").text(" Ingrese una fecha de vencimiento valida");
+		$("#expiration_credit_card_error").show();
+		error = true;
+	}
+	
+	if($("#security_credit_card").val() == "") {
+		$("#security_credit_card_span").addClass("control-group error");
+		$("#security_credit_card_error_text").text(" Ingrese el codigo de seguridad de la tarjeta");
+		$("#security_credit_card_error").show();
+		error = true;
+	} else if(!validateCreditCardSecurity($("#security_credit_card").val())) {
+		$("#security_credit_card_span").addClass("control-group error");
+		$("#security_credit_card_error_text").text(" Ingrese un codigo de seguridad valido");
+		$("#security_credit_card_error").show();
+		error = true;
+	}
+	
+	$.ajax({
+		url: "http://eiffel.itba.edu.ar/hci/service2/Booking.groovy?method=ValidateCreditCard&number=" + $("#number_credit_card").val() + "&exp_date=" + $("#expiration_credit_card").val() + "&sec_code=" + $("#security_credit_card").val(),
+		dataType: "jsonp",
+	}).done(function(data) {
+		if(data.hasOwnProperty("error")){
+			if(data["error"]["code"] == 107) {
+				$("#expiration_credit_card_span").addClass("control-group error");
+				$("#expiration_credit_card_error_text").text(" Ingrese una fecha de vencimiento valida");
+				$("#expiration_credit_card_error").show();
+				error = true;
+			} else if(data["error"]["code"] == 111) {
+				$("#security_credit_card_span").addClass("control-group error");
+				$("#security_credit_card_error_text").text(" Ingrese un codigo de seguridad valido");
+				$("#security_credit_card_error").show();
+				error = true;
+			}	
+		}
+	});
 
 	return error;
 }
 
 function validateTitularInformation() {
+	var error = false;
 	
+	if($("#name_credit_card").val() == "" ) {
+		$("#name_credit_card_span").addClass("control-group error");
+		$("#name_credit_card_error_text").text(" Ingrese el nombre del titular de la tarjeta");
+		$("#name_credit_card_error").show();
+		error = true;
+	} else if(!validateTextField($("#name_credit_card").val())) {
+		$("#name_credit_card_span").addClass("control-group error");
+		$("#name_credit_card_error_text").text(" Ingrese un nombre valido");
+		$("#name_credit_card_error").show();
+		error = true;
+	}
+	
+	if($("#surname_credit_card").val() == "" ) {
+		$("#surname_credit_card_span").addClass("control-group error");
+		$("#surname_credit_card_error_text").text(" Ingrese el apellido del titular de la tarjeta");
+		$("#surname_credit_card_error").show();
+		error = true;
+	} else if(!validateTextField($("#surname_credit_card").val())) {
+		$("#surname_credit_card_span").addClass("control-group error");
+		$("#surname_credit_card_error_text").text(" Ingrese un apellido valido");
+		$("#surname_credit_card_error").show();
+		error = true;
+	}
+	
+	if($("#dni_credit_card").val() == "" ) {
+		$("#dni_credit_card_span").addClass("control-group error");
+		$("#dni_credit_card_error_text").text(" Ingrese el DNI del titular de la tarjeta");
+		$("#dni_credit_card_error").show();
+		error = true;
+	} else if(!validateDNIField($("#dni_credit_card").val())) {
+		$("#dni_credit_card_span").addClass("control-group error");
+		$("#dni_credit_card_error_text").text(" Ingrese un DNI valido");
+		$("#dni_credit_card_error").show();
+		error = true;
+	}
+	
+	return error;
 }
 
 function validateContactInformation() {
+	var error = false;
 	
+	if($("#telephone_credit_card").val() == "" ) {
+		$("#telephone_credit_card_span").addClass("control-group error");
+		$("#telephone_credit_card_error_text").text(" Ingrese un telefono de contacto");
+		$("#telephone_credit_card_error").show();
+		error = true;
+	} else if(!validateTelephoneField($("#telephone_credit_card").val())) {
+		$("#telephone_credit_card_span").addClass("control-group error");
+		$("#telephone_credit_card_error_text").text(" Ingrese un telefono valido");
+		$("#telephone_credit_card_error").show();
+		error = true;
+	}
+	
+	if($("#email_credit_card").val() == "" ) {
+		$("#email_credit_card_span").addClass("control-group error");
+		$("#email_credit_card_error_text").text(" Ingrese un email de contacto");
+		$("#email_credit_card_error").show();
+		error = true;
+	} else if(!validateEmailField($("#email_credit_card").val())) {
+		$("#email_credit_card_span").addClass("control-group error");
+		$("#email_credit_card_error_text").text(" Ingrese un email valido");
+		$("#email_credit_card_error").show();
+		error = true;
+	}
+	
+	return error;
 }
 
 function validateCreditCardNumber(number) {
@@ -627,22 +760,18 @@ function validateCreditCardNumber(number) {
 	
 	if($("#type_credit_card").val() == "Visa") {
 		if(!visa1.test(number) && !visa2.test(number)) {
-			console.log("LLEGO");
 			correct = false;
 		}
 	} else if($("#type_credit_card").val() == "Master") {
 		if(!master1.test(number) && !master2.test(number) && !master3.test(number)) {
-			console.log("LLEGO2");
 			correct = false;
 		}
 	} else if($("#type_credit_card").val() == "Diners") {
 		if(!diners.test(number)) {
-			console.log("LLEGO 3");
 			correct = false;
 		}
 	} else if($("#type_credit_card").val() == "American") {
 		if(!american1.test(number) && !american2.test(number) && !american3.test(number)) {
-			console.log("LLEGO 4");
 			correct = false;
 		}
 	}
@@ -651,5 +780,30 @@ function validateCreditCardNumber(number) {
 }
 
 function validateCreditCardExpiration(number) {
+	var pattern = /^[0-9]{4}$/;
+	var correct = true;
 	
+	if(!pattern.test(number)) {
+		correct = false;
+	}
+	
+	return correct;
+}
+
+function validateCreditCardSecurity(number) {
+	var pattern1 = /^[0-9]{3}$/;
+	var pattern2 = /^[0-9]{4}$/;
+	var correct = true;
+	
+	if($("#type_credit_card").val() == "American") {
+		if(!pattern2.test(number)) {
+			correct = false;
+		}
+	} else {
+		if(!pattern1.test(number)) {
+			correct = false;
+		}
+	}
+	
+	return correct;
 }
