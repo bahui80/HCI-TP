@@ -134,7 +134,6 @@ function searchComments(page){
 	}
 
 	//hago el rquest
-	alert('http://eiffel.itba.edu.ar/hci/service2/Review.groovy?method=GetAirlineReviews&airline_id='+airline_id+'&flight_num='+flight_num+'&page='+page+'&page_size='+per_page+'&sort_key='+key+'&sort_order='+order);
 	$.ajax({
 		url: 'http://eiffel.itba.edu.ar/hci/service2/Review.groovy?method=GetAirlineReviews&airline_id='+airline_id+'&flight_num='+flight_num+'&page='+page+'&page_size='+per_page+'&sort_key='+key+'&sort_order='+order,
         dataType: "jsonp",
@@ -149,7 +148,10 @@ function fillReviews(data){
 
 	if(!data.hasOwnProperty("error")){
 		if(data['total'] == 0){
-			$('#comments_row').append('<div class="row-fluid"><div class="well clearfix"><div class="span12"><h3 class="text-center"><i class="icon-warning-sign"></i> No pudimos encontrar ninguna opinión!</h3><p class="text-center">Todavía no se han dejado opiniones sobre esta aerolinea o vuelo</p></div></div></div>')
+			if($.cookie('by_airline') == "true")
+				$('#comments_row').append('<div class="row-fluid"><div class="well clearfix"><div class="span12"><h3 class="text-center"><i class="icon-warning-sign"></i> No pudimos encontrar ninguna opinión!</h3><p class="text-center">Todavía no se han dejado opiniones sobre esta aerolinea</p></div></div></div>')
+			else
+				$('#comments_row').append('<div class="row-fluid"><div class="well clearfix"><div class="span12"><h3 class="text-center"><i class="icon-warning-sign"></i> No pudimos encontrar ninguna opinión!</h3><p class="text-center">Todavía no se han dejado opiniones sobre este vuelo</p></div></div></div>')	
 		}else{
 			for (var j=0;j<data['pageSize'];j++){
         		if( (data['page']-1)*(data['pageSize'])+j < data['total']){

@@ -58,6 +58,19 @@ function fillAirlinesArray(data){
 
 function preparePostComment(){
 	
+	$("#comment_flight_num_error").hide();
+	$("#comment_airline_name_error").hide();
+
+	$("#comment_airline_name").focusout(function() {
+		$("#comment_airline_name_span").removeClass('control-group error');
+		$("#comment_airline_name_error").hide();
+	});
+
+	$("#comment_flight_num").focusout(function() {
+		$("#comment_flight_num_span").removeClass('control-group error');
+		$("#comment_flight_num_error").hide();
+	});
+
 	$("#comment_button").click(function () {
 
 		var error_on = false;		
@@ -72,17 +85,23 @@ function preparePostComment(){
 		}
 
 		if($("#comment_airline_name").val() == ""){
-			// ACA ERROR DE NUMERO DE VUELO VACIO
+			$("#comment_airline_name_span").addClass('control-group error');
+			$("#comment_airline_name_error_text").text(" Ingrese una aerolinea");
+			$("#comment_airline_name_error").show();
 			error_on = true;
 		}
 
-		if($("#comment_airline_name").val() == ""){
-			// ACA ERROR DE AEROLINEA VACIA
+		if($("#comment_flight_num").val() == ""){
+			$("#comment_flight_num_span").addClass('control-group error');
+			$("#comment_flight_num_error").show();
+			$("#comment_flight_num_error_text").text(" Ingrese algún número de vuelo")
 			error_on = true;
 		}
 
 		if(!containsAirline){
-			// ACA ERROR DE AEROLINEA INVALIDA
+			$("#comment_airline_name_span").addClass('control-group error');
+			$("#comment_airline_name_error").show();
+			$("#comment_airline_name_error_text").text(" Ingrese una aerolinea válida");
 			error_on = true;
 		}
 
@@ -124,6 +143,19 @@ function postComment(airline, flight, amability, food, punctuality, frequent_pas
 
 function prepareSearchComment(){
 	
+	$("#flight_num_error").hide();
+	$("#airline_name_error").hide();
+
+	$("#airline_name").focusout(function() {
+		$("#airline_name_span").removeClass('control-group error');
+		$("#airline_name_error").hide();
+	});
+
+	$("#flight_num").focusout(function() {
+		$("#flight_num_span").removeClass('control-group error');
+		$("#flight_num_error").hide();
+	});
+
 	$("#search_button").click(function () {
 		
 		var by_airline = $("#airline_name_btn").hasClass("active");
@@ -141,18 +173,30 @@ function prepareSearchComment(){
 		}
 
 		if(!by_airline && $("#flight_num").val() == ""){
-			// ACA ERROR DE NUMERO DE VUELO VACIO O AEROLINEA
-			alert("pincha");
+			$("#flight_num_span").addClass('control-group error');
+			$("#flight_num_error").show();
+			$("#flight_num_error_text").text(" Ingrese algún número de vuelo")
 			error_on = true;
 		}
 
 		if($("#airline_name").val() == ""){
-			// ACA ERROR DE AEROLINEA VACIA
+			$("#airline_name_span").addClass('control-group error');
+			$("#airline_name_error_text").text(" Ingrese una aerolinea");
+			$("#airline_name_error").show();
+			error_on = true;
+		}
+
+		if(!by_airline && !validFlightNum($("#flight_num").val())){
+			$("#flight_num_span").addClass('control-group error');
+			$("#flight_num_error").show();
+			$("#flight_num_error_text").text(" El número de vuelo es de 4 cifras")
 			error_on = true;
 		}
 
 		if(!containsAirline){
-			// ACA ERROR DE AEROLINEA INVALIDA
+			$("#airline_name_span").addClass('control-group error');
+			$("#airline_name_error").show();
+			$("#airline_name_error_text").text(" Ingrese una aerolinea válida");
 			error_on = true;
 		}
 
@@ -168,6 +212,11 @@ function prepareSearchComment(){
 			commentSearch(by_airline, airline_name, airline_id, flight_num);
 		}
 	});	
+}
+
+function validFlightNum(flight){
+	var flightNumPtrn = /^[0-9]{4}$/;
+	return  flightNumPtrn.test(flight);
 }
 
 function commentSearch(by_airline, airline_name, airline_id, flight_num){
