@@ -1140,7 +1140,7 @@ function createRoundWayBtnEvent(btn){
 		$.cookie('ib-arr-date', $(btn).data('ib-arr-date'), { path: '/' });
 		$.cookie('ib-dep-hr', $(btn).data('ib-dep-hr'), { path: '/' });
 		$.cookie('ib-arr-hr', $(btn).data('ib-arr-hr'), { path: '/' });
-	}
+	});
 	createOneWayBtnEvent(btn);
 }
 
