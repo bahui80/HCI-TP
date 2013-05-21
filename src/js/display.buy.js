@@ -2,6 +2,11 @@ var totalEdits = 0;
 var adults = 1;
 var children = 0;
 var infants = 0;
+var cities = new Array();
+var citiesId = new Array();
+var countriesId = new Array();
+var iFound;
+
 
 $(document).ready(function() {
 //	var adults = $.cookie('adults');
@@ -23,6 +28,12 @@ $(document).ready(function() {
 	$("#dni_credit_card_error").hide();
 	$("#telephone_credit_card_error").hide();
 	$("#email_credit_card_error").hide();
+	$("#city_billing_address_error").hide();
+	$("#postal_code_billing_address_error").hide();
+	$("#address_billing_address_error").hide();
+	$("#floor_billing_address_error").hide();
+	$("#apartment_billing_address_error").hide();
+	$("#edit_billing_address_span").hide();
 	focusOutField("#number_credit_card", "#number_credit_card_span", "#number_credit_card_error");
 	focusOutField("#expiration_credit_card", "#expiration_credit_card_span", "#expiration_credit_card_error");
 	focusOutField("#security_credit_card", "#security_credit_card_span", "#security_credit_card_error");
@@ -31,8 +42,12 @@ $(document).ready(function() {
 	focusOutField("#dni_credit_card", "#dni_credit_card_span", "#dni_credit_card_error");
 	focusOutField("#telephone_credit_card", "#telephone_credit_card_span", "#telephone_credit_card_error");
 	focusOutField("#email_credit_card", "#email_credit_card_span", "#email_credit_card_error");
+	focusOutField("#city_billing_address", "#city_billing_address_span", "#city_billing_address_error");
+	focusOutField("#postal_code_billing_address", "#postal_code_billing_address_span", "#postal_code_billing_address_error");
+	focusOutField("#address_billing_address", "#address_billing_address_span", "#address_billing_address_error");
+	focusOutField("#floor_billing_address", "#floor_billing_address_span", "#floor_billing_address_error");
+	focusOutField("#apartment_billing_address", "#apartment_billing_address_span", "#apartment_billing_address_error");
 	
-
 	//revisar que no deja espacio entre dia mes y anio
 	for(var i = 0; i < adults; i++) {
 		$("#content_div").append('<div id="well_passenger_adults_' + (i + 1) + '" class="well clearfix passenger"><div class="span12"><legend><i class="icon-user"></i> Pasajero ' + (i + 1) + ' (Adulto)</legend><div class="row-fluid"><div id="passenger_adults_' + (i + 1) + '_name_span" class="span6"><label>Nombre</label><input id="passenger_adults_' + (i + 1) + '_name" class="fill_in span12" type="text" placeholder="Ingrese el nombre del pasajero"><p id="passenger_adults_' + (i + 1) + '_name_error" class="text-error"><i class="icon-remove"></i><small id="passenger_adults_' + (i + 1) + '_name_error_text"> Ingrese el nombre del pasajero</small></p></div><div id="passenger_adults_' + (i + 1) + '_surname_span" class="span6"><label>Apellido</label><input id="passenger_adults_' + (i + 1) + '_surname" class="fill_in span12" type="text" placeholder="Ingrese el apellido del pasajero"><p id="passenger_adults_' + (i + 1) + '_surname_error" class="text-error"><i class="icon-remove"></i><small id="passenger_adults_' + (i + 1) + '_surname_error_text"> Ingrese el apellido del pasajero</small></p></div></div><div class="row-fluid"><div id="passenger_adults_' + (i + 1) + '_dni_span" class="span6"><label>DNI</label><input id="passenger_adults_' + (i + 1) + '_dni" class="fill_in span12" type="text" placeholder="Ingrese el DNI del pasajero"><p id="passenger_adults_' + (i + 1) + '_dni_error" class="text-error"><i class="icon-remove"></i><small id="passenger_adults_' + (i + 1) + '_dni_error_text"> Ingrese el DNI del pasajero</small></p></div><div class="span6"><label>Sexo</label><select class="fill_in span12"><option>Masculino</option><option>Femenino</option></select></div></div><div class="row-fluid"><div id="passenger_adults_' + (i + 1) + '_date_span" class="span6"><label>Fecha de nacimiento</label><input id="passenger_adults_' + (i + 1) + '_day" type="text" placeholder="dd" class="fill_in span3"><input id="passenger_adults_' + (i + 1) + '_month" type="text" placeholder="mm" class="fill_in span3"><input id="passenger_adults_' + (i + 1) + '_year" type="text" placeholder="aaaa" class="fill_in span3"><p id="passenger_adults_' + (i + 1) + '_date_error" class="text-error"><i class="icon-remove"></i><small id="passenger_adults_' + (i + 1) + '_date_error_text"> Ingrese la fecha de nacimiento del pasajero</small></p></div></div></div><div class="row-fluid"><div id="edit_passenger_adults_' + (i + 1) + '_span" class="span12"><a id="edit_passenger_adults_' + (i + 1) + '" type="button" class="btn pull-right thin-font">Editar <i class="icon-pencil"></i></a></div></div></div>');
@@ -69,6 +84,12 @@ $(document).ready(function() {
 		$("#passenger_infants_" + (i + 1) + "_dni_error").hide();
 		$("#passenger_infants_" + (i + 1) + "_date_error").hide();
 	}
+
+	$.ajax({
+		url: "http://eiffel.itba.edu.ar/hci/service2/Geo.groovy?method=GetCities&page_size=40",
+        dataType: "jsonp",
+        jsonpCallback: "fillCitiesArray",
+    });
 	
 	$("#next_button").click(function() {
 		if(state == "pasajeros") { //pasamos al pago
@@ -101,6 +122,7 @@ $(document).ready(function() {
 				$("#edit_credit_card_span").show();
 				$("#edit_contact_information_span").show();
 				$("#edit_titular_information_span").show();
+				$("#edit_billing_address_span").show();
 				
 				//muestra los botontes editar de los pasajeros
 				for(var i = 0; i < adults; i++) {
@@ -131,17 +153,18 @@ $(document).ready(function() {
 			///////!!!!!!!!!!!!!!!!!!!!!!!!!!!FIJARME BIEN CCOMO SOLUCIONAR ESTO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!////////////////////
 				if(firstTime) {
 					for(var i = 0; i < adults; i++) {
-						enableButtons("#well_passenger_adults_" + (i + 1), "#edit_passenger_adults_" + (i + 1));
+						enableButtons("#well_passenger_adults_" + (i + 1), "#edit_passenger_adults_" + (i + 1), "adults", i);
 					}
 					for(var i = 0; i < children; i++) {
-						enableButtons("#well_passenger_children_" + (i + 1), "#edit_passenger_children_" + (i + 1));
+						enableButtons("#well_passenger_children_" + (i + 1), "#edit_passenger_children_" + (i + 1), "children", i);
 					}
 					for(var i = 0; i < infants; i++) {
-						enableButtons("#well_passenger_infants_" + (i + 1), "#edit_passenger_infants_" + (i + 1));
+						enableButtons("#well_passenger_infants_" + (i + 1), "#edit_passenger_infants_" + (i + 1), "infants", i);
 					}
-					enableButtons("#well_credit_card","#edit_credit_card");
-					enableButtons("#well_titular_information", "#edit_titular_information");
-					enableButtons("#well_contact_information", "#edit_contact_information");
+					enableButtons("#well_credit_card","#edit_credit_card", "credit_card", 0);
+					enableButtons("#well_titular_information", "#edit_titular_information", "titular_information", 0);
+					enableButtons("#well_contact_information", "#edit_contact_information", "contact_information", 0);
+					enableButtons("#well_billing_address", "#edit_billing_address", "billing_address", 0);
 				}
 				
 				firstTime = 0;
@@ -165,30 +188,66 @@ $(document).ready(function() {
 				showError("#well_credit_card","#edit_credit_card");
 				showError("#well_titular_information", "#edit_titular_information");
 				showError("#well_contact_information", "#edit_contact_information");
+				showError("#well_billing_address", "#edit_billing_address");
 			} else {
 				$("#myModal").modal();
-				var objJson = {"flightId": 8976, "passengers": [{"firstName": "John","lastName": "Doe","birthdate": "1969-06-02","idType": 1,"idNumber": "17155171"}],"payment": {"installments": 6,"creditCard": {"number": "4567899999888","expiration": "1213","securityCode": "123","firstName": "John","lastName": "Doe"},"billingAddress": {"country": "AR","state": "Buenos Aires","City": "BUE","postalCode": 1435,"street": "Av. Madero 299","floor": "","apartment": ""}},"contact": {"email": "john.doe@hotmail.com","phones": ["555-5555"]}};
-				
-				objJson.airlineId = airline;
-				objJson.flightNumber = parseInt(flight);
-				objJson.friendlinessRating = parseInt(amability);
-				objJson.foodRating = parseInt(food);
-				objJson.punctualityRating = parseInt(punctuality);
-				objJson.mileageProgramRating = parseInt(frequent_passenger);
-				objJson.comfortRating = parseInt(comfort);
-				objJson.qualityPriceRating = parseInt(price_quality);
-				if (recommend == "Si"){
-					objJson.yesRecommend = true;
-				} else{
-					objJson.yesRecommend = false;
+				var jsonData = {};
+				jsonData['flightId'] = 1234; ///falta pedir el valor real de la cookie
+				jsonData['passengers'] = [];
+				for(var i = 0; i < adults; i++) {
+					jsonData['passengers'][i] = {};
+					jsonData['passengers'][i]['firstName'] = $("#passenger_adults_" + (i + 1) + "_name").val();
+					jsonData['passengers'][i]['lastName'] = $("#passenger_adults_" + (i + 1) + "_surname").val();
+					jsonData['passengers'][i]['birthdate'] = $("#passenger_adults_" + (i + 1) + "_year").val() + "-" +  $("#passenger_adults_" + (i + 1) + "_month").val() + "-" +  $("#passenger_adults_" + (i + 1) + "_day").val();
+					jsonData['passengers'][i]['idType'] =  1;
+					jsonData['passengers'][i]['idNumber'] =  $("#passenger_adults_" + (i + 1) + "_dni").val() ;					
+				} 
+				for(var i = 0; i < children; i++) {
+					jsonData['passengers'][i + adults] = {};
+					jsonData['passengers'][i + adults]['firstName'] = $("#passenger_children_" + (i + 1) + "_name").val();
+					jsonData['passengers'][i + adults]['lastName'] = $("#passenger_children_" + (i + 1) + "_surname").val();
+					jsonData['passengers'][i + adults]['birthdate'] = $("#passenger_children_" + (i + 1) + "_year").val() + "-" +  $("#passenger_children_" + (i + 1) + "_month").val() + "-" +  $("#passenger_children_" + (i + 1) + "_day").val();
+					jsonData['passengers'][i + adults]['idType'] =  1;
+					jsonData['passengers'][i + adults]['idNumber'] =  $("#passenger_children_" + (i + 1) + "_dni").val() ;		
 				}
-				objJson.comments = comments;
-				console.log(JSON.stringify(objJson));
+				for(var i = 0; i < infants; i++) {
+					jsonData['passengers'][i + adults + infants] = {};
+					jsonData['passengers'][i + adults + infants]['firstName'] = $("#passenger_infants_" + (i + 1) + "_name").val();
+					jsonData['passengers'][i + adults + infants]['lastName'] = $("#passenger_infants_" + (i + 1) + "_surname").val();
+					jsonData['passengers'][i + adults + infants]['birthdate'] = $("#passenger_infants_" + (i + 1) + "_year").val() + "-" +  $("#passenger_infants_" + (i + 1) + "_month").val() + "-" +  $("#passenger_infants_" + (i + 1) + "_day").val();
+					jsonData['passengers'][i + adults + infants]['idType'] =  1;
+					jsonData['passengers'][i + adults + infants]['idNumber'] =  $("#passenger_infants_" + (i + 1) + "_dni").val();		
+				}
+				jsonData['payment'] = {};
+				jsonData['payment']['installments'] = 0;
+				jsonData['payment']['creditCard'] = {};
+				jsonData['payment']['creditCard']['number'] = $("#number_credit_card").val();
+				jsonData['payment']['creditCard']['expiration'] = $("#expiration_credit_card").val();
+				jsonData['payment']['creditCard']['securityCode'] = $("#security_credit_card").val();
+				jsonData['payment']['creditCard']['firstName'] = $("#name_credit_card").val();
+				jsonData['payment']['creditCard']['lastName'] = $("#surname_credit_card").val();
+				jsonData['billingAddress'] = {};
+				jsonData['billingAddress']['country'] = "PU";        //countriesId[iFound];
+				jsonData['billingAddress']['state'] = "asdjlaskldjasldkjasjkldasj";                //cities[iFound];
+				jsonData['billingAddress']['City'] =  "TOU"                             //citiesId[iFound];
+				jsonData['billingAddress']['postalCode'] = $("#postal_code_billing_address").val();
+				jsonData['billingAddress']['street'] = $("#address_billing_address").val();
+				jsonData['billingAddress']['floor'] = $("#floor_billing_address").val();
+				jsonData['billingAddress']['apartment'] = $("#apartment_billing_address").val();
+				jsonData['contact'] = {};
+				jsonData['contact']['email'] = $("#email_credit_card").val();
+				jsonData['contact']['phones'] = [];
+				jsonData['contact']['phones'][0] = $("#telephone_credit_card").val();
+		
 				$.ajax({
 					url: "http://eiffel.itba.edu.ar/hci/service2/Booking.groovy?method=BookFlight2",
-					data: { data: JSON.stringify(objJson) },
+					data: { data: JSON.stringify(jsonData) },
 					dataType: "jsonp",
 					contentType: "application/json",
+				}).done(function(data) {
+					if(data.hasOwnProperty('error')) {
+						$("#flightError").modal();
+					}
 				});
 			}
 		}
@@ -261,9 +320,40 @@ $(document).ready(function() {
 //	});
 });
 
-function enableButtons(idWell, idButton, functions) {
+function enableButtons(idWell, idButton, type, i) {
 	$(idButton).click(function() {
-		// if (functions) {
+		
+		
+		if(type == "adults") {
+			if(validateAdultPassenger("#passenger_adults_" + (i + 1) + "_name_span", $("#passenger_adults_" + (i + 1) + "_name").val(), "#passenger_adults_" + (i + 1) + "_name_error", "#passenger_adults_" + (i + 1) + "_name_error_text", "#passenger_adults_" + (i + 1) + "_surname_span", $("#passenger_adults_" + (i + 1) + "_surname").val(), "#passenger_adults_" + (i + 1) + "_surname_error", "#passenger_adults_" + (i + 1) + "_surname_error_text", "#passenger_adults_" + (i + 1) + "_dni_span", $("#passenger_adults_" + (i + 1) + "_dni").val(), "#passenger_adults_" + (i + 1) + "_dni_error", "#passenger_adults_" + (i + 1) + "_dni_error_text","#passenger_adults_" + (i + 1) + "_date_span", $("#passenger_adults_" + (i + 1) + "_day").val(), $("#passenger_adults_" + (i + 1) + "_month").val(), $("#passenger_adults_" + (i + 1) + "_year").val(), "#passenger_adults_" + (i + 1) + "_date_error", "#passenger_adults_" + (i + 1) + "_date_error_text")) {
+				return ;
+			}
+		} else if(type == "children") {
+			if(validateChildrenPassenger("#passenger_children_" + (i + 1) + "_name_span", $("#passenger_children_" + (i + 1) + "_name").val(), "#passenger_children_" + (i + 1) + "_name_error", "#passenger_children_" + (i + 1) + "_name_error_text", "#passenger_children_" + (i + 1) + "_surname_span", $("#passenger_children_" + (i + 1) + "_surname").val(), "#passenger_children_" + (i + 1) + "_surname_error", "#passenger_children_" + (i + 1) + "_surname_error_text", "#passenger_children_" + (i + 1) + "_dni_span", $("#passenger_children_" + (i + 1) + "_dni").val(), "#passenger_children_" + (i + 1) + "_dni_error", "#passenger_children_" + (i + 1) + "_dni_error_text","#passenger_children_" + (i + 1) + "_date_span", $("#passenger_children_" + (i + 1) + "_day").val(), $("#passenger_children_" + (i + 1) + "_month").val(), $("#passenger_children_" + (i + 1) + "_year").val(), "#passenger_children_" + (i + 1) + "_date_error", "#passenger_children_" + (i + 1) + "_date_error_text")) {
+				return ;
+			}
+		} else if(type == "infants") {
+			if(validateInfantPassenger("#passenger_infants_" + (i + 1) + "_name_span", $("#passenger_infants_" + (i + 1) + "_name").val(), "#passenger_infants_" + (i + 1) + "_name_error", "#passenger_infants_" + (i + 1) + "_name_error_text", "#passenger_infants_" + (i + 1) + "_surname_span", $("#passenger_infants_" + (i + 1) + "_surname").val(), "#passenger_infants_" + (i + 1) + "_surname_error", "#passenger_infants_" + (i + 1) + "_surname_error_text", "#passenger_infants_" + (i + 1) + "_dni_span", $("#passenger_infants_" + (i + 1) + "_dni").val(), "#passenger_infants_" + (i + 1) + "_dni_error", "#passenger_infants_" + (i + 1) + "_dni_error_text","#passenger_infants_" + (i + 1) + "_date_span", $("#passenger_infants_" + (i + 1) + "_day").val(), $("#passenger_infants_" + (i + 1) + "_month").val(), $("#passenger_infants_" + (i + 1) + "_year").val(), "#passenger_infants_" + (i + 1) + "_date_error", "#passenger_infants_" + (i + 1) + "_date_error_text")) {
+				return ;
+			}
+		} else if(type == "credit_card") {
+			if(validateCreditCardInformation()) {
+				return ;
+			}
+		} else if(type == "titular_information") {
+			if(validateTitularInformation()) {
+				return ;
+			}
+		} else if(type == "contact_information"){
+			if(validateContactInformation()) {
+				return ;
+			}
+		} else {
+			if(validateBillingAddress()) {
+				return ;
+			}
+		}
+			
 		$(idWell).removeClass("well-group-error");
 		$(idButton).removeClass("btn-danger");
 		
@@ -280,7 +370,6 @@ function enableButtons(idWell, idButton, functions) {
 			$(idButton).append('<i class="icon-pencil"></i>');
 			totalEdits--;
 		}
-		//}
 	});
 }
 
@@ -606,12 +695,14 @@ function validateCreditCard() {
 	var error1 = false;
 	var error2 = false;
 	var error3 = false;
+	var error4 = false;
 
 	error1 = validateCreditCardInformation();
 	error2 = validateTitularInformation();
 	error3 = validateContactInformation();
-	
-	return !error1 && !error2 && !error3;
+	error4 = validateBillingAddress();
+
+	return !error1 && !error2 && !error3 && !error4;
 }
 
 function validateCreditCardInformation() {
@@ -806,4 +897,68 @@ function validateCreditCardSecurity(number) {
 	}
 	
 	return correct;
+}
+
+function validateBillingAddress() {
+	var error = false;
+	var found = false;
+	var postalCodePattern = /^[0-9]+$/;
+
+	if($("#city_billing_address").val() == "") {
+		$("#city_billing_address_span").addClass("control-group error");
+		$("#city_billing_address_error_text").text(" Ingrese la ciudad de facturacion");
+		$("#city_billing_address_error").show();
+		error = true;
+	} else {
+		for(var i = 0; i < cities.length; i++) {
+			if(cities[i] == $("#city_billing_address").val()) {
+				found = true;
+				iFound = i;
+			}
+		}
+		if(!found) {
+			$("#city_billing_address_span").addClass("control-group error");
+			$("#city_billing_address_error_text").text(" Ingrese una ciudad válida");
+			$("#city_billing_address_error").show();
+			error = true;
+		}
+	}
+
+	if($("#postal_code_billing_address").val() == "") {
+		$("#postal_code_billing_address_span").addClass("control-group error");
+		$("#postal_code_billing_address_error_text").text(" Ingrese su código postal");
+		$("#postal_code_billing_address_error").show();
+		error = true;
+	} else if(!postalCodePattern.test($("#postal_code_billing_address").val())) {
+		$("#postal_code_billing_address_span").addClass("control-group error");
+		$("#postal_code_billing_address_error_text").text(" Ingrese un código postal válido");
+		$("#postal_code_billing_address_error").show();
+		error = true;
+	}
+
+	if($("#address_billing_address").val() == "") {
+		$("#address_billing_address_span").addClass("control-group error");
+		$("#address_billing_address_error_text").text(" Ingrese la dirección de facturación");
+		$("#address_billing_address_error").show();
+		error = true;
+	}
+
+	return error;
+}
+
+function fillCitiesArray(data) {
+	if(!data.hasOwnProperty("error")) {
+       	for (var i = 0;i<data['total'];i++){
+           	cities[i] = data['cities'][i]['name'];
+           	countriesId[i] = data['cities'][i]['countryId'];
+           	citiesId[i] = data['cities'][i]['cityId'];
+       	}
+	} else {
+       console.log(JSON.stringify(data));
+	}
+	
+	$('#city_billing_address').typeahead({
+		source : cities,
+		minLength : 2
+	});
 }
