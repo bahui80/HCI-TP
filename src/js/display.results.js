@@ -981,7 +981,7 @@ function createOneWayBtnEvent(btn){
 		$.cookie('adult-num', $(btn).data('adult-num'), { path: '/' });
 		$.cookie('child-num', $(btn).data('child-num'), { path: '/' });
 		$.cookie('infant-num', $(btn).data('infant-num'), { path: '/' });
-		document.location.href="buy.html";
+		//document.location.href="buy.html";
 	})	
 }
 
@@ -1003,7 +1003,6 @@ function roundWayFlight(data){
 		}else{
         	for (var j=0;j<data['pageSize'];j++){
         		if( (data['page']-1)*(data['pageSize'])+j < data['total']){
-        			console.log(data['flights']);
 	        		if ((data['flights'] != null) && (data['flights'][j].hasOwnProperty('outboundRoutes')) && (data['flights'][j].hasOwnProperty('inboundRoutes'))){
 
 						// informacion del vuelo de ida
@@ -1100,7 +1099,7 @@ function roundWayFlight(data){
 					$("#buy-btn-"+j).data("ib-arr-date", getDateInfo(data['flights'][j]['inboundRoutes'][0]['segments'][0]['arrival']['date']));
 					$("#buy-btn-"+j).data("ib-dep-hr", ib_dep_hr);
 					$("#buy-btn-"+j).data("ib-arr-hr", ib_arr_hr);
-
+					alert(ib_dep_hr);
 					//pasajeros
 					$("#buy-btn-"+j).data("adult-price", cur_flights_adult_price[j]);
 					$("#buy-btn-"+j).data("child-price", cur_flights_children_price[j]);
@@ -1133,13 +1132,15 @@ function roundWayFlight(data){
 }
 
 function createRoundWayBtnEvent(btn){
-	$.cookie('ib-flight-num', $(btn).data('ib-flight-num'), { path: '/' });
-	$.cookie('ib-dep-airport', $(btn).data('ib-dep-airport'), { path: '/' });
-	$.cookie('ib-arr-airport', $(btn).data('ib-arr-airport'), { path: '/' });
-	$.cookie('ib-dep-date', $(btn).data('ib-dep-date'), { path: '/' });
-	$.cookie('ib-arr-date', $(btn).data('ib-arr-date'), { path: '/' });
-	$.cookie('ib-dep-hr', $(btn).data('ib-dep-hr'), { path: '/' });
-	$.cookie('ib-arr-hr', $(btn).data('ib-arr-hr'), { path: '/' });
+	$(btn).click(function(){
+		$.cookie('ib-flight-num', $(btn).data('ib-flight-num'), { path: '/' });
+		$.cookie('ib-dep-airport', $(btn).data('ib-dep-airport'), { path: '/' });
+		$.cookie('ib-arr-airport', $(btn).data('ib-arr-airport'), { path: '/' });
+		$.cookie('ib-dep-date', $(btn).data('ib-dep-date'), { path: '/' });
+		$.cookie('ib-arr-date', $(btn).data('ib-arr-date'), { path: '/' });
+		$.cookie('ib-dep-hr', $(btn).data('ib-dep-hr'), { path: '/' });
+		$.cookie('ib-arr-hr', $(btn).data('ib-arr-hr'), { path: '/' });
+	}
 	createOneWayBtnEvent(btn);
 }
 
