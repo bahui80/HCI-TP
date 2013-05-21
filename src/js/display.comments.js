@@ -158,18 +158,18 @@ function fillReviews(data){
         			var airline_id = data['reviews'][j]['airlineId'];
         			var flight_number = data['reviews'][j]['flightNumber'];
         			var rating = data['reviews'][j]['overallRating'];
-        			var friendliness = '<div class="pull-left"><b>Amabilidad: </b></div><div class="pull-right">'+numberToStars(data['reviews'][j]['friendlinessRating'])+'</div><br>';
-        			var food = '<div class="pull-left"><b>Comida: </b></div><div class="pull-right">'+numberToStars(data['reviews'][j]['foodRating'])+'</div><br>';
-        			var punctuality = '<div class="pull-left"><b>Puntualidad: </b></div><div class="pull-right">'+numberToStars(data['reviews'][j]['punctualityRating'])+'</div><br>';
-        			var comfort = '<div class="pull-left"><b>Confort: </b></div><div class="pull-right">'+numberToStars(data['reviews'][j]['comfortRating'])+'</div><br>';
-        			var quality_price = '<div class="pull-left"><b>Precio/calidad: </b></div><div class="pull-right">'+numberToStars(data['reviews'][j]['qualityPriceRating'])+'</div><br>';
+        			var friendliness = '<div class="pull-left thin-font">Amabilidad </div><div class="pull-right">'+numberToStars(data['reviews'][j]['friendlinessRating'])+'</div><br>';
+        			var food = '<div class="pull-left thin-font">Comida </div><div class="pull-right">'+numberToStars(data['reviews'][j]['foodRating'])+'</div><br>';
+        			var punctuality = '<div class="pull-left thin-font">Puntualidad </div><div class="pull-right">'+numberToStars(data['reviews'][j]['punctualityRating'])+'</div><br>';
+        			var comfort = '<div class="pull-left thin-font">Confort </div><div class="pull-right">'+numberToStars(data['reviews'][j]['comfortRating'])+'</div><br>';
+        			var quality_price = '<div class="pull-left thin-font">Precio/calidad </div><div class="pull-right">'+numberToStars(data['reviews'][j]['qualityPriceRating'])+'</div><br>';
         			var recommend = data['reviews'][j]['yesRecommend'];
         			var comments = data['reviews'][j]['comments'];
 
         			if (recommend == 1){
-        				recommend = '<div class="pull-left"><b>Recomienda: </b></div><div class="pull-right"><i class="icon-ok"></i></div><br>';
+        				recommend = '<div class="pull-left thin-font">Recomienda </div><div class="pull-right"><i class="icon-ok"></i></div><br>';
         			} else {
-        				recommend = '<div class="pull-left"><b>Recomienda: </b></div><div class="pull-right"><i class="icon-remove"></i></div><br>';
+        				recommend = '<div class="pull-left thin-font">Recomienda </div><div class="pull-right"><i class="icon-remove"></i></div><br>';
         			}
 
         			if (comments == null){

@@ -281,10 +281,10 @@ function coinUpdate(from, to){
 		new_tax_val = parseInt((cur_flights_tax_price[j])/new_ratio);
 
 		new_text = '<div class="thin-font">'+new_sym+' <b>'+new_val+'</b></div>';
-		new_adults_val = new_sym+""+new_adults_val;
-		new_children_val = new_sym+""+new_children_val;
-		new_infants_val = new_sym+""+new_infants_val;
-		new_tax_val = new_sym+""+new_tax_val;
+		new_adults_val = new_sym+" "+new_adults_val;
+		new_children_val = new_sym+" "+new_children_val;
+		new_infants_val = new_sym+" "+new_infants_val;
+		new_tax_val = new_sym+" "+new_tax_val;
 
 		cur_val_selector= "#cur_val_"+j;
 
@@ -303,15 +303,15 @@ function coinUpdate(from, to){
 		$(popover_id).popover('destroy');
 
 		if(cur_flights_adult_quant[j] > 0){
-			adult_price = '<p class="pull-left"><b>Adultos ('+cur_flights_adult_quant[j]+'):</b> <p class="pull-right">'+new_adults_val+'</p></p><br>';
+			adult_price = '<div class="pull-left"><b>Adultos ('+cur_flights_adult_quant[j]+')</b> </div><div class="pull-right thin-font">'+new_adults_val+'</div><br>';
 		}
 		if(cur_flights_children_quant[j] > 0){
-			child_price = '<p class="pull-left"><b>Niños ('+cur_flights_children_quant[j]+'):</b> <p class="pull-right">'+new_children_val+'</p></p><br>';
+			child_price = '<div class="pull-left"><b>Niños ('+cur_flights_children_quant[j]+')</b> </div><div class="pull-right thin-font">'+new_children_val+'</div><br>';
 		}
 		if(cur_flights_infants_quant[j] > 0){
-			infant_price = '<p class="pull-left"><b>Infantes ('+cur_flights_infants_quant[j]+'):</b> <p class="pull-right">'+new_infants_val+'</p></p><br>';
+			infant_price = '<div class="pull-left"><b>Infantes ('+cur_flights_infants_quant[j]+')</b> </div><div class="pull-right thin-font">'+new_infants_val+'</div><br>';
 		}
-		taxes_price = '<p class="pull-left"><b>Impuestos:</b> <p class="pull-right">'+new_tax_val+'</p></p>';
+		taxes_price = '<div class="pull-left"><b>Impuestos</b> </div><div class="pull-right thin-font">'+new_tax_val+'</div><br>';
 
         // creo el html de los popovers
 		var popover_code = adult_price+child_price+infant_price+taxes_price;
