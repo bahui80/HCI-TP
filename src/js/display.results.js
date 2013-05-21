@@ -1099,7 +1099,7 @@ function roundWayFlight(data){
 					$("#buy-btn-"+j).data("ib-arr-date", getDateInfo(data['flights'][j]['inboundRoutes'][0]['segments'][0]['arrival']['date']));
 					$("#buy-btn-"+j).data("ib-dep-hr", ib_dep_hr);
 					$("#buy-btn-"+j).data("ib-arr-hr", ib_arr_hr);
-					alert(ib_dep_hr);
+
 					//pasajeros
 					$("#buy-btn-"+j).data("adult-price", cur_flights_adult_price[j]);
 					$("#buy-btn-"+j).data("child-price", cur_flights_children_price[j]);

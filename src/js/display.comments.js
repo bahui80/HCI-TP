@@ -71,7 +71,6 @@ function loadData(){
 	} else {
 		$("#airline_name_btn").removeClass("active");
 		$("#flight_number_btn").addClass("active");
-		$("#airline_name_span").hide();
 		$("#flight_num_span").show();
 	}
 
@@ -135,6 +134,7 @@ function searchComments(page){
 	}
 
 	//hago el rquest
+	alert('http://eiffel.itba.edu.ar/hci/service2/Review.groovy?method=GetAirlineReviews&airline_id='+airline_id+'&flight_num='+flight_num+'&page='+page+'&page_size='+per_page+'&sort_key='+key+'&sort_order='+order);
 	$.ajax({
 		url: 'http://eiffel.itba.edu.ar/hci/service2/Review.groovy?method=GetAirlineReviews&airline_id='+airline_id+'&flight_num='+flight_num+'&page='+page+'&page_size='+per_page+'&sort_key='+key+'&sort_order='+order,
         dataType: "jsonp",

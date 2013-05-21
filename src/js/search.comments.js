@@ -24,17 +24,15 @@ $(document).ready(function() {
 	$("#airline_name_btn").click(function () {
 		$("#flight_number_btn").removeClass('active');
 		$("#airline_name_btn").addClass('active');
-		$("#flight_num_span").slideUp(500);
-		$("#airline_name_span").slideDown(500);
+		$("#flight_num_span").fadeOut(500);
+		$("#airline_name_span").fadeIn(500);
 		$("#flight_num").val("");
 	});
 	
 	$("#flight_number_btn").click(function () {
 		$("#airline_name_btn").removeClass('active');
 		$("#flight_number_btn").addClass('active');
-		$("#flight_num_span").slideDown(500);
-		$("#airline_name_span").slideUp(500);
-		$("#airline_name").val("");
+		$("#flight_num_span").fadeIn(500);
 	});
 });
 
@@ -49,11 +47,11 @@ function fillAirlinesArray(data){
 	}
 	$('#airline_name').typeahead({
 		source : airlinesArray,
-		minLength : 1
+		minLength : 2
 	});
 	$('#comment_airline_name').typeahead({
 		source : airlinesArray,
-		minLength : 1
+		minLength : 2
 	});
 }
 
@@ -135,27 +133,25 @@ function prepareSearchComment(){
 		var airline_id = "";
 		var flight_num = "";
 
-		for(var k=0; k < airlinesArray.length && by_airline; k++){
+		for(var k=0; k < airlinesArray.length; k++){
 			if(airlinesArray[k] == $("#airline_name").val()){
 				airline_id = airlinesCodeArray[k];
-				containsAirline = true;
-			}
-			if(!by_airline){
 				containsAirline = true;
 			}
 		}
 
 		if(!by_airline && $("#flight_num").val() == ""){
-			// ACA ERROR DE NUMERO DE VUELO VACIO
+			// ACA ERROR DE NUMERO DE VUELO VACIO O AEROLINEA
+			alert("pincha");
 			error_on = true;
 		}
 
-		if(by_airline && $("#airline_name").val() == ""){
+		if($("#airline_name").val() == ""){
 			// ACA ERROR DE AEROLINEA VACIA
 			error_on = true;
 		}
 
-		if(by_airline && !containsAirline){
+		if(!containsAirline){
 			// ACA ERROR DE AEROLINEA INVALIDA
 			error_on = true;
 		}
@@ -163,8 +159,9 @@ function prepareSearchComment(){
 		//preparo info para formar la cookie
 		if(!error_on && by_airline){
 			airline_name = $("#airline_name").val();
-		} else {
+		} else if(!error_on && !by_airline) {
 			flight_num = $("#flight_num").val();
+			airline_name = $("#airline_name").val();
 		}
 
 		if(!error_on){			

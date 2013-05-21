@@ -6349,6 +6349,10 @@ a.badge:focus {
   padding-right: 7px !important;
 }
 
+.expand-top-margin{
+  margin-top: 7px !important;
+}
+
 .margin-fix{
   margin-top: 40px !important;
 }
