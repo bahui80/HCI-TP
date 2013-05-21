@@ -683,7 +683,6 @@ function loadCurrencies(data){
 function searchFlights(page){
 
 	$('#loading-modal').modal('show');
-	$("#results_num_div").slideUp(500);
 
 	// cargadas por url unicamente
 	var flight_type = $.cookie('flight_type');
@@ -933,7 +932,12 @@ function oneWayFlight(data){
 					$("#buy-btn-"+j).data("child-num", cur_flights_children_quant[j]);
 					$("#buy-btn-"+j).data("infant-num", cur_flights_infants_quant[j]);
 
-					createBtnEvent('#buy-btn-'+j, j)
+					createOneWayBtnEvent('#buy-btn-'+j);
+
+					// actualizo la leyendea de cant de vuelos actuales
+					if(first_search){
+						$("#found_num").text(data['total']);
+					}
 				}
         	}
 		}		
@@ -943,9 +947,6 @@ function oneWayFlight(data){
         $('#loading-modal').modal('hide');
         return;
 	}
-
-	// actualizo la leyendea de cant de vuelos actuales
-	$("#found_num").text(data['total']);
 
 	if(first_search && data['total'] == 0){
 		$("#compare-airlines").addClass("disabled");
@@ -957,7 +958,7 @@ function oneWayFlight(data){
 	first_search = false;
 }
 
-function createBtnEvent(btn, j){
+function createOneWayBtnEvent(btn){
 	$(btn).click(function(){
 		$.cookie('flight-type', $(btn).data('flight-type'), { path: '/' });
 		$.cookie('ob-flight-num', $(btn).data('ob-flight-num'), { path: '/' });
