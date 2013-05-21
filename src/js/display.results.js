@@ -981,7 +981,7 @@ function createOneWayBtnEvent(btn){
 		$.cookie('adult-num', $(btn).data('adult-num'), { path: '/' });
 		$.cookie('child-num', $(btn).data('child-num'), { path: '/' });
 		$.cookie('infant-num', $(btn).data('infant-num'), { path: '/' });
-		//document.location.href="buy.html";
+		document.location.href="buy.html";
 	})	
 }
 
