@@ -900,13 +900,11 @@ function oneWayFlight(data){
 						}
 					}
 
-
-
 					// creo el paginador con los resultados
 					createPagination(data['total'], data['pageSize'], data['page']);
 
 					//creo el div
-					$('#flights_row').append('<div class="well clearfix"><div class="span9"><table class="table"><thead><tr><th><i class="icon-circle-arrow-right icon-large"></i> '+ob_date+' <div class="pull-right">'+ob_dep_city+' ('+ob_dep_ap_id+') <i class="icon-caret-right icon-large"></i> '+ob_arr_city+' ('+ob_arr_ap_id+')</div></th></tr></thead><tbody><tr><td class="remove-bottom-padding"><ul class="inline small-bottom-margin"><li><b>Sale:</b> '+ob_dep_hr+'</li><li><b>Llega:</b> '+ob_arr_hr+'</li><li><i class="icon-time"></i> '+ob_dur+'</li><li>Directo</li><li><img src="'+ob_airline_pic+'" height="20" width="20"> '+ob_airline_name+'</li></ul></td></tr></tbody></table></div><div class="span3"><div class="well remove-bottom-margin remove-top-padding"><h3 class="text-center"><div id="cur_val_'+j+'">U$S'+flight_price+'</div></h3><div class="row-fluid"><div class="span12"><a id="popover'+j+'" rel="popover" class="btn btn-block thin-font" >Ver detalles</a></div></div><br><div class="row-fluid"><div class="span12"><a href="pasajeros.html" type="button" class="btn btn-inverse btn-block thin-font">Comprar</a></div></div></div></div></div>');
+					$('#flights_row').append('<div class="well clearfix"><div class="span9"><table class="table"><thead><tr><th><i class="icon-circle-arrow-right icon-large"></i> '+ob_date+' <div class="pull-right">'+ob_dep_city+' ('+ob_dep_ap_id+') <i class="icon-caret-right icon-large"></i> '+ob_arr_city+' ('+ob_arr_ap_id+')</div></th></tr></thead><tbody><tr><td class="remove-bottom-padding"><ul class="inline small-bottom-margin"><li><b>Sale:</b> '+ob_dep_hr+'</li><li><b>Llega:</b> '+ob_arr_hr+'</li><li><i class="icon-time"></i> '+ob_dur+'</li><li>Directo</li><li><img src="'+ob_airline_pic+'" height="20" width="20"> '+ob_airline_name+'</li></ul></td></tr></tbody></table></div><div class="span3"><div class="well remove-bottom-margin remove-top-padding"><h3 class="text-center"><div id="cur_val_'+j+'">U$S'+flight_price+'</div></h3><div class="row-fluid"><div class="span12"><a id="popover'+j+'" rel="popover" class="btn btn-block thin-font" >Ver detalles</a></div></div><br><div class="row-fluid"><div class="span12"><a type="button" id="buy-btn-'+j+'" class="btn btn-inverse btn-block thin-font">Comprar</a></div></div></div></div></div>');
 					
 					//muestro los divs con filtros adicionales
 					$("#filters-div").slideDown(500);
@@ -916,6 +914,26 @@ function oneWayFlight(data){
 
 					// Si la moenda actual es otra cambio	
 					coinUpdate("Dolares",$("#currencies").val());
+
+					// Le pongo la data el btn de buy
+					$("#buy-btn-"+j).data("ob-flight-num", data['flights'][j]['outboundRoutes'][0]['segments'][0]['flightNumber']);
+					$("#buy-btn-"+j).data("flight-type", "one-way");
+					$("#buy-btn-"+j).data("ob-dep-airport", data['flights'][j]['outboundRoutes'][0]['segments'][0]['departure']['airportDescription']);
+					$("#buy-btn-"+j).data("ob-arr-airport", data['flights'][j]['outboundRoutes'][0]['segments'][0]['arrival']['airportDescription']);
+					$("#buy-btn-"+j).data("ob_dep_date", ob_date);
+					$("#buy-btn-"+j).data("ob-arr-date", getDateInfo(data['flights'][j]['outboundRoutes'][0]['segments'][0]['arrival']['date']));
+					$("#buy-btn-"+j).data("ob-dep-hr", ob_dep_hr);
+					$("#buy-btn-"+j).data("ob-arr-hr", ob_arr_hr);
+					$("#buy-btn-"+j).data("adult-price", cur_flights_adult_price[j]);
+					$("#buy-btn-"+j).data("child-price", cur_flights_children_price[j]);
+					$("#buy-btn-"+j).data("infant-price", cur_flights_infants_price[j]);
+					$("#buy-btn-"+j).data("tax-price",cur_flights_tax_price[j]);
+					$("#buy-btn-"+j).data("total-price", cur_flights_price[j]);
+					$("#buy-btn-"+j).data("adult-num", cur_flights_adult_quant[j]);
+					$("#buy-btn-"+j).data("child-num", cur_flights_children_quant[j]);
+					$("#buy-btn-"+j).data("infant-num", cur_flights_infants_quant[j]);
+
+					createBtnEvent('#buy-btn-'+j, j)
 				}
         	}
 		}		
@@ -937,6 +955,28 @@ function oneWayFlight(data){
 	$('#loading-modal').modal('hide');
 
 	first_search = false;
+}
+
+function createBtnEvent(btn, j){
+	$(btn).click(function(){
+		$.cookie('flight-type', $(btn).data('flight-type'), { path: '/' });
+		$.cookie('ob-flight-num', $(btn).data('ob-flight-num'), { path: '/' });
+		$.cookie('ob-dep-airport', $(btn).data('ob-dep-airport'), { path: '/' });
+		$.cookie('ob-arr-airport', $(btn).data('ob-arr-airport'), { path: '/' });
+		$.cookie('ob_dep_date', $(btn).data('ob_dep_date'), { path: '/' });
+		$.cookie('ob-arr-date', $(btn).data('ob-arr-date'), { path: '/' });
+		$.cookie('ob-dep-hr', $(btn).data('ob-dep-hr'), { path: '/' });
+		$.cookie('ob-arr-hr', $(btn).data('ob-arr-hr'), { path: '/' });
+		$.cookie('adult-price', parseInt($(btn).data('adult-price')), { path: '/' });
+		$.cookie('child-price', parseInt($(btn).data('child-price')), { path: '/' });
+		$.cookie('infant-price', parseInt($(btn).data('infant-price')), { path: '/' });
+		$.cookie('tax-price', parseInt($(btn).data('tax-price')), { path: '/' });
+		$.cookie('total-price', parseInt($(btn).data('total-price')), { path: '/' });
+		$.cookie('adult-num', $(btn).data('adult-num'), { path: '/' });
+		$.cookie('child-num', $(btn).data('child-num'), { path: '/' });
+		$.cookie('infant-num', $(btn).data('infant-num'), { path: '/' });
+		document.location.href="buy.html";
+	})	
 }
 
 function foundNoFlights(){
