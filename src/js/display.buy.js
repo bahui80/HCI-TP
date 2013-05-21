@@ -1,7 +1,7 @@
 var totalEdits = 0;
-var adults = 1;
-var children = 0;
-var infants = 0;
+var adults = parseInt($.cookie('adult-num'));
+var children = parseInt($.cookie('child-num'));
+var infants = parseInt($.cookie('infant-num'));
 var cities = new Array();
 var citiesId = new Array();
 var countriesId = new Array();
@@ -9,13 +9,60 @@ var iFound;
 
 
 $(document).ready(function() {
-//	var adults = $.cookie('adults');
-//	var children = $.cookie('children');
-//	var infants = $.cookie('infants');
-	
 	var state = "pasajeros";
 	var firstTime = 1; // variable que me dice si ya se creo el evento para los botones editar
+	var total_price = $.cookie('total-price');
+	var tax_price = $.cookie('tax-price');
+	var adult_price = $.cookie('adult-price');
+	var child_price = $.cookie('child-price');
+	var infant_price = $.cookie('infant-price');
+	var ob_dep_date = $.cookie('ob-dep-date');
+	var ob_arr_date	 = $.cookie('ob-arr-date');
+	var ob_dep_hour = $.cookie('ob-dep-hr');
+	var ob_arr_hour = $.cookie('ob-arr-hr');
+	var flight_type = $.cookie('flight-type');
+	var ob_flight_num = $.cookie('ob-flight-num');
+	var ob_dep_airport = $.cookie('ob-dep-airport');
+	var ob_arr_airport = $.cookie('ob-arr-airport');
+	var ib_dep_airport = $.cookie('ib-dep-airport');
+	var ib_arr_airport = $.cookie('ib-arr-airport');
+	var ib_dep_date = $.cookie('ib-dep-date');
+	var ib_arr_date = $.cookie('ib-arr-date');
+	var ib_dep_hour = $.cookie('ib-dep-hr');
+	var ib_arr_hour = $.cookie('ib-arr-hr');
+	var ob_id_flight = $.cookie('ob_flight_num');
+	var ib_id_flight = $.cookie('ib-flight-num');
+
+
+	if(flight_type == "one-way")  {
+		$("#well_return").hide();
+	} else {
+		$("#ib_origin_airport").text(" " + ib_dep_airport);
+		$("#ib_destination_airport").text(" " + ib_arr_airport);	
+		$("#ib_origin_date").text(" " + ib_dep_date + " (" + ib_dep_hour + ")" );
+		$("#ib_destination_date").text(" " + ib_arr_date + " (" + ib_arr_hour + ")" );
+	}
+
+	$("#adult_price").text(" U$S " + adult_price + " x " + adults);
 	
+	if(children == 0) {
+		$("#children").hide();
+	} else {
+		$("#children_price").text(" U$S " + child_price + " x " + children);
+	}
+
+	if(infants == 0) {
+		$("#infant").hide();
+	} else {
+		$("#infant_price").text(" U$S " + infant_price + " x " + infants);
+	}
+	
+	$("#tax_price").text(" U$S " + tax_price);
+	$("#total_price").text(" U$S " + total_price);
+	$("#ob_origin_airport").text(" " + ob_dep_airport);
+	$("#ob_destination_airport").text(" " + ob_arr_airport);	
+	$("#ob_origin_date").text(" " + ob_dep_date + " (" + ob_dep_hour + ")" );
+	$("#ob_destination_date").text(" " + ob_arr_date + " (" + ob_arr_hour + ")" );
 	$(".credit_card").hide();
 	$("#edit_credit_card_span").hide();
 	$("#edit_contact_information_span").hide();

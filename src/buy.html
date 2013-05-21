@@ -7,6 +7,7 @@
 		<link href="css/font-awesome.css" rel="stylesheet">
 		<script src="js/jquery-1.9.1.js"></script>
 		<script src="js/bootstrap.js"></script>
+		<script src="js/jquery.cookie.js"></script>
 		<script src="js/display.buy.js"></script>
 	</head>
 	<body>
@@ -218,37 +219,37 @@
 						<div class="row-fluid">
 							<div class="span12">
 								<p>
-									<b>Origen:</b> Buenos Aires Ezeiza
+									<b>Origen:</b><span id="ob_origin_airport"> Buenos Aires Ezeiza</span>
 								</p>
 								<p>
-									<b>Destino:</b> Cordoba, Pajas Blancas
+									<b>Destino:</b><span id="ob_destination_airport"> Cordoba, Pajas Blancas</span>
 								</p>
 								<p>
-									<b>Fecha partida:</b> 22-10-2015 (23:00)
+									<b>Fecha partida:</b><span id="ob_origin_date"> 22-10-2015 (23:00)</span>
 								</p>
 								<p>
-									<b>Fecha llegada:</b> 22-10-2015 (24:00)
+									<b>Fecha llegada:</b><span id="ob_destination_date"> 22-10-2015 (24:00)</span>
 								</p>
 							</div>
 						</div>
 					</div>
-					<div class="well">
+					<div id="well_return" class="well">
 						<legend>
 							Vuelta
 						</legend>
 						<div class="row-fluid">
 							<div class="span12">
 								<p>
-									<b>Origen:</b> Buenos Aires, Ezeisa
+									<b>Origen:</b><span id="ib_origin_airport"> Buenos Aires, Ezeiza</span>
 								</p>
 								<p>
-									<b>Destino:</b> Cordoba, Pajas Blancas
+									<b>Destino:</b><span id="ib_destination_airport"> Cordoba, Pajas Blancas</span>
 								</p>
 								<p>
-									<b>Fecha partida:</b> 22-10-2015 (23:00)
+									<b>Fecha partida:</b><span id="ib_origin_date"> 22-10-2015 (23:00)</span>
 								</p>
 								<p>
-									<b>Fecha llegada:</b> 22-10-2015 (24:00)
+									<b>Fecha llegada:</b><span id="ib_destination_date"> 22-10-2015 (24:00)</span>
 								</p>
 							</div>
 						</div>
@@ -260,19 +261,19 @@
 						<div class="row-fluid">
 							<div class="span12">
 								<p>
-									<b>Por adulto:</b> AR$ 100
+									<b>Por adulto:</b><span id="adult_price"> AR$ 100</span>
+								</p>
+								<p id="children">
+									<b>Por niño:</b><span id="children_price"> AR$ 100</span>
+								</p>
+								<p id="infant">
+									<b>Por infante:</b><span id="infant_price"> AR$ 100</span>
 								</p>
 								<p>
-									<b>Por niño:</b> AR$ 100
+									<b>Impuestos:</b><span id="tax_price"> AR$ 100</span>
 								</p>
 								<p>
-									<b>Por infante:</b> AR$ 100
-								</p>
-								<p>
-									<b>Impuestos:</b> AR$ 100
-								</p>
-								<p>
-									<b>Final:</b> AR$ 400
+									<b>Final:</b><span id="total_price"> AR$ 400</span>
 								</p>
 							</div>
 						</div>
