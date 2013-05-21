@@ -56,7 +56,7 @@
 											<label>Número de la tarjeta</label>
 											<input id="number_credit_card" class="fill_in span12" type="text" placeholder="Ingrese el número de la tarjeta">
 											<p id="number_credit_card_error" class="text-error">
-												<i class="icon-remove"></i><small id="number_credit_card_error_text"> Ingrese el numero de la tarjeta</small>
+												<i class="icon-remove"></i><small id="number_credit_card_error_text"> Ingrese el número de la tarjeta</small>
 											</p>
 										</div>
 									</div>
@@ -72,7 +72,7 @@
 											<label>Código de seguridad</label>
 											<input id="security_credit_card" class="fill_in span12" type="text" placeholder="Ingrese el código de seguridad">
 											<p id="security_credit_card_error" class="text-error">
-												<i class="icon-remove"></i><small id="security_credit_card_error_text"> Ingrese el codigo de seguridad de la tarjeta</small>
+												<i class="icon-remove"></i><small id="security_credit_card_error_text"> Ingrese el código de seguridad de la tarjeta</small>
 											</p>
 										</div>
 									</div>
@@ -125,14 +125,19 @@
 									<legend>
 										<i class="icon-home"></i> Dirección de facturación
 									</legend>
-									<div class="row-fluid">
-										<div id="city_billing_address_span"  class="span6">
-											<label>Ciudad</label>
-											<input id="city_billing_address" class="fill_in span12" type="text" placeholder="Ingrese la ciudad de facturación">
-											<p id="city_billing_address_error" class="text-error">
-												<i class="icon-remove"></i><small id="city_billing_address_error_text"> Ingrese la ciudad de facturación</small>
-											</p>
+									<div id="countries_cities" class="row-fluid">
+										<div id="country_billing_address_span" class="span6">
+											<label id="country_label">País</label>
+											<select id="country_billing_address" class="fill_in span12">
+											</select>
 										</div>
+										<div id="city_billing_address_span" class="span6">
+											<label id="city_label">Ciudad</label> 
+											<select id="city_billing_address" class="fill_in span12">
+											</select>
+										</div>
+									</div>
+									<div class="row-fluid">
 										<div id="postal_code_billing_address_span" class="span6">
 											<label>Código postal</label>
 											<input id="postal_code_billing_address" class="fill_in span12" type="text" placeholder="Ingrese su código postal">
@@ -140,15 +145,15 @@
 												<i class="icon-remove"></i><small id="postal_code_billing_address_error_text"> Ingrese su código postal</small>
 											</p>
 										</div>
-									</div>
-									<div class="row-fluid">
-										<div id="address_billing_address_span"  class="span6">
-											<label>Dirección</label>
-											<input id="address_billing_address" class="fill_in span12" type="text" placeholder="Ingrese la dirección de facturación">
+											<div id="address_billing_address_span"  class="span6">
+												<label>Dirección</label>
+												<input id="address_billing_address" class="fill_in span12" type="text" placeholder="Ingrese la dirección de facturación">
 											<p id="address_billing_address_error" class="text-error">
 												<i class="icon-remove"></i><small id="address_billing_address_error_text"> Ingrese la dirección de facturación</small>
 											</p>
 										</div>
+									</div>
+									<div class="row-fluid">
 										<div id="floor_billing_address_span"  class="span3">
 											<label>Piso</label>
 											<input id="floor_billing_address" class="fill_in span12" type="text" placeholder="Ingrese el piso">

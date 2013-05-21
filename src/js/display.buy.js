@@ -4,7 +4,9 @@ var children = parseInt($.cookie('child-num'));
 var infants = parseInt($.cookie('infant-num'));
 var cities = new Array();
 var citiesId = new Array();
+var countries = new Array();
 var countriesId = new Array();
+var citiesCountriesId = new Array();
 var iFound;
 
 
@@ -21,7 +23,6 @@ $(document).ready(function() {
 	var ob_dep_hour = $.cookie('ob-dep-hr');
 	var ob_arr_hour = $.cookie('ob-arr-hr');
 	var flight_type = $.cookie('flight-type');
-	var ob_flight_num = $.cookie('ob-flight-num');
 	var ob_dep_airport = $.cookie('ob-dep-airport');
 	var ob_arr_airport = $.cookie('ob-arr-airport');
 	var ib_dep_airport = $.cookie('ib-dep-airport');
@@ -30,7 +31,7 @@ $(document).ready(function() {
 	var ib_arr_date = $.cookie('ib-arr-date');
 	var ib_dep_hour = $.cookie('ib-dep-hr');
 	var ib_arr_hour = $.cookie('ib-arr-hr');
-	var ob_id_flight = $.cookie('ob_flight_num');
+	var ob_id_flight = $.cookie('ob-flight-num');
 	var ib_id_flight = $.cookie('ib-flight-num');
 
 
@@ -75,7 +76,6 @@ $(document).ready(function() {
 	$("#dni_credit_card_error").hide();
 	$("#telephone_credit_card_error").hide();
 	$("#email_credit_card_error").hide();
-	$("#city_billing_address_error").hide();
 	$("#postal_code_billing_address_error").hide();
 	$("#address_billing_address_error").hide();
 	$("#floor_billing_address_error").hide();
@@ -89,7 +89,6 @@ $(document).ready(function() {
 	focusOutField("#dni_credit_card", "#dni_credit_card_span", "#dni_credit_card_error");
 	focusOutField("#telephone_credit_card", "#telephone_credit_card_span", "#telephone_credit_card_error");
 	focusOutField("#email_credit_card", "#email_credit_card_span", "#email_credit_card_error");
-	focusOutField("#city_billing_address", "#city_billing_address_span", "#city_billing_address_error");
 	focusOutField("#postal_code_billing_address", "#postal_code_billing_address_span", "#postal_code_billing_address_error");
 	focusOutField("#address_billing_address", "#address_billing_address_span", "#address_billing_address_error");
 	focusOutField("#floor_billing_address", "#floor_billing_address_span", "#floor_billing_address_error");
@@ -132,11 +131,14 @@ $(document).ready(function() {
 		$("#passenger_infants_" + (i + 1) + "_date_error").hide();
 	}
 
-	$.ajax({
-		url: "http://eiffel.itba.edu.ar/hci/service2/Geo.groovy?method=GetCities&page_size=40",
-        dataType: "jsonp",
-        jsonpCallback: "fillCitiesArray",
+
+    $.ajax({
+    	url: "http://eiffel.itba.edu.ar/hci/service2/Geo.groovy?method=GetCountries&sort_key=name&sort_order=asc",
+    	dataType: "jsonp",
+    	jsonpCallback: "fillCountriesArray",
     });
+
+
 	
 	$("#next_button").click(function() {
 		if(state == "pasajeros") { //pasamos al pago
@@ -150,9 +152,8 @@ $(document).ready(function() {
 				$(".credit_card").slideDown(500);
 				
 				//cambia los titulos y los botones
-				$("#title_text").text(' Informacion de pago');
-		//		$("#prev_button_text").text(" Pasajeros");
-				$("#next_button_text").text("Confirmacion ");
+				$("#title_text").text(' Información de pago');
+				$("#next_button_text").text("Confirmación ");
 				
 				//cambiamos imagen y barra
 				$("#img_change").attr("src","img/large-2.jpg");
@@ -191,13 +192,11 @@ $(document).ready(function() {
 				
 				//cambia los titulos, los botones y la imagen
 				$("#title_text").text(" Confirmacion");
-		//		$("#prev_button_text").text(" Pago");
 				$("#next_button_text").text("Confirmar ");
 				$("#img_icon").hide();
 				$("#img_change").attr("src","img/large-4.jpg");
 			
 				//creamos todos los eventos de los botones editar
-			///////!!!!!!!!!!!!!!!!!!!!!!!!!!!FIJARME BIEN CCOMO SOLUCIONAR ESTO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!////////////////////
 				if(firstTime) {
 					for(var i = 0; i < adults; i++) {
 						enableButtons("#well_passenger_adults_" + (i + 1), "#edit_passenger_adults_" + (i + 1), "adults", i);
@@ -237,9 +236,8 @@ $(document).ready(function() {
 				showError("#well_contact_information", "#edit_contact_information");
 				showError("#well_billing_address", "#edit_billing_address");
 			} else {
-				$("#myModal").modal();
 				var jsonData = {};
-				jsonData['flightId'] = 1234; ///falta pedir el valor real de la cookie
+				jsonData['flightId'] = ob_id_flight;
 				jsonData['passengers'] = [];
 				for(var i = 0; i < adults; i++) {
 					jsonData['passengers'][i] = {};
@@ -274,9 +272,9 @@ $(document).ready(function() {
 				jsonData['payment']['creditCard']['firstName'] = $("#name_credit_card").val();
 				jsonData['payment']['creditCard']['lastName'] = $("#surname_credit_card").val();
 				jsonData['billingAddress'] = {};
-				jsonData['billingAddress']['country'] = "PU";        //countriesId[iFound];
-				jsonData['billingAddress']['state'] = "asdjlaskldjasldkjasjkldasj";                //cities[iFound];
-				jsonData['billingAddress']['City'] =  "TOU"                             //citiesId[iFound];
+				jsonData['billingAddress']['country'] = $("#country_billing_address").val();
+				jsonData['billingAddress']['state'] = $("#city_billing_address option:selected").text();              
+				jsonData['billingAddress']['City'] =  $("#city_billing_address").val();                            
 				jsonData['billingAddress']['postalCode'] = $("#postal_code_billing_address").val();
 				jsonData['billingAddress']['street'] = $("#address_billing_address").val();
 				jsonData['billingAddress']['floor'] = $("#floor_billing_address").val();
@@ -285,86 +283,40 @@ $(document).ready(function() {
 				jsonData['contact']['email'] = $("#email_credit_card").val();
 				jsonData['contact']['phones'] = [];
 				jsonData['contact']['phones'][0] = $("#telephone_credit_card").val();
-		
+
 				$.ajax({
 					url: "http://eiffel.itba.edu.ar/hci/service2/Booking.groovy?method=BookFlight2",
 					data: { data: JSON.stringify(jsonData) },
 					dataType: "jsonp",
 					contentType: "application/json",
 				}).done(function(data) {
-					if(data.hasOwnProperty('error')) {
+					alert("sdasd");
+					if(data.hasOwnProperty('error') || data['booking'] == false) {
 						$("#flightError").modal();
+					} else {
+						if(flight_type == "round-way") {
+							jsonData['flightId'] = ib_id_flight;
+
+							$.ajax({
+								url: "http://eiffel.itba.edu.ar/hci/service2/Booking.groovy?method=BookFlight2",
+								data: { data: JSON.stringify(jsonData) },
+								dataType: "jsonp",
+								contentType: "application/json",
+							}).done(function(data) { 
+								if(data.hasOwnProperty('error') || data['booking'] == false) {
+									$("#flightError").modal();
+								} else {
+									$("#myModal").modal();
+								}
+							});
+						} else {
+							$("#myModal").modal();
+						}
 					}
 				});
 			}
 		}
 	});
-		
-//	$("#prev_button").click(function() {
-//		if(state == "pasajeros") { //pasamos al paso de pago
-//			$("#prev_button").attr("href", "results.html");
-//			state = "resutados";
-//		} else if(state == "tarjeta") { //pasamos a los pasajeros
-//			$("#prev_button").removeAttr("href");
-//			$(".credit_card").slideUp(500);
-//			$(".passenger").show();
-//			$(".passenger").slideUp(500);
-//			$(".passenger").slideDown(500);
-//			
-//			//cambio titulo e imagen
-//			$("#title_text").text(" Informacion de pasajeros");
-//			$("#img_change").attr("src","img/large-1.jpg");
-//			
-//			
-//			//cambio botones de la barra de abajo
-//			$("#prev_button_text").text(" Resultados");
-//			$("#next_button_text").text("Pago ");
-//			
-//			state = "pasajeros"
-//		} else if(state == "confirmacion") { //pasamos al estado de pago
-//			
-//			
-//			//oculto los botones de editar de la tarjeta
-//			$("#edit_credit_card_span").hide();
-//			$("#edit_contact_information_span").hide();
-//			$("#edit_titular_information_span").hide();
-//			
-//			//oculto los botones de editar de los pasajeros
-//			for(var i = 0; i < adults; i++) {
-//				$("#edit_passenger_adults_" + (i + 1) + "_span").hide();
-//				enableInputs("#well_passenger_adults_" + (i + 1));
-//				
-//			}
-//			
-//			for(var i = 0; i < children; i++) {
-//				$("#edit_passenger_children_" + (i + 1) + "_span").hide();
-//				enableInputs("#well_passenger_children_" + (i + 1));
-//			}
-//			
-//			for(var i = 0; i < infants; i++) {
-//				$("#edit_passenger_infants_" + (i + 1) + "_span").hide();
-//				enableInputs("#well_passenger_infants_" + (i + 1));
-//			}
-//			
-//			//permito la escritura nuevamente de los inputs de la tarjeta
-//			enableInputs("#well_credit_card");
-//			enableInputs("#well_titular_information");
-//			enableInputs("#well_contact_information");
-//			
-//			$(".credit_card").slideUp(500);
-//			$(".passenger").slideUp(500);
-//			$(".credit_card").slideDown(500);
-//			
-//			//cambio titulo imagen y barra de abajo
-//			$("#title_text").text(" Informacion de pago");
-//			$("#img_change").attr("src","img/large-2.jpg");
-//			$("#prev_button_text").text(" Pasajeros");
-//			$("#next_button_text").text("Confirmacion ");
-//			$("#img_icon").show();
-//			
-//			state = "tarjeta";
-//		}
-//	});
 });
 
 function enableButtons(idWell, idButton, type, i) {
@@ -460,7 +412,7 @@ function validateAdultPassenger(passengerNameSpan, passengerName, passengerNameE
 		error = true;
 	} else if(!validateTextField(passengerName)) {
 		$(passengerNameSpan).addClass("control-group error");
-		$(passengerNameErrorText).text(" Ingrese un nombre valido");
+		$(passengerNameErrorText).text(" Ingrese un nombre válido");
 		$(passengerNameError).show();
 		error = true;
 	}
@@ -472,19 +424,19 @@ function validateAdultPassenger(passengerNameSpan, passengerName, passengerNameE
 		error = true;
 	} else if(!validateTextField(passengerSurname)) {
 		$(passengerSurnameSpan).addClass("control-group error");
-		$(passengerSurnameErrorText).text(" Ingrese un apellido valido");
+		$(passengerSurnameErrorText).text(" Ingrese un apellido válido");
 		$(passengerSurnameError).show();
 		error = true;
 	}
 	
 	if(passengerDNI == "") {
 		$(passengerDNISpan).addClass("control-group error");
-		$(passengerDNIErrorText).text(" Ingrese el numero de DNI del pasajero");
+		$(passengerDNIErrorText).text(" Ingrese el número de DNI del pasajero");
 		$(passengerDNIError).show();
 		error = true;
 	} else if(!validateDNIField(passengerDNI)) {
 		$(passengerDNISpan).addClass("control-group error");
-		$(passengerDNIErrorText).text(" Ingrese un numero de DNI valido");
+		$(passengerDNIErrorText).text(" Ingrese un número de DNI válido");
 		$(passengerDNIError).show();
 		error = true;
 	}
@@ -496,7 +448,7 @@ function validateAdultPassenger(passengerNameSpan, passengerName, passengerNameE
 		error = true;
 	} else if(!validateDate(passengerDay, passengerMonth, passengerYear)) {
 		$(passengerDateSpan).addClass("control-group error");
-		$(passengerDateErrorText).text(" Ingrese una fecha de nacimiento valida");
+		$(passengerDateErrorText).text(" Ingrese una fecha de nacimiento válida");
 		$(passengerDateError).show();
 		error = true;
 	} else if(!validateDateAdult(passengerDay, passengerMonth, passengerYear)) {
@@ -519,7 +471,7 @@ function validateChildrenPassenger(passengerNameSpan, passengerName, passengerNa
 		error = true;
 	} else if(!validateTextField(passengerName)) {
 		$(passengerNameSpan).addClass("control-group error");
-		$(passengerNameErrorText).text(" Ingrese un nombre valido");
+		$(passengerNameErrorText).text(" Ingrese un nombre válido");
 		$(passengerNameError).show();
 		error = true;
 	}
@@ -531,19 +483,19 @@ function validateChildrenPassenger(passengerNameSpan, passengerName, passengerNa
 		error = true;
 	} else if(!validateTextField(passengerSurname)) {
 		$(passengerSurnameSpan).addClass("control-group error");
-		$(passengerSurnameErrorText).text(" Ingrese un apellido valido");
+		$(passengerSurnameErrorText).text(" Ingrese un apellido válido");
 		$(passengerSurnameError).show();
 		error = true;
 	}
 	
 	if(passengerDNI == "") {
 		$(passengerDNISpan).addClass("control-group error");
-		$(passengerDNIErrorText).text(" Ingrese el numero de DNI del pasajero");
+		$(passengerDNIErrorText).text(" Ingrese el número de DNI del pasajero");
 		$(passengerDNIError).show();
 		error = true;
 	} else if(!validateDNIField(passengerDNI)) {
 		$(passengerDNISpan).addClass("control-group error");
-		$(passengerDNIErrorText).text(" Ingrese un numero de DNI valido");
+		$(passengerDNIErrorText).text(" Ingrese un número de DNI válido");
 		$(passengerDNIError).show();
 		error = true;
 	}
@@ -555,12 +507,12 @@ function validateChildrenPassenger(passengerNameSpan, passengerName, passengerNa
 		error = true;
 	} else if(!validateDate(passengerDay, passengerMonth, passengerYear)) {
 		$(passengerDateSpan).addClass("control-group error");
-		$(passengerDateErrorText).text(" Ingrese una fecha de nacimiento valida");
+		$(passengerDateErrorText).text(" Ingrese una fecha de nacimiento válida");
 		$(passengerDateError).show();
 		error = true;
 	} else if(!validateDateChildren(passengerDay, passengerMonth, passengerYear)) {
 		$(passengerDateSpan).addClass("control-group error");
-		$(passengerDateErrorText).text(" La fecha de nacimiento no se corresponde con un ninio");
+		$(passengerDateErrorText).text(" La fecha de nacimiento no se corresponde con un niño");
 		$(passengerDateError).show();
 		error = true;
 	}
@@ -578,7 +530,7 @@ function validateInfantPassenger(passengerNameSpan, passengerName, passengerName
 		error = true;
 	} else if(!validateTextField(passengerName)) {
 		$(passengerNameSpan).addClass("control-group error");
-		$(passengerNameErrorText).text(" Ingrese un nombre valido");
+		$(passengerNameErrorText).text(" Ingrese un nombre válido");
 		$(passengerNameError).show();
 		error = true;
 	}
@@ -590,19 +542,19 @@ function validateInfantPassenger(passengerNameSpan, passengerName, passengerName
 		error = true;
 	} else if(!validateTextField(passengerSurname)) {
 		$(passengerSurnameSpan).addClass("control-group error");
-		$(passengerSurnameErrorText).text(" Ingrese un apellido valido");
+		$(passengerSurnameErrorText).text(" Ingrese un apellido válido");
 		$(passengerSurnameError).show();
 		error = true;
 	}
 	
 	if(passengerDNI == "") {
 		$(passengerDNISpan).addClass("control-group error");
-		$(passengerDNIErrorText).text(" Ingrese el numero de DNI del pasajero");
+		$(passengerDNIErrorText).text(" Ingrese el número de DNI del pasajero");
 		$(passengerDNIError).show();
 		error = true;
 	} else if(!validateDNIField(passengerDNI)) {
 		$(passengerDNISpan).addClass("control-group error");
-		$(passengerDNIErrorText).text(" Ingrese un numero de DNI valido");
+		$(passengerDNIErrorText).text(" Ingrese un número de DNI válido");
 		$(passengerDNIError).show();
 		error = true;
 	}
@@ -614,7 +566,7 @@ function validateInfantPassenger(passengerNameSpan, passengerName, passengerName
 		error = true;
 	} else if(!validateDate(passengerDay, passengerMonth, passengerYear)) {
 		$(passengerDateSpan).addClass("control-group error");
-		$(passengerDateErrorText).text(" Ingrese una fecha de nacimiento valida");
+		$(passengerDateErrorText).text(" Ingrese una fecha de nacimiento válida");
 		$(passengerDateError).show();
 		error = true;
 	} else if(!validateDateInfant(passengerDay, passengerMonth, passengerYear)) {
@@ -757,12 +709,12 @@ function validateCreditCardInformation() {
 	
 	if($("#number_credit_card").val() == "" ) {
 		$("#number_credit_card_span").addClass("control-group error");
-		$("#number_credit_card_error_text").text(" Ingrese el numero de la tarjeta");
+		$("#number_credit_card_error_text").text(" Ingrese el número de la tarjeta");
 		$("#number_credit_card_error").show();
 		error = true;
 	} else if(!validateCreditCardNumber($("#number_credit_card").val())) {
 		$("#number_credit_card_span").addClass("control-group error");
-		$("#number_credit_card_error_text").text(" Ingrese un numero valido de tarjeta");
+		$("#number_credit_card_error_text").text(" Ingrese un número válido de tarjeta");
 		$("#number_credit_card_error").show();
 		error = true;
 	}
@@ -774,19 +726,19 @@ function validateCreditCardInformation() {
 		error = true;
 	} else if(!validateCreditCardExpiration($("#expiration_credit_card").val())) {
 		$("#expiration_credit_card_span").addClass("control-group error");
-		$("#expiration_credit_card_error_text").text(" Ingrese una fecha de vencimiento valida");
+		$("#expiration_credit_card_error_text").text(" Ingrese una fecha de vencimiento válida");
 		$("#expiration_credit_card_error").show();
 		error = true;
 	}
 	
 	if($("#security_credit_card").val() == "") {
 		$("#security_credit_card_span").addClass("control-group error");
-		$("#security_credit_card_error_text").text(" Ingrese el codigo de seguridad de la tarjeta");
+		$("#security_credit_card_error_text").text(" Ingrese el código de seguridad de la tarjeta");
 		$("#security_credit_card_error").show();
 		error = true;
 	} else if(!validateCreditCardSecurity($("#security_credit_card").val())) {
 		$("#security_credit_card_span").addClass("control-group error");
-		$("#security_credit_card_error_text").text(" Ingrese un codigo de seguridad valido");
+		$("#security_credit_card_error_text").text(" Ingrese un código de seguridad válido");
 		$("#security_credit_card_error").show();
 		error = true;
 	}
@@ -798,12 +750,12 @@ function validateCreditCardInformation() {
 		if(data.hasOwnProperty("error")){
 			if(data["error"]["code"] == 107) {
 				$("#expiration_credit_card_span").addClass("control-group error");
-				$("#expiration_credit_card_error_text").text(" Ingrese una fecha de vencimiento valida");
+				$("#expiration_credit_card_error_text").text(" Ingrese una fecha de vencimiento válida");
 				$("#expiration_credit_card_error").show();
 				error = true;
 			} else if(data["error"]["code"] == 111) {
 				$("#security_credit_card_span").addClass("control-group error");
-				$("#security_credit_card_error_text").text(" Ingrese un codigo de seguridad valido");
+				$("#security_credit_card_error_text").text(" Ingrese un código de seguridad válido");
 				$("#security_credit_card_error").show();
 				error = true;
 			}	
@@ -823,7 +775,7 @@ function validateTitularInformation() {
 		error = true;
 	} else if(!validateTextField($("#name_credit_card").val())) {
 		$("#name_credit_card_span").addClass("control-group error");
-		$("#name_credit_card_error_text").text(" Ingrese un nombre valido");
+		$("#name_credit_card_error_text").text(" Ingrese un nombre válido");
 		$("#name_credit_card_error").show();
 		error = true;
 	}
@@ -835,7 +787,7 @@ function validateTitularInformation() {
 		error = true;
 	} else if(!validateTextField($("#surname_credit_card").val())) {
 		$("#surname_credit_card_span").addClass("control-group error");
-		$("#surname_credit_card_error_text").text(" Ingrese un apellido valido");
+		$("#surname_credit_card_error_text").text(" Ingrese un apellido válido");
 		$("#surname_credit_card_error").show();
 		error = true;
 	}
@@ -847,7 +799,7 @@ function validateTitularInformation() {
 		error = true;
 	} else if(!validateDNIField($("#dni_credit_card").val())) {
 		$("#dni_credit_card_span").addClass("control-group error");
-		$("#dni_credit_card_error_text").text(" Ingrese un DNI valido");
+		$("#dni_credit_card_error_text").text(" Ingrese un DNI válido");
 		$("#dni_credit_card_error").show();
 		error = true;
 	}
@@ -865,7 +817,7 @@ function validateContactInformation() {
 		error = true;
 	} else if(!validateTelephoneField($("#telephone_credit_card").val())) {
 		$("#telephone_credit_card_span").addClass("control-group error");
-		$("#telephone_credit_card_error_text").text(" Ingrese un telefono valido");
+		$("#telephone_credit_card_error_text").text(" Ingrese un telefono válido");
 		$("#telephone_credit_card_error").show();
 		error = true;
 	}
@@ -877,7 +829,7 @@ function validateContactInformation() {
 		error = true;
 	} else if(!validateEmailField($("#email_credit_card").val())) {
 		$("#email_credit_card_span").addClass("control-group error");
-		$("#email_credit_card_error_text").text(" Ingrese un email valido");
+		$("#email_credit_card_error_text").text(" Ingrese un email válido");
 		$("#email_credit_card_error").show();
 		error = true;
 	}
@@ -951,7 +903,7 @@ function validateBillingAddress() {
 	var found = false;
 	var postalCodePattern = /^[0-9]+$/;
 
-	if($("#city_billing_address").val() == "") {
+/*	if($("#city_billing_address").val() == "") {
 		$("#city_billing_address_span").addClass("control-group error");
 		$("#city_billing_address_error_text").text(" Ingrese la ciudad de facturacion");
 		$("#city_billing_address_error").show();
@@ -969,7 +921,7 @@ function validateBillingAddress() {
 			$("#city_billing_address_error").show();
 			error = true;
 		}
-	}
+	}*/
 
 	if($("#postal_code_billing_address").val() == "") {
 		$("#postal_code_billing_address_span").addClass("control-group error");
@@ -993,19 +945,52 @@ function validateBillingAddress() {
 	return error;
 }
 
+function fillCountriesArray(data) {
+	if(!data.hasOwnProperty("error")) {
+		for(var i = 0; i < data['total']; i++) {
+			countries[i] = data['countries'][i]['name'];
+			countriesId[i] = data['countries'][i]['countryId'];
+		}
+		$.ajax({
+			url: "http://eiffel.itba.edu.ar/hci/service2/Geo.groovy?method=GetCities&page_size=40&sort_key=name&sort_order=asc",
+        	dataType: "jsonp",
+        	jsonpCallback: "fillCitiesArray",
+    	});
+	} else {
+		////// ver que poner como error si no me pudo cargar los paises y las ciudades
+	}
+}
+
 function fillCitiesArray(data) {
+	var id;
+
 	if(!data.hasOwnProperty("error")) {
        	for (var i = 0;i<data['total'];i++){
            	cities[i] = data['cities'][i]['name'];
-           	countriesId[i] = data['cities'][i]['countryId'];
            	citiesId[i] = data['cities'][i]['cityId'];
+           	citiesCountriesId[i] = data['cities'][i]['countryId'];
        	}
+       	for(var i = 0; i < countries.length; i++) {
+       		$("#country_billing_address").append('<option value="' + countriesId[i] + '">' + countries[i] + '</option>');
+       	}
+       	for(var i = 0; i < cities.length; i++) {
+       		if(citiesCountriesId[i] == countriesId[0]) {
+       			$("#city_billing_address").append('<option value="' + citiesId[i] + '">' + cities[i] + '</option>');
+       		}
+       	}
+       	$("#country_billing_address").change(function() {
+       		for(var j = 0; j < countriesId.length; j++) {
+       			if($("#country_billing_address").val() == countriesId[j]) {
+       				id = j;
+       			}
+       		}
+       		$("#city_billing_address").empty();
+       		for(var i = 0; i < cities.length; i++) {
+       			if(citiesCountriesId[i] == countriesId[id]) {
+       				$("#city_billing_address").append('<option value="' + citiesId[i] + '">' + cities[i] + '</option>');
+       			}
+       		}
+       	});
 	} else {
-       console.log(JSON.stringify(data));
 	}
-	
-	$('#city_billing_address').typeahead({
-		source : cities,
-		minLength : 2
-	});
 }
