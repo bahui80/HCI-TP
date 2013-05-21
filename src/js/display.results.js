@@ -562,6 +562,11 @@ function loadFields(){
 		$("#oneWay_trip").removeClass('active');
 		$("#ret_date_div").show();
 		$('#ret_date').val(ret_date);
+		//saco el filtro min-max
+		$("#min_max_filter_div").hide();
+		$("#min_max_filter_btn_div").hide();
+		//muestro 1 resultado más
+		page_size = 6;
 	}
 
 	// cargar horarios de retorno
@@ -828,7 +833,7 @@ function searchFlights(page){
 	} else {
 		// FALTA IMPLEMENTAR
 		$.ajax({
-			url: "http://eiffel.itba.edu.ar/hci/service2/Booking.groovy?method=GetRoundTripFlights&from="+from+"&to="+to+"&dep_date="+dep_date+"&ret_date="+ret_date+"&adults="+adults+"&children="+children+"&infants="+infants+"&airline_id="+airline_id+"&min_price="+min_price+"&max_price="+max_price+"&cabin_type="+cabin_type+"&min_dep_time="+min_dep_time+"&max_dep_time="+max_dep_time+"&min_ret_time="+min_ret_time+"&max_ret_time="+max_ret_time+"&page="+page+"&page_size="+page_size+"&sort_key="+sort_key+"&sort_order="+sort_order,
+			url: "http://eiffel.itba.edu.ar/hci/service2/Booking.groovy?method=GetRoundTripFlights2&from="+from+"&to="+to+"&dep_date="+dep_date+"&ret_date="+ret_date+"&adults="+adults+"&children="+children+"&infants="+infants+"&airline_id="+airline_id+"&min_price="+min_price+"&max_price="+max_price+"&cabin_type="+cabin_type+"&min_dep_time="+min_dep_time+"&max_dep_time="+max_dep_time+"&min_ret_time="+min_ret_time+"&max_ret_time="+max_ret_time+"&page="+page+"&page_size="+page_size+"&sort_key="+sort_key+"&sort_order="+sort_order,
         	dataType: "jsonp",
         	jsonpCallback: "roundWayFlight"
     	});
@@ -919,7 +924,7 @@ function oneWayFlight(data){
 					$("#buy-btn-"+j).data("flight-type", "one-way");
 					$("#buy-btn-"+j).data("ob-dep-airport", data['flights'][j]['outboundRoutes'][0]['segments'][0]['departure']['airportDescription']);
 					$("#buy-btn-"+j).data("ob-arr-airport", data['flights'][j]['outboundRoutes'][0]['segments'][0]['arrival']['airportDescription']);
-					$("#buy-btn-"+j).data("ob_dep_date", ob_date);
+					$("#buy-btn-"+j).data("ob-dep-date", ob_date);
 					$("#buy-btn-"+j).data("ob-arr-date", getDateInfo(data['flights'][j]['outboundRoutes'][0]['segments'][0]['arrival']['date']));
 					$("#buy-btn-"+j).data("ob-dep-hr", ob_dep_hr);
 					$("#buy-btn-"+j).data("ob-arr-hr", ob_arr_hr);
@@ -964,7 +969,7 @@ function createOneWayBtnEvent(btn){
 		$.cookie('ob-flight-num', $(btn).data('ob-flight-num'), { path: '/' });
 		$.cookie('ob-dep-airport', $(btn).data('ob-dep-airport'), { path: '/' });
 		$.cookie('ob-arr-airport', $(btn).data('ob-arr-airport'), { path: '/' });
-		$.cookie('ob_dep_date', $(btn).data('ob_dep_date'), { path: '/' });
+		$.cookie('ob-dep-date', $(btn).data('ob-dep-date'), { path: '/' });
 		$.cookie('ob-arr-date', $(btn).data('ob-arr-date'), { path: '/' });
 		$.cookie('ob-dep-hr', $(btn).data('ob-dep-hr'), { path: '/' });
 		$.cookie('ob-arr-hr', $(btn).data('ob-arr-hr'), { path: '/' });
@@ -1000,29 +1005,6 @@ function roundWayFlight(data){
         		if( (data['page']-1)*(data['pageSize'])+j < data['total']){
         			console.log(data['flights']);
 	        		if ((data['flights'] != null) && (data['flights'][j].hasOwnProperty('outboundRoutes')) && (data['flights'][j].hasOwnProperty('inboundRoutes'))){
-						//info del precio
-						var flight_price = cur_flights_price[j] = parseInt(data['flights'][j]['price']['total']['total']);
-						var taxes_price = parseInt(data['flights'][j]['price']['total']['taxes']+data['flights'][j]['price']['total']['charges']);
-						var adult_price;
-						var child_price;
-						var infant_price					
-
-	        			if (data['flights'][j]['price']['adults'] == null){
-	        				adult_price = "-";
-	        			} else {
-	        				adult_price = data['flights'][j]['price']['adults']['baseFare']+" x"+data['flights'][j]['price']['adults']['quantity'];
-	        			}
-	        			if (data['flights'][j]['price']['children'] == null){
-	        				child_price = "-";
-	        			} else {
-	        				child_price = data['flights'][j]['price']['children']['baseFare']+" x"+data['flights'][j]['price']['children']['quantity'];
-	        			}
-	        			if (data['flights'][j]['price']['infants'] == null){
-	        				infant_price = "-";
-	        			} else {
-	        				infant_price = data['flights'][j]['price']['infants']['baseFare']+" x"+data['flights'][j]['price']['infants']['quantity'];
-	        			}
-
 
 						// informacion del vuelo de ida
 	        			var ob_date = getDateInfo(data['flights'][j]['outboundRoutes'][0]['segments'][0]['departure']['date']);
@@ -1054,6 +1036,37 @@ function roundWayFlight(data){
 						var ib_airline_name = data['flights'][j]['inboundRoutes'][0]['segments'][0]['airlineName'];
 						var ib_airline_pic;	
 
+					//info del precio
+						var flight_price = cur_flights_price[j] = data['flights'][j]['price']['total']['total'];
+						var adult_price;
+						var child_price;
+						var infant_price
+						var taxes_price;
+
+	        			if (data['flights'][j]['price']['adults'] == null){
+	        				cur_flights_adult_price[j] = 0;
+	        				cur_flights_adult_quant[j] = 0;
+	        			} else {
+	        				cur_flights_adult_quant[j] = data['flights'][j]['price']['adults']['quantity'];
+	        				cur_flights_adult_price[j] = data['flights'][j]['price']['adults']['baseFare']*data['flights'][j]['price']['adults']['quantity'];
+	        			}
+	        			if (data['flights'][j]['price']['children'] == null){
+	        				cur_flights_children_price[j] = 0;
+	        				cur_flights_children_quant[j] = 0;
+	        			} else {
+	        				cur_flights_children_quant[j] = data['flights'][j]['price']['children']['quantity'];
+	        				cur_flights_children_price[j] = data['flights'][j]['price']['children']['baseFare']*data['flights'][j]['price']['children']['quantity'];
+	        			}
+	        			if (data['flights'][j]['price']['infants'] == null){
+	        				cur_flights_infants_price[j] = 0;
+	        				cur_flights_infants_quant[j] = 0;
+	        			} else {
+	        				cur_flights_infants_quant[j] = data['flights'][j]['price']['infants']['quantity'];
+	        				cur_flights_infants_price[j] = data['flights'][j]['price']['infants']['baseFare']*data['flights'][j]['price']['infants']['quantity'];
+	        			}
+
+	        			cur_flights_tax_price[j] = data['flights'][j]['price']['total']['taxes']+data['flights'][j]['price']['total']['charges'];
+
 						for (var k=0; k<data['filters'][0]['values'].length; k++) {
 							if (ib_airline_name == data['filters'][0]['values'][k]['name']) {
 								ib_airline_pic = data['filters'][0]['values'][k]['logo'];
@@ -1063,9 +1076,47 @@ function roundWayFlight(data){
 						// tengo que guardarme los datos que voy a usar para mandarle por el href a la compra
 					}
 					//creo el div
-					$('#flights_row').append('<div class="well small-bottom-padding clearfix"><div class="span9"><table class="table"><thead><tr><th><i class="icon-circle-arrow-right icon-large"></i> '+ob_date+' <div class="pull-right">'+ob_dep_city+' ('+ob_dep_ap_id+') <i class="icon-caret-right icon-large"></i> '+ob_arr_city+' ('+ob_arr_ap_id+')</div></th></tr></thead><tbody><tr><td class="remove-bottom-padding"><ul class="inline small-bottom-margin"><li><b>Sale:</b> '+ob_dep_hr+'</li><li><b>Llega:</b> '+ob_arr_hr+'</li><li><i class="icon-time"></i> '+ob_dur+'</li><li>Directo</li><li><img src="'+ob_airline_pic+'" height="20" width="20"> '+ob_airline_name+'</li></ul></td></tr></tbody><thead><tr><th><i class="icon-circle-arrow-left icon-large"></i> '+ib_date+' <div class="pull-right">'+ib_dep_city+' ('+ib_dep_ap_id+') <i class="icon-caret-right icon-large"></i> '+ib_arr_city+' ('+ib_arr_ap_id+')</div></th></tr></thead><tbody><tr><td class="remove-bottom-padding"><ul class="inline small-bottom-margin"><li><b>Sale:</b> '+ib_dep_hr+'</li><li><b>Llega:</b> '+ib_arr_hr+'</li><li><i class="icon-time"></i> '+ib_dur+'</li><li>Directo</li><li><img src="'+ib_airline_pic+'" height="20" width="20"> '+ib_airline_name+'</li></ul></td></tr></tbody></table></div><div class="span3"><div class="well remove-bottom-margin remove-top-padding"><h3 class="text-center"><div id="cur_val_'+j+'">U$S'+flight_price+'</div></h3><div class="row-fluid"><div class="span12"><a id="popover'+j+'" rel="popover" class="btn btn-block thin-font" >Ver detalles</a></div></div><br><div class="row-fluid"><div class="span12"><a href="pasajeros.html" type="button" class="btn btn-inverse btn-block thin-font">Comprar</a></div></div></div></div></div>');
+					$('#flights_row').append('<div class="well small-bottom-padding clearfix"><div class="span9"><table class="table"><thead><tr><th><i class="icon-circle-arrow-right icon-large"></i> '+ob_date+' <div class="pull-right">'+ob_dep_city+' ('+ob_dep_ap_id+') <i class="icon-caret-right icon-large"></i> '+ob_arr_city+' ('+ob_arr_ap_id+')</div></th></tr></thead><tbody><tr><td class="remove-bottom-padding"><ul class="inline small-bottom-margin"><li><b>Sale:</b> '+ob_dep_hr+'</li><li><b>Llega:</b> '+ob_arr_hr+'</li><li><i class="icon-time"></i> '+ob_dur+'</li><li>Directo</li><li><img src="'+ob_airline_pic+'" height="20" width="20"> '+ob_airline_name+'</li></ul></td></tr></tbody><thead><tr><th><i class="icon-circle-arrow-left icon-large"></i> '+ib_date+' <div class="pull-right">'+ib_dep_city+' ('+ib_dep_ap_id+') <i class="icon-caret-right icon-large"></i> '+ib_arr_city+' ('+ib_arr_ap_id+')</div></th></tr></thead><tbody><tr><td class="remove-bottom-padding"><ul class="inline small-bottom-margin"><li><b>Sale:</b> '+ib_dep_hr+'</li><li><b>Llega:</b> '+ib_arr_hr+'</li><li><i class="icon-time"></i> '+ib_dur+'</li><li>Directo</li><li><img src="'+ib_airline_pic+'" height="20" width="20"> '+ib_airline_name+'</li></ul></td></tr></tbody></table></div><div class="span3"><div class="well remove-bottom-margin remove-top-padding"><h3 class="text-center"><div id="cur_val_'+j+'">U$S'+flight_price+'</div></h3><div class="row-fluid"><div class="span12"><a id="popover'+j+'" rel="popover" class="btn btn-block thin-font" >Ver detalles</a></div></div><br><div class="row-fluid"><div class="span12"><a id="buy-btn-'+j+'" type="button" class="btn btn-inverse btn-block thin-font">Comprar</a></div></div></div></div></div>');
 				
+					coinUpdate("Dolares",$("#currencies").val());
 
+					// Le pongo la data el btn de buy: tipo de vuelo
+					$("#buy-btn-"+j).data("flight-type", "round-way");
+
+					//ida
+					$("#buy-btn-"+j).data("ob-flight-num", data['flights'][j]['outboundRoutes'][0]['segments'][0]['flightNumber']);					
+					$("#buy-btn-"+j).data("ob-dep-airport", data['flights'][j]['outboundRoutes'][0]['segments'][0]['departure']['airportDescription']);
+					$("#buy-btn-"+j).data("ob-arr-airport", data['flights'][j]['outboundRoutes'][0]['segments'][0]['arrival']['airportDescription']);
+					$("#buy-btn-"+j).data("ob-dep-date", ob_date);
+					$("#buy-btn-"+j).data("ob-arr-date", getDateInfo(data['flights'][j]['outboundRoutes'][0]['segments'][0]['arrival']['date']));
+					$("#buy-btn-"+j).data("ob-dep-hr", ob_dep_hr);
+					$("#buy-btn-"+j).data("ob-arr-hr", ob_arr_hr);
+
+					//vuelta
+					$("#buy-btn-"+j).data("ib-flight-num", data['flights'][j]['inboundRoutes'][0]['segments'][0]['flightNumber']);					
+					$("#buy-btn-"+j).data("ib-dep-airport", data['flights'][j]['inboundRoutes'][0]['segments'][0]['departure']['airportDescription']);
+					$("#buy-btn-"+j).data("ib-arr-airport", data['flights'][j]['inboundRoutes'][0]['segments'][0]['arrival']['airportDescription']);
+					$("#buy-btn-"+j).data("ib-dep-date", ib_date);
+					$("#buy-btn-"+j).data("ib-arr-date", getDateInfo(data['flights'][j]['inboundRoutes'][0]['segments'][0]['arrival']['date']));
+					$("#buy-btn-"+j).data("ib-dep-hr", ib_dep_hr);
+					$("#buy-btn-"+j).data("ib-arr-hr", ib_arr_hr);
+
+					//pasajeros
+					$("#buy-btn-"+j).data("adult-price", cur_flights_adult_price[j]);
+					$("#buy-btn-"+j).data("child-price", cur_flights_children_price[j]);
+					$("#buy-btn-"+j).data("infant-price", cur_flights_infants_price[j]);
+					$("#buy-btn-"+j).data("tax-price",cur_flights_tax_price[j]);
+					$("#buy-btn-"+j).data("total-price", cur_flights_price[j]);
+					$("#buy-btn-"+j).data("adult-num", cur_flights_adult_quant[j]);
+					$("#buy-btn-"+j).data("child-num", cur_flights_children_quant[j]);
+					$("#buy-btn-"+j).data("infant-num", cur_flights_infants_quant[j]);
+
+					createRoundWayBtnEvent('#buy-btn-'+j);
+
+					// actualizo la leyendea de cant de vuelos actuales
+					if(first_search){
+						$("#found_num").text(data['total']);
+					}
 				}
         	}
 		}
@@ -1079,6 +1130,17 @@ function roundWayFlight(data){
 	
 	//termino de cargar
 	$('#loading-modal').modal('hide');
+}
+
+function createRoundWayBtnEvent(btn){
+	$.cookie('ib-flight-num', $(btn).data('ib-flight-num'), { path: '/' });
+	$.cookie('ib-dep-airport', $(btn).data('ib-dep-airport'), { path: '/' });
+	$.cookie('ib-arr-airport', $(btn).data('ib-arr-airport'), { path: '/' });
+	$.cookie('ib-dep-date', $(btn).data('ib-dep-date'), { path: '/' });
+	$.cookie('ib-arr-date', $(btn).data('ib-arr-date'), { path: '/' });
+	$.cookie('ib-dep-hr', $(btn).data('ib-dep-hr'), { path: '/' });
+	$.cookie('ib-arr-hr', $(btn).data('ib-arr-hr'), { path: '/' });
+	createOneWayBtnEvent(btn);
 }
 
 function createPagination(total, perPage, cur_page){
