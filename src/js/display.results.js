@@ -26,7 +26,7 @@ var cur_flights_adult_quant = new Array();
 var cur_flights_children_quant = new Array();
 var cur_flights_infants_quant = new Array();
 
-// Variables globales de la primer busqueda
+// Variables globales de la primer búsqueda
 var first_search = true;
 var max_results_price;
 var min_results_price;
@@ -53,7 +53,7 @@ $(document).ready(function() {
 		// preparara los efectos de filtro
 		prepareFilterEffects();
 
-		// cargo las opciones de busqueda y hago la busqueda
+		// cargo las opciones de búsqueda y hago la búsqueda
 		loadFields();
 });
 
@@ -572,7 +572,7 @@ function loadFields(){
 	// instancio el paginado
 	createPagination();
 
-	// datos de la busqueda del home
+	// datos de la búsqueda del home
 	var flight_type = $.cookie('flight_type');
 	var from = $.cookie('from');
 	var to = $.cookie('to');
@@ -585,7 +585,7 @@ function loadFields(){
 	var children = $.cookie('children');
 	var infants = $.cookie('infants');
 
-	// cargar parametros de busqueda
+	// cargar parametros de búsqueda
 	$('#from').val(from);
 	$('#to').val(to);
 	$('#dep_date').val(dep_date);
@@ -719,7 +719,7 @@ function loadCurrencies(data){
         console.log(JSON.stringify(data));
 	}
 
-	// hago la busqueda inicial con los campos que llene
+	// hago la búsqueda inicial con los campos que llene
 	searchFlights(1);
 
 	//ya puede preparar el evento de la matriz comparativa
@@ -854,7 +854,7 @@ function searchFlights(page){
 	    							});
 							} else {
 								$('#loading-modal').modal('hide');
-								$('#flights_row').append('<div id="flights_row"class="row-fluid"><div class="well clearfix"><div class="span12"><h3 class="text-center"><i class="icon-warning-sign"></i> No pudimos encontrar ningún vuelo!</h3><p class="text-center">Hubo un error inesperado en la busqueda. Asegúrese de acceder desde la página principal.</p></div></div></div>')
+								$('#flights_row').append('<div id="flights_row"class="row-fluid"><div class="well clearfix"><div class="span12"><h3 class="text-center"><i class="icon-warning-sign"></i> No pudimos encontrar ningún vuelo!</h3><p class="text-center">Hubo un error inesperado en la búsqueda. Asegúrese de acceder desde la página principal.</p></div></div></div>')
 			        			console.log(JSON.stringify(data));
 			        			return;
 							}
@@ -862,7 +862,7 @@ function searchFlights(page){
 	    			}
 				} else {
 					$('#loading-modal').modal('hide');
-					$('#flights_row').append('<div id="flights_row"class="row-fluid"><div class="well clearfix"><div class="span12"><h3 class="text-center"><i class="icon-warning-sign"></i> No pudimos encontrar ningún vuelo!</h3><p class="text-center">Hubo un error inesperado en la busqueda. Asegúrese de acceder desde la página principal.</p></div></div></div>')
+					$('#flights_row').append('<div id="flights_row"class="row-fluid"><div class="well clearfix"><div class="span12"><h3 class="text-center"><i class="icon-warning-sign"></i> No pudimos encontrar ningún vuelo!</h3><p class="text-center">Hubo un error inesperado en la búsqueda. Asegúrese de acceder desde la página principal.</p></div></div></div>')
         			console.log(JSON.stringify(data));
         			return;
 				}
@@ -988,7 +988,7 @@ function oneWayFlight(data){
         	}
 		}		
 	}else{
-		$('#flights_row').append('<div id="flights_row"class="row-fluid"><div class="well clearfix"><div class="span12"><h3 class="text-center"><i class="icon-warning-sign"></i> No pudimos encontrar ningún vuelo!</h3><p class="text-center">Hubo un error inesperado en la busqueda</p></div></div></div>')
+		$('#flights_row').append('<div id="flights_row"class="row-fluid"><div class="well clearfix"><div class="span12"><h3 class="text-center"><i class="icon-warning-sign"></i> No pudimos encontrar ningún vuelo!</h3><p class="text-center">Hubo un error inesperado en la búsqueda</p></div></div></div>')
         console.log(JSON.stringify(data));
         $('#loading-modal').modal('hide');
         return;
@@ -1164,7 +1164,7 @@ function roundWayFlight(data){
         	}
 		}
 	}else{
-		$('#flights_row').append('<div id="flights_row"class="row-fluid"><div class="well clearfix"><div class="span12"><h3 class="text-center"><i class="icon-warning-sign"></i> No pudimos encontrar ningún vuelo!</h3><p class="text-center">Hubo un error inesperado en la busqueda</p></div></div></div>')
+		$('#flights_row').append('<div id="flights_row"class="row-fluid"><div class="well clearfix"><div class="span12"><h3 class="text-center"><i class="icon-warning-sign"></i> No pudimos encontrar ningún vuelo!</h3><p class="text-center">Hubo un error inesperado en la búsqueda</p></div></div></div>')
         console.log(JSON.stringify(data));
 	}
 

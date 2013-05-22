@@ -61,16 +61,50 @@
 										</div>
 									</div>
 									<div class="row-fluid">
-										<div id="expiration_credit_card_span" class="span6">
+										<div class="span6">
+											<div id="month_expiration_credit_card_span" class="span6">
 											<label>Fecha de vencimiento</label>
-											<input id="expiration_credit_card" class="fill_in span12" type="text" placeholder="Ingrese la fecha de vencimiento de la tarjeta">
-											<p id="expiration_credit_card_error" class="text-error">
-												<i class="icon-remove"></i><small id="expiration_credit_card_error_text"> Ingrese la fecha de vencimiento de la tarjeta</small>
-											</p>
+											<select id="month_expiration_credit_card" class="fill_in remove-bottom-margin span12">
+												<option value="month">Mes</option>
+												<option value="01">01</option>
+												<option value="02">02</option>
+												<option value="03">03</option>
+												<option value="04">04</option>
+												<option value="05">05</option>
+												<option value="06">06</option>
+												<option value="07">07</option>
+												<option value="08">08</option>
+												<option value="09">09</option>
+												<option value="10">10</option>
+												<option value="11">11</option>
+												<option value="12">12</option>
+											</select>
 										</div>
+										<div id="year_expiration_credit_card_span" class="span6">
+											<label></label>
+											<select id="year_expiration_credit_card" class="fill_in remove-bottom-margin add-margin-top span12">
+												<option value="year">Año</option>
+												<option value="13">2013</option>
+												<option value="14">2014</option>
+												<option value="15">2015</option>
+												<option value="16">2016</option>
+												<option value="17">2017</option>
+												<option value="18">2018</option>
+												<option value="19">2019</option>
+												<option value="20">2020</option>
+												<option value="21">2021</option>
+												<option value="22">2022</option>
+												<option value="23">2023</option>
+											</select>
+										</div>
+										<p id="expiration_credit_card_error" class="text-error">
+												<i class="icon-remove"></i><small id="expiration_credit_card_error_text"> Ingrese una fecha de vencimiento</small>
+											</p>
+									</div>
+
 										<div id="security_credit_card_span" class="span6">
 											<label>Código de seguridad</label>
-											<input id="security_credit_card" class="fill_in span12" type="text" placeholder="Ingrese el código de seguridad">
+											<input id="security_credit_card" class="fill_in span6" type="text" placeholder="Ingrese el código">
 											<p id="security_credit_card_error" class="text-error">
 												<i class="icon-remove"></i><small id="security_credit_card_error_text"> Ingrese el código de seguridad de la tarjeta</small>
 											</p>
@@ -123,7 +157,7 @@
 								<div id="well_billing_address" class="well clearfix">
 								<div class="span12">
 									<legend>
-										<i class="icon-home"></i> Dirección de facturación
+										<i class="icon-truck"></i> Dirección de facturación
 									</legend>
 									<div id="countries_cities" class="row-fluid">
 										<div id="country_billing_address_span" class="span6">
@@ -147,9 +181,9 @@
 										</div>
 											<div id="address_billing_address_span"  class="span6">
 												<label>Dirección</label>
-												<input id="address_billing_address" class="fill_in span12" type="text" placeholder="Ingrese la dirección de facturación">
+												<input id="address_billing_address" class="fill_in span12" type="text" placeholder="Ingrese una dirección">
 											<p id="address_billing_address_error" class="text-error">
-												<i class="icon-remove"></i><small id="address_billing_address_error_text"> Ingrese la dirección de facturación</small>
+												<i class="icon-remove"></i><small id="address_billing_address_error_text"> Ingrese una dirección</small>
 											</p>
 										</div>
 									</div>
@@ -191,7 +225,7 @@
 										</div>
 										<div id="email_credit_card_span" class="span6">
 											<label>Correo electrónico</label>
-											<input id="email_credit_card" class="fill_in span12" type="text" placeholder="Ingrese su dirección de correo">
+											<input id="email_credit_card" class="fill_in span12" type="text" placeholder="Ingrese su dirección de correo electrónico">
 											<p id="email_credit_card_error" class="text-error">
 												<i class="icon-remove"></i><small id="email_credit_card_error_text"> Ingrese su direccion de correo</small>
 											</p>
@@ -208,8 +242,9 @@
 						<div class="row-fluid">
 							<div class="span12">
 								<div class="well clearfix">
-									<a id="next_button" type="button" class="btn btn-inverse pull-right thin-font"><span id="next_button_text"> Pago </span><i id="img_icon" class="icon-caret-right"></i> </a>
-									<a href="results.html" id="prev_button" type="button" class="btn btn-inverse pull-left thin-font"><i class="icon-caret-left"></i><span id="prev_button_text"> Resultados</span></a>
+									<a id="next_button" type="button" class="btn btn-inverse pull-right thin-font"><span id="next_button_text"> Pago </span></a>
+									<small id="add-left-margin" class="thin-font">Antes de finalizar su compra podrá editar sus datos</small>
+									<a href="results.html" id="prev_button" type="button" class="btn btn-inverse pull-left thin-font"><span id="prev_button_text"> Volver a resultados</span></a>
 								</div>
 							</div>
 						</div>
@@ -230,10 +265,10 @@
 									<b>Destino:</b><span id="ob_destination_airport"> Cordoba, Pajas Blancas</span>
 								</p>
 								<p>
-									<b>Fecha partida:</b><span id="ob_origin_date"> 22-10-2015 (23:00)</span>
+									<b>Sale:</b><span id="ob_origin_date"> 22-10-2015 (23:00)</span>
 								</p>
 								<p>
-									<b>Fecha llegada:</b><span id="ob_destination_date"> 22-10-2015 (24:00)</span>
+									<b>Llega:</b><span id="ob_destination_date"> 22-10-2015 (24:00)</span>
 								</p>
 							</div>
 						</div>
@@ -251,10 +286,10 @@
 									<b>Destino:</b><span id="ib_destination_airport"> Cordoba, Pajas Blancas</span>
 								</p>
 								<p>
-									<b>Fecha partida:</b><span id="ib_origin_date"> 22-10-2015 (23:00)</span>
+									<b>Sale:</b><span id="ib_origin_date"> 22-10-2015 (23:00)</span>
 								</p>
 								<p>
-									<b>Fecha llegada:</b><span id="ib_destination_date"> 22-10-2015 (24:00)</span>
+									<b>Llega:</b><span id="ib_destination_date"> 22-10-2015 (24:00)</span>
 								</p>
 							</div>
 						</div>
@@ -305,7 +340,7 @@
 		<!-- Modal de error -->
 		<div id="modalError" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-body">
-				<legend>
+				<legend><i class="icon-warning-sign"></i>
 					Debe guardar todos los campos para continuar
 				</legend>
 				<p>
@@ -320,7 +355,7 @@
 		<!-- Modal de error sin vuelo-->
 	<div id="flightError" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-body">
-				<legend>
+				<legend><i class="icon-warning-sign"></i>
 					Hubo un error en la reserva de su vuelo
 				</legend>
 				<p>

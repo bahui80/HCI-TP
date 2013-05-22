@@ -1,10 +1,3 @@
-///////////////AGREGAR EL BOTON DEL ALENDARIO????????????????????????///////////////////////////////////
-
-
-
-
-
-
 // Variables globales
 var citiesAirportsArray = new Array();
 var citiesAirportsCodeArray = new Array();
@@ -220,7 +213,7 @@ function fillAirportsArray(data){
 				$("#from_error").show();
 				error_on = true;
 			} else {
-				$("#from_error_text").text(" Ingrese un origen valido");
+				$("#from_error_text").text(" Ingrese un origen válido");
 				$("#from_error").show();
 				error_on = true;
 			}
@@ -233,7 +226,7 @@ function fillAirportsArray(data){
 				$("#destination_error").show();
 				error_on = true;
 			} else {
-				$("#to_error_text").text(" Ingrese un destino valido");
+				$("#to_error_text").text(" Ingrese un destino válido");
 				$("#destination_error").show();
 				error_on = true;
 			}
@@ -252,7 +245,7 @@ function fillAirportsArray(data){
 			error_on = true;
 		} else if(!validDate($("#dep_date").val())) {
 			$("#depart_span").addClass('control-group error');
-			$("#dep_date_error_text").text(" Ingrese una fecha de ida valida");
+			$("#dep_date_error_text").text(" Ingrese una fecha de ida válida");
 			$("#depart_date_error").show();
 			error_on = true;
 		} else if(tooClose($("#dep_date").val())) {
@@ -279,7 +272,7 @@ function fillAirportsArray(data){
 				error_on = true;
 			} else if(!validDate($("#ret_date").val())) {
 				$("#return_span").addClass('control-group error');
-				$("#ret_date_error_text").text(" Ingrese una fecha de vuelta valida");
+				$("#ret_date_error_text").text(" Ingrese una fecha de vuelta válida");
 				$("#return_date_error").show();
 				error_on = true;
 			} else if(tooClose($("#ret_date").val())) {

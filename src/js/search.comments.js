@@ -88,7 +88,7 @@ function preparePostComment(){
 
 		if($("#comment_airline_name").val() == ""){
 			$("#comment_airline_name_span").addClass('control-group error');
-			$("#comment_airline_name_error_text").text(" Ingrese una aerolinea");
+			$("#comment_airline_name_error_text").text(" Ingrese una aerolínea");
 			$("#comment_airline_name_error").show();
 			error_on = true;
 		}
@@ -103,7 +103,7 @@ function preparePostComment(){
 		if(!containsAirline){
 			$("#comment_airline_name_span").addClass('control-group error');
 			$("#comment_airline_name_error").show();
-			$("#comment_airline_name_error_text").text(" Ingrese una aerolinea válida");
+			$("#comment_airline_name_error_text").text(" Ingrese una aerolínea válida");
 			error_on = true;
 		}
 
@@ -183,7 +183,7 @@ function prepareSearchComment(){
 
 		if($("#airline_name").val() == ""){
 			$("#airline_name_span").addClass('control-group error');
-			$("#airline_name_error_text").text(" Ingrese una aerolinea");
+			$("#airline_name_error_text").text(" Ingrese una aerolínea");
 			$("#airline_name_error").show();
 			error_on = true;
 		}
@@ -198,7 +198,7 @@ function prepareSearchComment(){
 		if(!containsAirline){
 			$("#airline_name_span").addClass('control-group error');
 			$("#airline_name_error").show();
-			$("#airline_name_error_text").text(" Ingrese una aerolinea válida");
+			$("#airline_name_error_text").text(" Ingrese una aerolínea válida");
 			error_on = true;
 		}
 

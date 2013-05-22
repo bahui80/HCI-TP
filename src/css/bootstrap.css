@@ -6356,3 +6356,31 @@ a.badge:focus {
 .margin-fix{
   margin-top: 40px !important;
 }
+
+#add-left-margin {
+  margin-left: 70px !important;
+}
+
+.grey-text{
+  color: #707070;
+}
+
+#add-left-margin2 {
+  margin-left: 220px;
+}
+
+.add-margin-top {
+  margin-top: 20px !important;
+}
+
+.error-select {
+  border-color: #b94a48;
+  margin-bottom: 0px !important;
+  -webkit-box-shadow: 0 0 1px#b94a48;
+      -moz-box-shadow: 0 0 1px #b94a48;
+      box-shadow: 0 0 1px #b94a48;
+}
+
+input:disabled {
+  cursor:default;
+};
