@@ -68,11 +68,14 @@ function loadData(){
 		$("#flight_number_btn").removeClass("active");
 		$("#airline_name_span").show();
 		$("#flight_num_span").hide();
+		$(".flight-sort-filter").show();
 	} else {
 		$("#airline_name_btn").removeClass("active");
 		$("#flight_number_btn").addClass("active");
 		$("#flight_num_span").show();
+		$(".flight-sort-filter").hide();
 	}
+
 
 
 	//cargo la busqueda

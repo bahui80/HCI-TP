@@ -27,12 +27,14 @@ $(document).ready(function() {
 		$("#flight_num_span").fadeOut(500);
 		$("#airline_name_span").fadeIn(500);
 		$("#flight_num").val("");
+		$(".flight-sort-filter").show();
 	});
 	
 	$("#flight_number_btn").click(function () {
 		$("#airline_name_btn").removeClass('active');
 		$("#flight_number_btn").addClass('active');
 		$("#flight_num_span").fadeIn(500);
+		$(".flight-sort-filter").hide();
 	});
 });
 
