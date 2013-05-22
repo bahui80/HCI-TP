@@ -128,7 +128,7 @@ function postComment(airline, flight, amability, food, punctuality, frequent_pas
 	objJson.mileageProgramRating = parseInt(frequent_passenger);
 	objJson.comfortRating = parseInt(comfort);
 	objJson.qualityPriceRating = parseInt(price_quality);
-	if (recommend == "Si"){
+	if (recommend == "true"){
 		objJson.yesRecommend = true;
 	} else{
 		objJson.yesRecommend = false;
