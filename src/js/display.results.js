@@ -745,7 +745,7 @@ function searchFlights(page){
 	var sliders_val = $(".noUiSlider").val();
 	var min_price = "";
 	var max_price = "";	
-	if(!first_search){
+	if(!first_search && flight_type == "one_way"){
 		// el +1 y el -1 son para arreglar la posible impresicion por cambio de moneda
 		min_price = (sliders_val[0]-1)*cur_ratio;
 		max_price = (sliders_val[1]+1)*cur_ratio;
@@ -875,6 +875,7 @@ function searchFlights(page){
 			});
 		}
 	} else {
+		alert("http://eiffel.itba.edu.ar/hci/service2/Booking.groovy?method=GetRoundTripFlights2&from="+from+"&to="+to+"&dep_date="+dep_date+"&ret_date="+ret_date+"&adults="+adults+"&children="+children+"&infants="+infants+"&airline_id="+airline_id+"&min_price="+min_price+"&max_price="+max_price+"&cabin_type="+cabin_type+"&min_dep_time="+min_dep_time+"&max_dep_time="+max_dep_time+"&min_ret_time="+min_ret_time+"&max_ret_time="+max_ret_time+"&page="+page+"&page_size="+page_size+"&sort_key="+sort_key+"&sort_order="+sort_order);
 		$.ajax({
 			url: "http://eiffel.itba.edu.ar/hci/service2/Booking.groovy?method=GetRoundTripFlights2&from="+from+"&to="+to+"&dep_date="+dep_date+"&ret_date="+ret_date+"&adults="+adults+"&children="+children+"&infants="+infants+"&airline_id="+airline_id+"&min_price="+min_price+"&max_price="+max_price+"&cabin_type="+cabin_type+"&min_dep_time="+min_dep_time+"&max_dep_time="+max_dep_time+"&min_ret_time="+min_ret_time+"&max_ret_time="+max_ret_time+"&page="+page+"&page_size="+page_size+"&sort_key="+sort_key+"&sort_order="+sort_order,
         	dataType: "jsonp",
