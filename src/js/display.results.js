@@ -37,6 +37,7 @@ $(document).ready(function() {
 		//hago espacio para los resultados
 		$('#flights_row').empty();
 
+		//solo muestro lo de la matriz si encontro algun vuelo
 		$("#results_num_div").hide();
 
 		// muestro un modal incerrable de cargando hasta que termine de buscar el vuelo
@@ -212,6 +213,9 @@ function searchCheapestAndDraw(){
 	if(flight_type == "one_way"){
 		$('#loading-modal').modal();
 		recursiveOneWayFlightSearch(0, airline_id_arr.length, from, to, dep_date, adults, children, infants, cabin_type, min_dep_time, max_dep_time);
+	} else {
+		$('#loading-modal').modal();
+		recursiveRoundWayFlightSearch(0, airline_id_arr.length, from, to, dep_date, adults, children, infants, cabin_type, min_dep_time, max_dep_time, min_ret_time, max_ret_time, ret_date);
 	}
 }
 
@@ -238,9 +242,42 @@ function recursiveOneWayFlightSearch(i,j, from, to, dep_date, adults, children, 
 				airline_cheapest_flight_dur_arr[i] = getDuration(data['flights'][0]['outboundRoutes'][0]['segments'][0]['duration']);
 			}
 		} else {
+				airline_cheapest_flight_price_arr[i] = "-";
+				airline_cheapest_flight_dur_arr[i] = "-";
 			console.log(JSON.stringify(data));
 		}
 		recursiveOneWayFlightSearch(i+1,j, from, to, dep_date, adults, children, infants, cabin_type, min_dep_time, max_dep_time);
+	});
+}
+
+function recursiveRoundWayFlightSearch(i,j, from, to, dep_date, adults, children, infants, cabin_type, min_dep_time, max_dep_time, min_ret_time, max_ret_time, ret_date){
+	if (i == j){
+		//cierro el modal
+		$('#loading-modal').modal('hide');
+		$("#loading-text").text("Por favor espere mientras buscamos los mejores precios");
+		drawMatrix();
+		coinUpdate("Dolares",$("#currencies").val());
+		return
+	}
+	$("#loading-text").text("Buscando el mejor precio de "+airline_name_arr[i] );
+	$.ajax({
+		url: "http://eiffel.itba.edu.ar/hci/service2/Booking.groovy?method=GetRoundTripFlights2&from="+from+"&to="+to+"&dep_date="+dep_date+"&ret_date="+ret_date+"&adults="+adults+"&children="+children+"&infants="+infants+"&airline_id="+airline_id_arr[i]+"&min_price=&max_price=&cabin_type="+cabin_type+"&min_dep_time="+min_dep_time+"&max_dep_time="+max_dep_time+"&min_ret_time="+min_ret_time+"&max_ret_time="+max_ret_time+"&page=1&page_size=1&sort_key=total&sort_order=asc",
+   		dataType: "jsonp",
+	}).done(function(data) {
+		if(!data.hasOwnProperty("error")){
+			if(data['total'] == 0){
+				airline_cheapest_flight_price_arr[i] = "-";
+				airline_cheapest_flight_dur_arr[i] = "-";
+			}else{
+				airline_cheapest_flight_price_arr[i] = parseInt(data['flights'][0]['price']['total']['total']);
+				airline_cheapest_flight_dur_arr[i] = getDuration(data['flights'][0]['outboundRoutes'][0]['segments'][0]['duration']);
+			}
+		} else {
+				airline_cheapest_flight_price_arr[i] = "-";
+				airline_cheapest_flight_dur_arr[i] = "-";
+			console.log(JSON.stringify(data));
+		}
+		recursiveRoundWayFlightSearch(i+1,j, from, to, dep_date, adults, children, infants, cabin_type, min_dep_time, max_dep_time, min_ret_time, max_ret_time, ret_date);
 	});
 }
 
@@ -811,14 +848,16 @@ function searchFlights(page){
 	        							jsonpCallback: "oneWayFlight"
 	    							});
 							} else {
-								$('#flights_row').append('<div id="flights_row"class="row-fluid"><div class="well clearfix"><div class="span12"><h3 class="text-center"><i class="icon-warning-sign"></i> No pudimos encontrar ningún vuelo!</h3><p class="text-center">Hubo un error inesperado en la busqueda</p></div></div></div>')
+								$('#loading-modal').modal('hide');
+								$('#flights_row').append('<div id="flights_row"class="row-fluid"><div class="well clearfix"><div class="span12"><h3 class="text-center"><i class="icon-warning-sign"></i> No pudimos encontrar ningún vuelo!</h3><p class="text-center">Hubo un error inesperado en la busqueda. Asegúrese de acceder desde la página principal.</p></div></div></div>')
 			        			console.log(JSON.stringify(data));
 			        			return;
 							}
 						});
 	    			}
 				} else {
-					$('#flights_row').append('<div id="flights_row"class="row-fluid"><div class="well clearfix"><div class="span12"><h3 class="text-center"><i class="icon-warning-sign"></i> No pudimos encontrar ningún vuelo!</h3><p class="text-center">Hubo un error inesperado en la busqueda</p></div></div></div>')
+					$('#loading-modal').modal('hide');
+					$('#flights_row').append('<div id="flights_row"class="row-fluid"><div class="well clearfix"><div class="span12"><h3 class="text-center"><i class="icon-warning-sign"></i> No pudimos encontrar ningún vuelo!</h3><p class="text-center">Hubo un error inesperado en la busqueda. Asegúrese de acceder desde la página principal.</p></div></div></div>')
         			console.log(JSON.stringify(data));
         			return;
 				}
@@ -831,7 +870,6 @@ function searchFlights(page){
 			});
 		}
 	} else {
-		// FALTA IMPLEMENTAR
 		$.ajax({
 			url: "http://eiffel.itba.edu.ar/hci/service2/Booking.groovy?method=GetRoundTripFlights2&from="+from+"&to="+to+"&dep_date="+dep_date+"&ret_date="+ret_date+"&adults="+adults+"&children="+children+"&infants="+infants+"&airline_id="+airline_id+"&min_price="+min_price+"&max_price="+max_price+"&cabin_type="+cabin_type+"&min_dep_time="+min_dep_time+"&max_dep_time="+max_dep_time+"&min_ret_time="+min_ret_time+"&max_ret_time="+max_ret_time+"&page="+page+"&page_size="+page_size+"&sort_key="+sort_key+"&sort_order="+sort_order,
         	dataType: "jsonp",
@@ -940,9 +978,7 @@ function oneWayFlight(data){
 					createOneWayBtnEvent('#buy-btn-'+j);
 
 					// actualizo la leyendea de cant de vuelos actuales
-					if(first_search){
-						$("#found_num").text(data['total']);
-					}
+					$("#found_num").text(data['total']);
 				}
         	}
 		}		
@@ -951,10 +987,6 @@ function oneWayFlight(data){
         console.log(JSON.stringify(data));
         $('#loading-modal').modal('hide');
         return;
-	}
-
-	if(first_search && data['total'] == 0){
-		$("#compare-airlines").addClass("disabled");
 	}
 
 	//termino de cargar
@@ -997,9 +1029,9 @@ function roundWayFlight(data){
 
 	if(!data.hasOwnProperty("error")){
 		if(data['total'] == 0){
-			$("#pagination-row").hide();
-			$("#coin-sort-filters").hide();
-			$('#flights_row').append('<div class="row-fluid"><div class="well clearfix"><div class="span12"><h3 class="text-center"><i class="icon-warning-sign"></i> No pudimos encontrar ningún vuelo!</h3><p class="text-center"> No pudimos encontrar ningún vuelo!</h3><p class="text-center">Intenta buscando con otros parámetros o quitando filtros si haz aplicado alguno</p></div></div></div>')
+			$('#flights_row').append('<div id="flights_row"class="row-fluid"><div class="well clearfix"><div class="span12"><h3 class="text-center"><i class="icon-warning-sign"></i> No pudimos encontrar ningún vuelo!</h3><p class="text-center">Intenta buscando con otros parámetros o quitando filtros si haz aplicado alguno</p></div></div></div>')	
+			$("#pagination-row").slideUp(500);
+			$("#coin-sort-filters").slideUp(500);
 		}else{
         	for (var j=0;j<data['pageSize'];j++){
         		if( (data['page']-1)*(data['pageSize'])+j < data['total']){
@@ -1077,6 +1109,12 @@ function roundWayFlight(data){
 					//creo el div
 					$('#flights_row').append('<div class="well small-bottom-padding clearfix"><div class="span9"><table class="table"><thead><tr><th><i class="icon-circle-arrow-right icon-large"></i> '+ob_date+' <div class="pull-right">'+ob_dep_city+' ('+ob_dep_ap_id+') <i class="icon-caret-right icon-large"></i> '+ob_arr_city+' ('+ob_arr_ap_id+')</div></th></tr></thead><tbody><tr><td class="remove-bottom-padding"><ul class="inline small-bottom-margin"><li><b>Sale:</b> '+ob_dep_hr+'</li><li><b>Llega:</b> '+ob_arr_hr+'</li><li><i class="icon-time"></i> '+ob_dur+'</li><li>Directo</li><li><img src="'+ob_airline_pic+'" height="20" width="20"> '+ob_airline_name+'</li></ul></td></tr></tbody><thead><tr><th><i class="icon-circle-arrow-left icon-large"></i> '+ib_date+' <div class="pull-right">'+ib_dep_city+' ('+ib_dep_ap_id+') <i class="icon-caret-right icon-large"></i> '+ib_arr_city+' ('+ib_arr_ap_id+')</div></th></tr></thead><tbody><tr><td class="remove-bottom-padding"><ul class="inline small-bottom-margin"><li><b>Sale:</b> '+ib_dep_hr+'</li><li><b>Llega:</b> '+ib_arr_hr+'</li><li><i class="icon-time"></i> '+ib_dur+'</li><li>Directo</li><li><img src="'+ib_airline_pic+'" height="20" width="20"> '+ib_airline_name+'</li></ul></td></tr></tbody></table></div><div class="span3"><div class="well remove-bottom-margin remove-top-padding"><h3 class="text-center"><div id="cur_val_'+j+'">U$S'+flight_price+'</div></h3><div class="row-fluid"><div class="span12"><a id="popover'+j+'" rel="popover" class="btn btn-block thin-font" >Ver detalles</a></div></div><br><div class="row-fluid"><div class="span12"><a id="buy-btn-'+j+'" type="button" class="btn btn-inverse btn-block thin-font">Comprar</a></div></div></div></div></div>');
 				
+					//muestro los divs con filtros adicionales
+					$("#filters-div").slideDown(500);
+					$("#pagination-row").slideDown(500);
+					$("#coin-sort-filters").slideDown(500);
+					$("#results_num_div").slideDown(500);
+
 					coinUpdate("Dolares",$("#currencies").val());
 
 					// Le pongo la data el btn de buy: tipo de vuelo
@@ -1113,9 +1151,10 @@ function roundWayFlight(data){
 					createRoundWayBtnEvent('#buy-btn-'+j);
 
 					// actualizo la leyendea de cant de vuelos actuales
-					if(first_search){
-						$("#found_num").text(data['total']);
-					}
+					$("#found_num").text(data['total']);
+
+					// creo el paginador con los resultados
+					createPagination(data['total'], data['pageSize'], data['page']);
 				}
         	}
 		}
@@ -1124,11 +1163,11 @@ function roundWayFlight(data){
         console.log(JSON.stringify(data));
 	}
 
-	// creo el paginador con los resultados
-	createPagination(data['total'], data['pageSize'], data['page']);
 	
 	//termino de cargar
 	$('#loading-modal').modal('hide');
+
+	first_search = false;
 }
 
 function createRoundWayBtnEvent(btn){

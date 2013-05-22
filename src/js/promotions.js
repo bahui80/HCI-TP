@@ -39,7 +39,7 @@ function fillCitiesArray(data){
 		var my_long = data['cities'][myCities.indexOf(origin)]['longitude'];
 
 		$.ajax({
-            url: "http://eiffel.itba.edu.ar/hci/service2/Booking.groovy?method=GetFlightDeals&from="+origin_id,
+            url: "http://eiffel.itba.edu.ar/hci/service2/Booking.groovy?method=GetFlightDeals2&from="+origin_id,
 			dataType: "jsonp",
 			jsonpCallback: "offer_search",
         });
@@ -65,7 +65,7 @@ function offer_search(data){
 		var cityId = data['deals'][i]['cityId'];
 		var cityName = data['deals'][i]['cityName'];
 		var countryId = data['deals'][i]['countryName'];
-		var price = data['deals'][i]['price'];
+		var price = parseInt(data['deals'][i]['price']);
 		var moneda = data['currencyId'];
 		var content = '<p><b>'+cityName+':</b> U$D '+price+'</p><a id="search_offer_btn'+i+'" data-from="'+from+' data-from-id="'+from_id+' data-to="'+cityName+'" data-to-id="'+cityId+'" data-price="'+price+'" class="btn btn-inverse thin-font btn-block" onclick="createCookie(this)">Buscar vuelo</a>'
 		if(price >0 && price<200){
@@ -91,7 +91,8 @@ function createMarker(point, content, map, img) {
 		icon: img
 	});
 	var infowindow = new google.maps.InfoWindow({
-		content: content
+		content: content,
+		maxWidth: 700,
 	});
 	google.maps.event.addListener(marker, 'click', function() {
 	if(curr_infw) { curr_infw.close();}
@@ -108,8 +109,39 @@ function createCookie(button) {
     var to = $(button).data('to');
     var to_id = $(button).data('to-id');
     var price = $(button).data('price');
-    var today = new Date();
-    var dep_date = new Date(today.getFullYear(), today.getMonth(), today.getDate()+7);
-    dep_date = dep_date.getFullYear()+"-"+dep_date.getMonth()+"-"+dep_date.getDate();
-    console.log("Create Cookie");
+    var temp = new Date();
+    temp.setDate(temp.getDate());
+    var flight_date = new Date(temp.getFullYear(), temp.getMonth(), temp.getDate(), 0, 0, 0, 0);
+
+	var dateDay = flight_date.getDate()+2;
+    if(dateDay < 10){
+	   	dateDay = "0"+dateDay;
+	}
+
+	var dateMonth = (flight_date.getMonth()+1);
+	if(dateMonth < 10){
+	   	dateMonth = "0"+dateMonth;
+	}
+
+    dep_date = flight_date.getFullYear()+"-"+dateMonth+"-"+dateDay;
+    
+	$.cookie('flight_type', 'one_way', { path: '/' });		
+	
+	$.cookie('from', from, { path: '/' });
+	$.cookie('from_code', from_id, { path: '/' });
+	$.cookie('to', to, { path: '/' });
+	$.cookie('to_code', to_id, { path: '/' });
+	$.cookie('dep_date', dep_date, { path: '/' });
+	$.cookie('ret_date', "", { path: '/' });
+
+	$.cookie('adults', 1, { path: '/' });
+	$.cookie('children', 0, {  path: '/' });
+	$.cookie('infants', 0, { path: '/' });
+
+	$.cookie('airline', "", { path: '/' });
+	$.cookie('cabin_type', "", { path: '/' });
+	$.cookie('dep_time', "", { path: '/' });
+	$.cookie('ret_time', "", { path: '/' });
+
+	document.location.href="results.html";
 };

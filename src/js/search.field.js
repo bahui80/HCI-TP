@@ -255,6 +255,11 @@ function fillAirportsArray(data){
 			$("#dep_date_error_text").text(" Ingrese una fecha de ida valida");
 			$("#depart_date_error").show();
 			error_on = true;
+		} else if(tooClose($("#dep_date").val())) {
+			$("#depart_span").addClass('control-group error');
+			$("#dep_date_error_text").text(" La fecha debe ser al menos 2 días a partir de hoy");
+			$("#depart_date_error").show();
+			error_on = true;
 		} else {
 			var nowTemp = new Date();
 			var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
@@ -277,6 +282,11 @@ function fillAirportsArray(data){
 				$("#ret_date_error_text").text(" Ingrese una fecha de vuelta valida");
 				$("#return_date_error").show();
 				error_on = true;
+			} else if(tooClose($("#ret_date").val())) {
+				$("#return_span").addClass('control-group error');
+				$("#ret_date_error_text").text(" La fecha debe ser al menos 2 días a partir de hoy");
+				$("#return_date_error").show();
+				error_on = true;
 			} else if(stringToDate($("#dep_date").val()) >= stringToDate($("#ret_date").val())) {
 				$("#return_span").addClass('control-group error');
 				$("#ret_date_error_text").text(" Ingrese una fecha posterior a la de origen");
@@ -292,7 +302,6 @@ function fillAirportsArray(data){
 
 function searchFlight(){
 
-
 	// opciones basicas
 	if ($("#oneway_trip").hasClass('active')){
 		$.cookie('flight_type', 'one_way', { path: '/' });		
@@ -306,7 +315,7 @@ function searchFlight(){
 	$.cookie('dep_date', changeDateFormat($("#dep_date").val()), { path: '/' });
 	$.cookie('ret_date', changeDateFormat($("#ret_date").val()), { path: '/' });
 
-	// pasajeros
+	// pasajerosx	
 	$.cookie('adults', $("#adults").val(), { path: '/' });
 	$.cookie('children', $("#children").val(), {  path: '/' });
 	$.cookie('infants', $("#infants").val(), { path: '/' });
@@ -380,4 +389,15 @@ function stringToDate(stringDate) {
 	
 	date = new Date(dtYear, dtMonth - 1, dtDay, 0, 0, 0, 0);
 	return date;
+}
+
+function tooClose(date){
+	var dateType = stringToDate(date);
+	var temp = new Date();
+	temp.setDate(temp.getDate()+1);
+	if( dateType < temp){
+		return true;
+	} else {
+		return false;
+	}
 }

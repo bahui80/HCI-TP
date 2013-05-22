@@ -1,7 +1,7 @@
 $(document).ready(function(){
 	if(!are_cookies_enabled()){
 		$("body").empty();
-		$("body").append('<div class="navbar navbar-inverse navbar-static-top"><div class="navbar-inner"><div class="container text-center"><a class="brand" href="index.html">Quiero viajar!</a></div></div></div><br><div class="container"><div class="row-fluid"><div class="span12 well"><h1 class="text-center"><i class="icon-warning-sign "></i> Atención:</h1><h3 class="text-center thin-font">El sitio utiliza Cookies, asegurese de activarlas</h3></div></div></div>');
+		$("body").append('<div class="navbar navbar-inverse navbar-static-top"><div class="navbar-inner"><div class="container text-center"><a class="brand" href="index.html">Quiero viajar!</a></div></div></div><br><div class="container"><div class="row-fluid"><div class="span12 well"><h1 class="text-center"><i class="icon-warning-sign "></i> Atención</h1><h3 class="text-center thin-font">El sitio utiliza Cookies, asegúrese de activarlas</h3></div></div></div>');
 	}
 });
 
