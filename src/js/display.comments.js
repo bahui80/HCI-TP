@@ -168,7 +168,7 @@ function fillReviews(data){
         			var punctuality = '<div class="pull-left thin-font">Puntualidad </div><div class="pull-right">'+numberToStars(data['reviews'][j]['punctualityRating'])+'</div><br>';
         			var comfort = '<div class="pull-left thin-font">Confort </div><div class="pull-right">'+numberToStars(data['reviews'][j]['comfortRating'])+'</div><br>';
         			var quality_price = '<div class="pull-left thin-font">Precio/calidad </div><div class="pull-right">'+numberToStars(data['reviews'][j]['qualityPriceRating'])+'</div><br>';
-        			var frequent_passenger = '<div class="pull-left thin-font">Viajero frecuente </div><div class="pull-right">'+numberToStars(data['reviews'][j]['qualityPriceRating'])+'</div><br>';
+        			var frequent_passenger = '<div class="pull-left thin-font">Viajero frecuente </div><div class="pull-right">'+numberToStars(data['reviews'][j]['mileageProgramRating'])+'</div><br>';
         			var recommend = data['reviews'][j]['yesRecommend'];
         			var comments = data['reviews'][j]['comments'];
 
