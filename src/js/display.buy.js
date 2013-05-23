@@ -13,6 +13,8 @@ var iFound;
 $(document).ready(function() {
 	var state = "pasajeros";
 	var firstTime = 1; // variable que me dice si ya se creo el evento para los botones editar
+	var cur_sym = $.cookie('cur-sym');
+	var cur_ratio = $.cookie('cur-ratio');
 	var total_price = $.cookie('total-price');
 	var tax_price = $.cookie('tax-price');
 	var adult_price = $.cookie('adult-price');
@@ -44,22 +46,23 @@ $(document).ready(function() {
 		$("#ib_destination_date").text(" " + ib_arr_date + " (" + ib_arr_hour + ")" );
 	}
 
-	$("#adult_price").text(" U$S " + adult_price + " x " + adults);
+	$("#adult_price").text(" "+cur_sym+" " + parseInt(adult_price/cur_ratio) + " x " + adults);
 	
 	if(children == 0) {
 		$("#children").hide();
 	} else {
-		$("#children_price").text(" U$S " + child_price + " x " + children);
+		$("#children_price").text(" "+cur_sym+" " + parseInt(child_price/cur_ratio) + " x " + children);
 	}
 
 	if(infants == 0) {
 		$("#infant").hide();
 	} else {
-		$("#infant_price").text(" U$S " + infant_price + " x " + infants);
+		$("#infant_price").text(" "+cur_sym+" " + parseInt(infant_price/cur_ratio) + " x " + infants);
 	}
 	
-	$("#tax_price").text(" U$S " + tax_price);
-	$("#total_price").text(" U$S " + total_price);
+	$("#tax_price").text(" "+cur_sym+" " + parseInt(tax_price/cur_ratio));
+	$("#total_price").text(" "+cur_sym+" " + parseInt(total_price/cur_ratio));
+
 	$("#ob_origin_airport").text(" " + ob_dep_airport);
 	$("#ob_destination_airport").text(" " + ob_arr_airport);	
 	$("#ob_origin_date").text(" " + ob_dep_date + " (" + ob_dep_hour + ")" );

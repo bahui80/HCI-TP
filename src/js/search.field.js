@@ -137,34 +137,41 @@ function fillAirportsArray(data){
 	});
 	
 	$("#from").focusout(function() {
-	//	$("#from").select();
 		$("#origin_span").removeClass('control-group error');
 		$("#from_error").hide();
 	});
 	
 	$("#to").focusout(function() {
-//		$("#to").select();
 		$("#destination_span").removeClass('control-group error');
 		$("#destination_error").hide();
 	});
 	
 	$("#airline").focusout(function() {
-//		$("#airline").select();
 		$("#airline_span").removeClass('control-group error');
 		$("#airline_error").hide();
 	});
 	
 	$("#dep_date").focusout(function() {
-//		$("#dep_date").select();
 		$("#depart_span").removeClass('control-group error');
 		$("#depart_date_error").hide();
 	});
-	
+
+	$("#dep_date_btn").click(function() {
+		$("#depart_span").removeClass('control-group error');
+		$("#depart_date_error").hide();
+	});
+
 	$("#ret_date").focusout(function() {
-//		$("#ret_date").select();
 		$("#return_span").removeClass('control-group error');
 		$("#return_date_error").hide();
 	});
+
+	
+	$("#ret_date_btn").click(function() {
+		$("#return_span").removeClass('control-group error');
+		$("#return_date_error").hide();
+	});
+
 	
 	$("#search_button").click(function () {
 		
@@ -275,14 +282,14 @@ function fillAirportsArray(data){
 				$("#ret_date_error_text").text(" Ingrese una fecha de vuelta válida");
 				$("#return_date_error").show();
 				error_on = true;
-			} else if(tooClose($("#ret_date").val())) {
-				$("#return_span").addClass('control-group error');
-				$("#ret_date_error_text").text(" La fecha debe ser al menos 2 días a partir de hoy");
-				$("#return_date_error").show();
-				error_on = true;
 			} else if(stringToDate($("#dep_date").val()) >= stringToDate($("#ret_date").val())) {
 				$("#return_span").addClass('control-group error');
 				$("#ret_date_error_text").text(" Ingrese una fecha posterior a la de origen");
+				$("#return_date_error").show();
+				error_on = true;
+			} else if(tooClose($("#ret_date").val())) {
+				$("#return_span").addClass('control-group error');
+				$("#ret_date_error_text").text(" La fecha debe ser al menos 2 días a partir de hoy");
 				$("#return_date_error").show();
 				error_on = true;
 			}

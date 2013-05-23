@@ -27,14 +27,12 @@ $(document).ready(function() {
 		$("#flight_num_span").fadeOut(500);
 		$("#airline_name_span").fadeIn(500);
 		$("#flight_num").val("");
-		$(".flight-sort-filter").show();
 	});
 	
 	$("#flight_number_btn").click(function () {
 		$("#airline_name_btn").removeClass('active');
 		$("#flight_number_btn").addClass('active');
 		$("#flight_num_span").fadeIn(500);
-		$(".flight-sort-filter").hide();
 	});
 });
 
@@ -97,6 +95,13 @@ function preparePostComment(){
 			$("#comment_flight_num_span").addClass('control-group error');
 			$("#comment_flight_num_error").show();
 			$("#comment_flight_num_error_text").text(" Ingrese algún número de vuelo")
+			error_on = true;
+		}
+
+		if(!validFlightNum($("#comment_flight_num").val())){
+			$("#comment_flight_num_span").addClass('control-group error');
+			$("#comment_flight_num_error").show();
+			$("#comment_flight_num_error_text").text(" El número de vuelo es de 1 a 4 cifras")
 			error_on = true;
 		}
 
@@ -191,7 +196,7 @@ function prepareSearchComment(){
 		if(!by_airline && !validFlightNum($("#flight_num").val())){
 			$("#flight_num_span").addClass('control-group error');
 			$("#flight_num_error").show();
-			$("#flight_num_error_text").text(" El número de vuelo es de 4 cifras")
+			$("#flight_num_error_text").text(" El número de vuelo es de 1 a 4 cifras")
 			error_on = true;
 		}
 
@@ -217,7 +222,7 @@ function prepareSearchComment(){
 }
 
 function validFlightNum(flight){
-	var flightNumPtrn = /^[0-9]{4}$/;
+	var flightNumPtrn = /^[0-9]{1,4}$/;
 	return  flightNumPtrn.test(flight);
 }
 

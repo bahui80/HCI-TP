@@ -20,7 +20,6 @@ $(document).ready(function() {
     	if (depDate.valueOf() > retDate.valueOf()) {
     		//cambio el de retorno
     		retDate = newDate;
-    		$('#ret_date').val(dateToString(newDate));
     		$('#ret_date_btn').datepicker('update', dateToString(newDate));
     	} else {
     		$('#ret_date_btn').datepicker('update', dateToString(retDate));    		

@@ -3,7 +3,7 @@ var airline_id_arr = new Array();
 var airline_logo_arr = new Array();
 var airline_name_arr = new Array();
 var airline_cheapest_flight_price_arr = new Array();
-var airline_cheapest_flight_dur_arr = new Array();
+var airline_qual_arr = new Array();
 
 // Variables globales del paginado
 var cur_page;
@@ -12,6 +12,7 @@ var page_size = 5;
 // Variables globales de las monedas -> por el cambio de moneda
 var cur_currency = "Dolares";
 var cur_ratio = 1;
+var cur_sym = "U$S";
 var currencies_desc_array = new Array();
 var currencies_ratio_array = new Array();
 var currencies_symbol_array = new Array();
@@ -140,15 +141,15 @@ function drawMatrix(){
 	var j = 0;
 	for(var k=0; k<airline_name_arr.length; k++){
 		$('#'+j+'-row-1').before('<th class="data-col"><img src="'+airline_logo_arr[k]+'" height="20" width="20"><br><small>'+airline_name_arr[k]+'</small></th>');
-		if(airline_cheapest_flight_dur_arr[k] == "-"){
-			$('#'+j+'-row-2').append('<td class="data-col">-</td>');
+		if(airline_qual_arr[k] == "-"){
+			$('#'+j+'-row-3').append('<td class="data-col">-</td>');
 		} else {
-			$('#'+j+'-row-2').append('<td class="data-col" id="airline_cheapest_price_'+k+'">U$S '+airline_cheapest_flight_price_arr[k]+'</td>');
+			$('#'+j+'-row-3').append('<td class="data-col" id="airline_cheapest_price_'+k+'">U$S '+airline_cheapest_flight_price_arr[k]+'</td>');
 		}		
-		if(airline_cheapest_flight_dur_arr[k] == "-"){
-			$('#'+j+'-row-3').append('<td class="data-col">'+airline_cheapest_flight_dur_arr[k]+'</td>');
+		if(airline_qual_arr[k] == "-"){
+			$('#'+j+'-row-2').append('<td class="data-col">'+airline_qual_arr[k]+'</td>');
 		} else {
-			$('#'+j+'-row-3').append('<td class="data-col"><i class="icon-time"></i> '+airline_cheapest_flight_dur_arr[k]+'</td>');
+			$('#'+j+'-row-2').append('<td class="data-col">'+airline_qual_arr[k]+'</td>');
 		}
 		if((k+1)%airlines_per_table == 0){
 			j++;
@@ -240,14 +241,19 @@ function recursiveOneWayFlightSearch(i,j, from, to, dep_date, adults, children, 
 		if(!data.hasOwnProperty("error")){
 			if(data['total'] == 0){
 				airline_cheapest_flight_price_arr[i] = "-";
-				airline_cheapest_flight_dur_arr[i] = "-";
+				airline_qual_arr[i] = "-";
 			}else{
 				airline_cheapest_flight_price_arr[i] = parseInt(data['flights'][0]['price']['total']['total']);
-				airline_cheapest_flight_dur_arr[i] = getDuration(data['flights'][0]['outboundRoutes'][0]['segments'][0]['duration']);
+				airline_qual_arr[i] = data['flights'][0]['outboundRoutes'][0]['segments'][0]['arilineRating'];
+				if (airline_qual_arr[i] == null){
+					airline_qual_arr[i] = "<small>Sin calificación</small>";
+				} else {
+					airline_qual_arr[i] = numberToStars(airline_qual_arr[i]);
+				}
 			}
 		} else {
 				airline_cheapest_flight_price_arr[i] = "-";
-				airline_cheapest_flight_dur_arr[i] = "-";
+				airline_qual_arr[i] = "-";
 			console.log(JSON.stringify(data));
 		}
 		recursiveOneWayFlightSearch(i+1,j, from, to, dep_date, adults, children, infants, cabin_type, min_dep_time, max_dep_time);
@@ -271,18 +277,49 @@ function recursiveRoundWayFlightSearch(i,j, from, to, dep_date, adults, children
 		if(!data.hasOwnProperty("error")){
 			if(data['total'] == 0){
 				airline_cheapest_flight_price_arr[i] = "-";
-				airline_cheapest_flight_dur_arr[i] = "-";
+				airline_qual_arr[i] = "-";
 			}else{
 				airline_cheapest_flight_price_arr[i] = parseInt(data['flights'][0]['price']['total']['total']);
-				airline_cheapest_flight_dur_arr[i] = getDuration(data['flights'][0]['outboundRoutes'][0]['segments'][0]['duration']);
+				airline_qual_arr[i] = data['flights'][0]['outboundRoutes'][0]['segments'][0]['arilineRating'];
+				if (airline_qual_arr[i] == null){
+					airline_qual_arr[i] = "<small>Sin calificación</small>";
+				} else {
+					airline_qual_arr[i] = numberToStars(airline_qual_arr[i]);
+				}
 			}
 		} else {
 				airline_cheapest_flight_price_arr[i] = "-";
-				airline_cheapest_flight_dur_arr[i] = "-";
+				airline_qual_arr[i] = "-";
 			console.log(JSON.stringify(data));
 		}
 		recursiveRoundWayFlightSearch(i+1,j, from, to, dep_date, adults, children, infants, cabin_type, min_dep_time, max_dep_time, min_ret_time, max_ret_time, ret_date);
 	});
+}
+
+function numberToStars(number){
+	var floatNum = parseFloat(number);
+	var fullStars = parseInt(floatNum/2);
+	var halfStar = 0;
+
+	if((floatNum/2)-fullStars > 0){
+		halfStar = 1;
+	}
+
+	var starsCode = "";
+
+	for(var i=0; i<fullStars; i++){
+		starsCode = starsCode+'<i class="icon-star"></i>';
+	}
+	if(halfStar == 1){
+		starsCode = starsCode+'<i class="icon-star-half-empty"></i>';
+	}
+
+
+	for(var i=0; i<5-fullStars-parseInt(halfStar); i++){
+		starsCode = starsCode+'<i class="icon-star-empty"></i>';
+	}
+
+	return starsCode;
 }
 
 function coinUpdate(from, to){
@@ -449,6 +486,7 @@ function filterEvents(){
 		coinUpdate(cur_currency,$("#currencies").val());
 		cur_currency = new_cur;
 		cur_ratio = new_ratio;
+		cur_sym = new_sym;
 	});
 
 	// function del slider inicial
@@ -971,9 +1009,9 @@ function oneWayFlight(data){
 					$("#buy-btn-"+j).data("ob-arr-date", getDateInfo(data['flights'][j]['outboundRoutes'][0]['segments'][0]['arrival']['date']));
 					$("#buy-btn-"+j).data("ob-dep-hr", ob_dep_hr);
 					$("#buy-btn-"+j).data("ob-arr-hr", ob_arr_hr);
-					$("#buy-btn-"+j).data("adult-price", cur_flights_adult_price[j]);
-					$("#buy-btn-"+j).data("child-price", cur_flights_children_price[j]);
-					$("#buy-btn-"+j).data("infant-price", cur_flights_infants_price[j]);
+					$("#buy-btn-"+j).data("adult-price", cur_flights_adult_price[j]/cur_flights_adult_quant[j]);
+					$("#buy-btn-"+j).data("child-price", cur_flights_children_price[j]/cur_flights_children_quant[j]);
+					$("#buy-btn-"+j).data("infant-price", cur_flights_infants_price[j]/cur_flights_infants_quant[j]);
 					$("#buy-btn-"+j).data("tax-price",cur_flights_tax_price[j]);
 					$("#buy-btn-"+j).data("total-price", cur_flights_price[j]);
 					$("#buy-btn-"+j).data("adult-num", cur_flights_adult_quant[j]);
@@ -1010,14 +1048,16 @@ function createOneWayBtnEvent(btn){
 		$.cookie('ob-arr-date', $(btn).data('ob-arr-date'), { path: '/' });
 		$.cookie('ob-dep-hr', $(btn).data('ob-dep-hr'), { path: '/' });
 		$.cookie('ob-arr-hr', $(btn).data('ob-arr-hr'), { path: '/' });
-		$.cookie('adult-price', parseInt($(btn).data('adult-price')), { path: '/' });
-		$.cookie('child-price', parseInt($(btn).data('child-price')), { path: '/' });
-		$.cookie('infant-price', parseInt($(btn).data('infant-price')), { path: '/' });
-		$.cookie('tax-price', parseInt($(btn).data('tax-price')), { path: '/' });
-		$.cookie('total-price', parseInt($(btn).data('total-price')), { path: '/' });
+		$.cookie('adult-price', $(btn).data('adult-price'), { path: '/' });
+		$.cookie('child-price', $(btn).data('child-price'), { path: '/' });
+		$.cookie('infant-price', $(btn).data('infant-price'), { path: '/' });
+		$.cookie('tax-price', $(btn).data('tax-price'), { path: '/' });
+		$.cookie('total-price', $(btn).data('total-price'), { path: '/' });
 		$.cookie('adult-num', $(btn).data('adult-num'), { path: '/' });
 		$.cookie('child-num', $(btn).data('child-num'), { path: '/' });
 		$.cookie('infant-num', $(btn).data('infant-num'), { path: '/' });
+		$.cookie('cur-sym', cur_sym, { path: '/' });
+		$.cookie('cur-ratio',cur_ratio, { path: '/' });
 		document.location.href="buy.html";
 	})	
 }
@@ -1144,9 +1184,9 @@ function roundWayFlight(data){
 					$("#buy-btn-"+j).data("ib-arr-hr", ib_arr_hr);
 
 					//pasajeros
-					$("#buy-btn-"+j).data("adult-price", cur_flights_adult_price[j]);
-					$("#buy-btn-"+j).data("child-price", cur_flights_children_price[j]);
-					$("#buy-btn-"+j).data("infant-price", cur_flights_infants_price[j]);
+					$("#buy-btn-"+j).data("adult-price", cur_flights_adult_price[j]/cur_flights_adult_quant[j]);
+					$("#buy-btn-"+j).data("child-price", cur_flights_children_price[j]/cur_flights_children_quant[j]);
+					$("#buy-btn-"+j).data("infant-price", cur_flights_infants_price[j]/cur_flights_infants_quant[j]);
 					$("#buy-btn-"+j).data("tax-price",cur_flights_tax_price[j]);
 					$("#buy-btn-"+j).data("total-price", cur_flights_price[j]);
 					$("#buy-btn-"+j).data("adult-num", cur_flights_adult_quant[j]);
