@@ -928,7 +928,7 @@ function oneWayFlight(data){
 	// si no hubo error imprime
 	if(!data.hasOwnProperty("error")){
 		if(data['total'] == 0){
-			$('#flights_row').append('<div id="flights_row"class="row-fluid"><div class="well clearfix"><div class="span12"><h3 class="text-center"><i class="icon-warning-sign"></i> No pudimos encontrar ningún vuelo!</h3><p class="text-center">Intenta buscando con otros parámetros o quitando filtros si haz aplicado alguno</p></div></div></div>')	
+			foundNoFlights();
 		}else{
 			//ahora agrego los vuelos
         	for (var j=0;j<data['pageSize'];j++){
@@ -1062,6 +1062,8 @@ function createOneWayBtnEvent(btn){
 
 function foundNoFlights(){
 	$('#flights_row').append('<div id="flights_row"class="row-fluid"><div class="well clearfix"><div class="span12"><h3 class="text-center"><i class="icon-warning-sign"></i> No pudimos encontrar ningún vuelo!</h3><p class="text-center">Intenta buscando con otros parámetros o quitando filtros si haz aplicado alguno</p></div></div></div>')	
+	$('#airline-well').hide();
+	$('#results_num_div').hide();
 	$('#loading-modal').modal('hide');	
 }
 
@@ -1072,7 +1074,7 @@ function roundWayFlight(data){
 
 	if(!data.hasOwnProperty("error")){
 		if(data['total'] == 0){
-			$('#flights_row').append('<div id="flights_row"class="row-fluid"><div class="well clearfix"><div class="span12"><h3 class="text-center"><i class="icon-warning-sign"></i> No pudimos encontrar ningún vuelo!</h3><p class="text-center">Intenta buscando con otros parámetros o quitando filtros si haz aplicado alguno</p></div></div></div>')	
+			foundNoFlights();
 		}else{
         	for (var j=0;j<data['pageSize'];j++){
         		if( (data['page']-1)*(data['pageSize'])+j < data['total']){
