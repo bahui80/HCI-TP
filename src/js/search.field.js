@@ -284,7 +284,7 @@ function fillAirportsArray(data){
 				error_on = true;
 			} else if(stringToDate($("#dep_date").val()) >= stringToDate($("#ret_date").val())) {
 				$("#return_span").addClass('control-group error');
-				$("#ret_date_error_text").text(" Ingrese una fecha posterior a la de origen");
+				$("#ret_date_error_text").text(" Ingrese una fecha posterior a la de ida");
 				$("#return_date_error").show();
 				error_on = true;
 			} else if(tooClose($("#ret_date").val())) {
