@@ -5738,10 +5738,9 @@ a.thumbnail:focus {
   display: inline-block;
   padding: 2px 4px;
   font-size: 11.844px;
-  font-weight: 400;
+  font-weight: 300;
   line-height: 14px;
   color: #ffffff;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
   white-space: nowrap;
   vertical-align: baseline;
   background-color: #999999;
@@ -5758,11 +5757,13 @@ a.thumbnail:focus {
 }
 
 .badge {
-  padding-right: 9px;
-  padding-left: 9px;
-  -webkit-border-radius: 9px;
-     -moz-border-radius: 9px;
-          border-radius: 9px;
+  padding-right: 7px;
+  padding-left: 7px;
+  padding-bottom: 2px;
+  margin-right: 5px;
+  -webkit-border-radius: 70px;
+     -moz-border-radius: 70px;
+          border-radius: 70px;
 }
 
 .label:empty,
@@ -6363,7 +6364,7 @@ a.badge:focus {
 
 
 #add-left-margin2 {
-  margin-left: 220px;
+  margin-left: 180px;
 }
 
 .add-margin-top {
