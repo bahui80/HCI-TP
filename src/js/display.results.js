@@ -234,7 +234,7 @@ function recursiveOneWayFlightSearch(i,j, from, to, dep_date, adults, children, 
 	}
 	$("#loading-text").text("Buscando el mejor precio de "+airline_name_arr[i] );
 	$.ajax({
-		url: "http://eiffel.itba.edu.ar/hci/service2/Booking.groovy?method=GetOneWayFlights&from="+from+"&to="+to+"&dep_date="+dep_date+"&adults="+adults+"&children="+children+"&infants="+infants+"&airline_id="+airline_id_arr[i]+"&min_price=&max_price=&cabin_type="+cabin_type+"&min_dep_time="+min_dep_time+"&max_dep_time="+max_dep_time+"&page=1&page_size=1&sort_key=total&sort_order=asc",
+		url: "http://eiffel.itba.edu.ar/hci/service2/Booking.groovy?method=GetOneWayFlights&from="+from+"&to="+to+"&dep_date="+dep_date+"&adults="+adults+"&children="+children+"&infants="+infants+"&airline_id="+airline_id_arr[i]+"&min_price=&max_price=&cabin_type=&min_dep_time=&max_dep_time=&page=1&page_size=1&sort_key=total&sort_order=asc",
    		dataType: "jsonp",
 
 	}).done(function(data) {
@@ -271,7 +271,7 @@ function recursiveRoundWayFlightSearch(i,j, from, to, dep_date, adults, children
 	}
 	$("#loading-text").text("Buscando el mejor precio de "+airline_name_arr[i] );
 	$.ajax({
-		url: "http://eiffel.itba.edu.ar/hci/service2/Booking.groovy?method=GetRoundTripFlights2&from="+from+"&to="+to+"&dep_date="+dep_date+"&ret_date="+ret_date+"&adults="+adults+"&children="+children+"&infants="+infants+"&airline_id="+airline_id_arr[i]+"&min_price=&max_price=&cabin_type="+cabin_type+"&min_dep_time="+min_dep_time+"&max_dep_time="+max_dep_time+"&min_ret_time="+min_ret_time+"&max_ret_time="+max_ret_time+"&page=1&page_size=1&sort_key=total&sort_order=asc",
+		url: "http://eiffel.itba.edu.ar/hci/service2/Booking.groovy?method=GetRoundTripFlights2&from="+from+"&to="+to+"&dep_date="+dep_date+"&ret_date="+ret_date+"&adults="+adults+"&children="+children+"&infants="+infants+"&airline_id="+airline_id_arr[i]+"&min_price=&max_price=&cabin_type=&min_dep_time=&max_dep_time=&min_ret_time=&max_ret_time=&page=1&page_size=1&sort_key=total&sort_order=asc",
    		dataType: "jsonp",
 	}).done(function(data) {
 		if(!data.hasOwnProperty("error")){
@@ -929,8 +929,6 @@ function oneWayFlight(data){
 	if(!data.hasOwnProperty("error")){
 		if(data['total'] == 0){
 			$('#flights_row').append('<div id="flights_row"class="row-fluid"><div class="well clearfix"><div class="span12"><h3 class="text-center"><i class="icon-warning-sign"></i> No pudimos encontrar ningún vuelo!</h3><p class="text-center">Intenta buscando con otros parámetros o quitando filtros si haz aplicado alguno</p></div></div></div>')	
-			$("#pagination-row").slideUp(500);
-			$("#coin-sort-filters").slideUp(500);
 		}else{
 			//ahora agrego los vuelos
         	for (var j=0;j<data['pageSize'];j++){
@@ -1075,8 +1073,6 @@ function roundWayFlight(data){
 	if(!data.hasOwnProperty("error")){
 		if(data['total'] == 0){
 			$('#flights_row').append('<div id="flights_row"class="row-fluid"><div class="well clearfix"><div class="span12"><h3 class="text-center"><i class="icon-warning-sign"></i> No pudimos encontrar ningún vuelo!</h3><p class="text-center">Intenta buscando con otros parámetros o quitando filtros si haz aplicado alguno</p></div></div></div>')	
-			$("#pagination-row").slideUp(500);
-			$("#coin-sort-filters").slideUp(500);
 		}else{
         	for (var j=0;j<data['pageSize'];j++){
         		if( (data['page']-1)*(data['pageSize'])+j < data['total']){
