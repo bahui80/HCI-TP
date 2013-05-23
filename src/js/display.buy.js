@@ -115,11 +115,24 @@ $(document).ready(function() {
 		focusOutField("#passenger_adults_" + (i + 1) + "_name", "#passenger_adults_" + (i + 1) + "_name_span", "#passenger_adults_" + (i + 1 ) + "_name_error");
 		focusOutField("#passenger_adults_" + (i + 1) + "_surname", "#passenger_adults_" + (i + 1) + "_surname_span", "#passenger_adults_" + (i + 1 ) + "_surname_error");
 		focusOutField("#passenger_adults_" + (i + 1) + "_dni", "#passenger_adults_" + (i + 1) + "_dni_span", "#passenger_adults_" + (i + 1 ) + "_dni_error");
+		focusOutField2("#passenger_adults_" + (i + 1) + "_day", "#passenger_adults_" + (i + 1) + "_day", "#passenger_adults_" + (i + 1) + "_month", "#passenger_adults_" + (i + 1) + "_year", "#passenger_adults_" + (i + 1) + "_date_span", "#passenger_adults_" + (i + 1) + "_date_error");
+		focusOutField2("#passenger_adults_" + (i + 1) + "_month", "#passenger_adults_" + (i + 1) + "_day", "#passenger_adults_" + (i + 1) + "_month", "#passenger_adults_" + (i + 1) + "_year", "#passenger_adults_" + (i + 1) + "_date_span", "#passenger_adults_" + (i + 1) + "_date_error");
+		focusOutField2("#passenger_adults_" + (i + 1) + "_year", "#passenger_adults_" + (i + 1) + "_day", "#passenger_adults_" + (i + 1) + "_month", "#passenger_adults_" + (i + 1) + "_year", "#passenger_adults_" + (i + 1) + "_date_span", "#passenger_adults_" + (i + 1) + "_date_error");
 		$("#edit_passenger_adults_" + (i + 1) + "_span").hide();
 		$("#passenger_adults_" + (i + 1) + "_name_error").hide();
 		$("#passenger_adults_" + (i + 1) + "_surname_error").hide();
 		$("#passenger_adults_" + (i + 1) + "_dni_error").hide();
 		$("#passenger_adults_" + (i + 1) + "_date_error").hide();
+		$("#passenger_adults_" + (i + 1) + "_name").alpha();
+		$("#passenger_adults_" + (i + 1) + "_surname").alpha();
+		$("#passenger_adults_" + (i + 1) + "_dni").numeric("integer");
+		$("#passenger_adults_" + (i + 1) + "_dni").attr('maxlength','8');
+		$("#passenger_adults_" + (i + 1) + "_day").numeric("integer");
+		$("#passenger_adults_" + (i + 1) + "_month").numeric("integer");
+		$("#passenger_adults_" + (i + 1) + "_year").numeric("integer");
+		$("#passenger_adults_" + (i + 1) + "_day").attr('maxlength','2');
+		$("#passenger_adults_" + (i + 1) + "_month").attr('maxlength','2');
+		$("#passenger_adults_" + (i + 1) + "_year").attr('maxlength','4');
 	}
 	
 	for(var i = 0; i < children; i++) {
@@ -127,11 +140,24 @@ $(document).ready(function() {
 		focusOutField("#passenger_children_" + (i + 1) + "_name", "#passenger_children_" + (i + 1) + "_name_span", "#passenger_children_" + (i + 1 ) + "_name_error");
 		focusOutField("#passenger_children_" + (i + 1) + "_surname", "#passenger_children_" + (i + 1) + "_surname_span", "#passenger_children_" + (i + 1 ) + "_surname_error");
 		focusOutField("#passenger_children_" + (i + 1) + "_dni", "#passenger_children_" + (i + 1) + "_dni_span", "#passenger_children_" + (i + 1 ) + "_dni_error");
+		focusOutField2("#passenger_children_" + (i + 1) + "_day", "#passenger_children_" + (i + 1) + "_day", "#passenger_children_" + (i + 1) + "_month", "#passenger_children_" + (i + 1) + "_year", "#passenger_children_" + (i + 1) + "_date_span", "#passenger_children_" + (i + 1) + "_date_error");
+		focusOutField2("#passenger_children_" + (i + 1) + "_month", "#passenger_children_" + (i + 1) + "_day", "#passenger_children_" + (i + 1) + "_month", "#passenger_children_" + (i + 1) + "_year", "#passenger_children_" + (i + 1) + "_date_span", "#passenger_children_" + (i + 1) + "_date_error");
+		focusOutField2("#passenger_children_" + (i + 1) + "_year", "#passenger_children_" + (i + 1) + "_day", "#passenger_children_" + (i + 1) + "_month", "#passenger_children_" + (i + 1) + "_year", "#passenger_children_" + (i + 1) + "_date_span", "#passenger_children_" + (i + 1) + "_date_error");
 		$("#edit_passenger_children_" + (i + 1) + "_span").hide();
 		$("#passenger_children_" + (i + 1) + "_name_error").hide();
 		$("#passenger_children_" + (i + 1) + "_surname_error").hide();
 		$("#passenger_children_" + (i + 1) + "_dni_error").hide();
 		$("#passenger_children_" + (i + 1) + "_date_error").hide();
+		$("#passenger_children_" + (i + 1) + "_name").alpha();
+		$("#passenger_children_" + (i + 1) + "_surname").alpha();
+		$("#passenger_children_" + (i + 1) + "_dni").numeric("integer");
+		$("#passenger_children_" + (i + 1) + "_dni").numeric('maxlength','8');
+		$("#passenger_children_" + (i + 1) + "_day").numeric("integer");
+		$("#passenger_children_" + (i + 1) + "_month").numeric("integer");
+		$("#passenger_children_" + (i + 1) + "_year").numeric("integer");
+		$("#passenger_children_" + (i + 1) + "_day").attr('maxlength','2');
+		$("#passenger_children_" + (i + 1) + "_month").attr('maxlength','2');
+		$("#passenger_children_" + (i + 1) + "_year").attr('maxlength','4');
 	}
 	
 	for(var i = 0; i < infants; i++) {
@@ -139,13 +165,26 @@ $(document).ready(function() {
 		focusOutField("#passenger_infants_" + (i + 1) + "_name", "#passenger_infants_" + (i + 1) + "_name_span", "#passenger_infants_" + (i + 1 ) + "_name_error");
 		focusOutField("#passenger_infants_" + (i + 1) + "_surname", "#passenger_infants_" + (i + 1) + "_surname_span", "#passenger_infants_" + (i + 1 ) + "_surname_error");
 		focusOutField("#passenger_infants_" + (i + 1) + "_dni", "#passenger_infants_" + (i + 1) + "_dni_span", "#passenger_infants_" + (i + 1 ) + "_dni_error");
+		focusOutField2("#passenger_infants_" + (i + 1) + "_day", "#passenger_infants_" + (i + 1) + "_day", "#passenger_infants_" + (i + 1) + "_month", "#passenger_infants_" + (i + 1) + "_year", "#passenger_infants_" + (i + 1) + "_date_span", "#passenger_infants_" + (i + 1) + "_date_error");
+		focusOutField2("#passenger_infants_" + (i + 1) + "_month", "#passenger_infants_" + (i + 1) + "_day", "#passenger_infants_" + (i + 1) + "_month", "#passenger_infants_" + (i + 1) + "_year", "#passenger_infants_" + (i + 1) + "_date_span", "#passenger_infants_" + (i + 1) + "_date_error");
+		focusOutField2("#passenger_infants_" + (i + 1) + "_year", "#passenger_infants_" + (i + 1) + "_day", "#passenger_infants_" + (i + 1) + "_month", "#passenger_infants_" + (i + 1) + "_year", "#passenger_infants_" + (i + 1) + "_date_span", "#passenger_infants_" + (i + 1) + "_date_error");
 		$("#edit_passenger_infants_" + (i + 1) + "_span").hide();
 		$("#passenger_infants_" + (i + 1) + "_name_error").hide();
 		$("#passenger_infants_" + (i + 1) + "_surname_error").hide();
 		$("#passenger_infants_" + (i + 1) + "_dni_error").hide();
 		$("#passenger_infants_" + (i + 1) + "_date_error").hide();
-	}
+		$("#passenger_infants_" + (i + 1) + "_name").alpha();
+		$("#passenger_infants_" + (i + 1) + "_surname").alpha();
+		$("#passenger_infants_" + (i + 1) + "_dni").numeric("integer");
+		$("#passenger_infants_" + (i + 1) + "_dni").numeric('maxlength','8');
+		$("#passenger_infants_" + (i + 1) + "_day").numeric("integer");
+		$("#passenger_infants_" + (i + 1) + "_month").numeric("integer");
+		$("#passenger_infants_" + (i + 1) + "_year").numeric("integer");
+		$("#passenger_infants_" + (i + 1) + "_day").attr('maxlength','2');
+		$("#passenger_infants_" + (i + 1) + "_month").attr('maxlength','2');
+		$("#passenger_infants_" + (i + 1) + "_year").attr('maxlength','4');
 
+	}
 
     $.ajax({
     	url: "http://eiffel.itba.edu.ar/hci/service2/Geo.groovy?method=GetCountries&sort_key=name&sort_order=asc",
@@ -594,7 +633,7 @@ function validateInfantPassenger(passengerNameSpan, passengerName, passengerName
 }
 
 function validateTextField(text) {
-	var textPattern = /^[A-Za-z ]+$/;
+	var textPattern = /^[A-Za-záéíóú ]+$/;
 	return textPattern.test(text);
 }
 
@@ -973,4 +1012,14 @@ function fillCitiesArray(data) {
        	});
 	} else {
 	}
+}
+
+
+function focusOutField2(passengerFieldActual, passengerFieldDay, passengerFieldMonth, passengerFieldYear, passengerDateSpan , passengerError) {
+	$(passengerFieldActual).focusout(function() {
+		if(validateDate($(passengerFieldDay).val(), $(passengerFieldMonth).val(), $(passengerFieldYear).val())) {
+			$(passengerDateSpan).removeClass('control-group error');
+			$(passengerError).hide();
+		}
+	});
 }
