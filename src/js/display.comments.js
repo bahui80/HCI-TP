@@ -194,7 +194,7 @@ function fillReviews(data){
 
         			var stars_code = numberToStars(rating);
 
-        			$("#comments_row").append('<div class="well remove-bottom-padding clearfix"><div class="span9"><table class="table"><thead><tr><th><img src="'+airline_pic+'" height="20" width="20"> '+airline_name+' <div class="pull-right">Vuelo: #'+flight_number+''+airline_id+'</div></th></tr></thead><tbody><tr><td class="remove-bottom-padding max-width-table"><ul class="inline small-bottom-margin"><li>'+comments+'</li></ul></td></tr></tbody></table></div><div class="span3 well remove-top-padding"><h4 class="text-center">'+rating+'/10</h4><h4 class="text-center">'+stars_code+'</h4><div class="row-fluid"><div class="span12"><a id="popover'+j+'" rel="popover" class="btn btn-block btn-inverse thin-font">Ver detalles</a></div></div></div></div>')
+        			$("#comments_row").append('<div class="well remove-bottom-padding clearfix"><div class="span9"><table class="table"><thead><tr><th><img src="'+airline_pic+'" height="20" width="20"> '+airline_name+' <div class="pull-right">Vuelo: #'+flight_number+''+airline_id+'</div></th></tr></thead><tbody><tr><td class="remove-bottom-padding max-width-table"><ul class="inline small-bottom-margin"><li>'+comments+'</li></ul></td></tr></tbody></table></div><div class="span3 well remove-top-padding"><h4 class="text-center">'+rating+'/10</h4><h4 class="text-center">'+stars_code+'</h4><div class="row-fluid"><div class="span12"><a id="popover'+j+'" rel="popover" class="btn btn-block thin-font">Ver detalles</a></div></div></div></div>')
 
 					var popover_code = friendliness+food+comfort+quality_price+punctuality+frequent_passenger+recommend;
 					var popover_id = "#popover"+j;

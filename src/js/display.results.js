@@ -102,22 +102,10 @@ function matrixEvent(){
 	//apertura cerrado de matriz
 	$("#compare-airlines").click(function(){
 		if(first_time_matrix){
-				// busco los precios mas baratos de cada aerolinea
-				searchCheapestAndDraw();
-				$("#compare-airlines").text("Ocultar matriz comparativa");
-				first_time_matrix = false;
-				matrix_on = true;
-		} else {
-			if(matrix_on ){
-				$("#airline-well").slideUp(500);
-				$("#compare-airlines").text("Mostrar matriz comparativa");
-				matrix_on = false;
-			} else {
-				var table = "";
-				$("#compare-airlines").text("Ocultar matriz comparativa");
-				$("#airline-well").slideDown(500);
-				matrix_on = true;
-			}
+			// busco los precios mas baratos de cada aerolinea
+			searchCheapestAndDraw();
+			$("#results_num_div").slideUp();
+			first_time_matrix = false;
 		}
 	});
 }
@@ -993,7 +981,9 @@ function oneWayFlight(data){
 					$("#filters-div").slideDown(500);
 					$("#pagination-row").slideDown(500);
 					$("#coin-sort-filters").slideDown(500);
-					$("#results_num_div").slideDown(500);
+					if(first_time_matrix){
+						$("#results_num_div").slideDown(500);
+					}
 
 					// Si la moenda actual es otra cambio	
 					coinUpdate("Dolares",$("#currencies").val());
@@ -1062,8 +1052,8 @@ function createOneWayBtnEvent(btn){
 
 function foundNoFlights(){
 	$('#flights_row').append('<div id="flights_row"class="row-fluid"><div class="well clearfix"><div class="span12"><h3 class="text-center"><i class="icon-warning-sign"></i> No pudimos encontrar ningún vuelo!</h3><p class="text-center">Intenta buscando con otros parámetros o quitando filtros si haz aplicado alguno</p></div></div></div>')	
-	$('#airline-well').hide();
-	$('#results_num_div').hide();
+	$("#pagination-row").slideUp(500);
+	$("#coin-sort-filters").slideUp(500);
 	$('#loading-modal').modal('hide');	
 }
 
@@ -1156,8 +1146,9 @@ function roundWayFlight(data){
 					$("#filters-div").slideDown(500);
 					$("#pagination-row").slideDown(500);
 					$("#coin-sort-filters").slideDown(500);
-					$("#results_num_div").slideDown(500);
-
+					if(first_time_matrix){
+						$("#results_num_div").slideDown(500);
+					}
 					coinUpdate("Dolares",$("#currencies").val());
 
 					// Le pongo la data el btn de buy: tipo de vuelo

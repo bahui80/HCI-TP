@@ -5,5 +5,6 @@ $(document).ready(function() {
     		type: 'info',
     		fadeOut: { enabled: true, delay: 3000 }
   		}).show(); 
+		$.cookie('end', 'false', { path: '/' });
 	}
 });
