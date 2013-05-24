@@ -232,7 +232,14 @@ $(document).ready(function() {
 				$("#img_change").attr("src","img/large-2.jpg");
 				$("#bar_passengers_link").empty();
 				$("#bar_passengers_link").append('<a href=""><i class="icon-group"></i> Pasajeros</a>');
-			} 
+			} else{
+				$('html, body').animate({scrollTop: '0'}, 'slow');
+				$('.center').notify({
+    				message: { html: true, html: '<strong>Hay errores en su formulario</strong>. Revise los campos resaltados.' },
+    				type: 'error',
+    				fadeOut: { enabled: true, delay: 3000 }
+  				}).show(); 
+			}
 		} else if(state == "tarjeta") { //pasamos a la confirmacion
 			if(validateCreditCard()) {
 				state = "confirmacion";
@@ -292,14 +299,28 @@ $(document).ready(function() {
 				}
 				
 				firstTime = 0;
+			} else{
+				$('html, body').animate({scrollTop: '0'}, 'slow');
+				$('.center').notify({
+    				message: { html: true, html: '<strong>Hay errores en su formulario</strong>. Revise los campos resaltados.' },
+    				type: 'error',
+    				fadeOut: { enabled: true, delay: 3000 }
+  				}).show(); 
 			}
 		} else {
 			//chequeo que no haya algun campo sin guardar
 			if(totalEdits != 0) {
-				$("#modalError").modal();
-				$("#modalError_button").click(function() {
-					$("#modalError").modal("hide");
-				});
+				$('html, body').animate({scrollTop: '0'}, 'slow');
+				$('.center').notify({
+    				message: { html: true, html: '<strong>Debe guardar todos los campos para continuar</strong>. Revise los campos resaltados.' },
+    				type: 'error',
+    				fadeOut: { enabled: true, delay: 3000 }
+  				}).show();
+				// NUEVA MANERA DE MOSTRAR ERROR
+				//$("#modalError").modal();
+				//$("#modalError_button").click(function() {
+				//	$("#modalError").modal("hide");
+				//});
 				for(var i = 0; i < adults; i++) {
 					showError("#well_passenger_adults_" + (i + 1), "#edit_passenger_adults_" + (i + 1));
 				}
@@ -383,11 +404,14 @@ $(document).ready(function() {
 								if(data.hasOwnProperty('error') || data['booking'] == false) {
 									$("#flightError").modal();
 								} else {
-									$("#myModal").modal();
+									//estado de la compra
+									$.cookie('end', 'true', { path: '/' });
+									document.location.href="index.html";
 								}
 							});
 						} else {
-							$("#myModal").modal();
+							$.cookie('end', 'true', { path: '/' });
+							document.location.href="index.html";
 						}
 					}
 				});

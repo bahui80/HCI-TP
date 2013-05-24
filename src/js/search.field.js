@@ -302,6 +302,9 @@ function fillAirportsArray(data){
 
 function searchFlight(){
 
+	//estado de la compra
+	$.cookie('end', 'false', { path: '/' });
+
 	// opciones basicas
 	if ($("#oneway_trip").hasClass('active')){
 		$.cookie('flight_type', 'one_way', { path: '/' });		
