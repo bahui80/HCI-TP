@@ -278,7 +278,7 @@ $(document).ready(function() {
 				$(".credit_card").slideDown(500);
 				
 				//cambia los titulos, los botones y la imagen
-				$("#title_text").text(" Confirmacion");
+				$("#title_text").text(" Confirmación");
 				$("#next_button_text").text("Confirmar ");
 				$("#img_change").attr("src","img/large-4.jpg");
 			
