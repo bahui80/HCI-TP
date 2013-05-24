@@ -369,13 +369,13 @@ function coinUpdate(from, to){
 		$(popover_id).popover('destroy');
 
 		if(cur_flights_adult_quant[j] > 0){
-			adult_price = '<div class="pull-left"><b>Adultos ('+cur_flights_adult_quant[j]+')</b> </div><div class="pull-right thin-font">'+new_adults_val+'</div><br>';
+			adult_price = '<div class="pull-left"><b>Adultos x'+cur_flights_adult_quant[j]+'</b> </div><div class="pull-right thin-font">'+new_adults_val+'</div><br>';
 		}
 		if(cur_flights_children_quant[j] > 0){
-			child_price = '<div class="pull-left"><b>Niños ('+cur_flights_children_quant[j]+')</b> </div><div class="pull-right thin-font">'+new_children_val+'</div><br>';
+			child_price = '<div class="pull-left"><b>Niños x'+cur_flights_children_quant[j]+'</b> </div><div class="pull-right thin-font">'+new_children_val+'</div><br>';
 		}
 		if(cur_flights_infants_quant[j] > 0){
-			infant_price = '<div class="pull-left"><b>Infantes ('+cur_flights_infants_quant[j]+')</b> </div><div class="pull-right thin-font">'+new_infants_val+'</div><br>';
+			infant_price = '<div class="pull-left"><b>Infantes x'+cur_flights_infants_quant[j]+'</b> </div><div class="pull-right thin-font">'+new_infants_val+'</div><br>';
 		}
 		taxes_price = '<div class="pull-left"><b>Impuestos</b> </div><div class="pull-right thin-font">'+new_tax_val+'</div><br>';
 
