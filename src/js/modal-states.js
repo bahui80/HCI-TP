@@ -1,6 +1,6 @@
 $(document).ready(function() {
 	$.ajaxSetup({
-		timeout: 10000,
+		timeout: 20000,
 		error: function( objAJAXRequest, strError ){
 			if (strError == "timeout"){
 				modalPetitionError();
