@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/my_flights_tab"
+        android:showAsAction="always|withText"
+        android:title="@string/my_flights"/>
+    <item
+        android:id="@+id/sales_tab"
+        android:showAsAction="always|withText"
+        android:title="@string/sales"/>
+    <item
+        android:id="@+id/settings"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/settings"/>
+
+</menu>

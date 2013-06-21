@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    
+        <CheckBoxPreference 
+            android:key="perform_updates"
+            android:title="Recibir notificaciones" 
+            android:defaultValue="true"
+        />
+        
+        <ListPreference 
+            android:key="updates_interval"
+            android:title="Frecuencia de actualización"
+            android:summary=""
+            android:defaultValue="15" 
+            android:entries="@array/updateInterval"
+            android:entryValues="@array/updateIntervalValues"
+            android:dependency="perform_updates"
+        />
+        <PreferenceScreen
+            android:key="notification_settings"
+            android:title="Notificaciones"
+            android:dependency="perform_updates"
+            android:persistent="false">
+            
+		        <CheckBoxPreference 
+		            android:key="state_change"
+		            android:title="Cambio de estado" 
+		            android:defaultValue="true"
+		            android:dependency="perform_updates"
+		        />
+		        <CheckBoxPreference 
+		            android:key="terminal_change"
+		            android:title="Cambio de terminal"
+		            android:defaultValue="true"
+		            android:dependency="perform_updates"
+		        />
+		         <CheckBoxPreference 
+		            android:key="gate_change"
+		            android:title="Cambio de puerta" 
+		            android:defaultValue="true"
+		            android:dependency="perform_updates"
+		        />
+		         <CheckBoxPreference 
+		            android:key="baggage_change"
+		            android:title="Cambio de puerta de equipaje" 
+		            android:defaultValue="true"
+		            android:dependency="perform_updates"
+		        />
+		         <CheckBoxPreference 
+		            android:key="time_change"
+		            android:title="Cambio de horario" 
+		            android:defaultValue="true"
+		            android:dependency="perform_updates"
+		        />
+        </PreferenceScreen>
+</PreferenceScreen>

@@ -1,0 +1,21 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/erase"
+        android:showAsAction="always|withText"
+        android:title="@string/erase"/>
+    <item
+        android:id="@+id/refresh"
+        android:showAsAction="always|withText"
+        android:title="@string/refresh"/>
+    <item
+        android:id="@+id/comment"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/comment"/>
+    <item
+        android:id="@+id/settings"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/settings"/>
+
+</menu>

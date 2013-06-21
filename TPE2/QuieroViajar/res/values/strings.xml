@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">QuieroViajar!</string>
+    <string name="my_flights">Mis Vuelos</string>
+    <string name="search_flight">Buscar Vuelo</string>
+    <string name="sales">Ofertas</string>
+    <string name="terminal">Terminal:</string>
+    <string name="gate">Puerta:</string>
+    <string name="luggage">Equipaje:</string>
+    <string name="erase">Borrar</string>
+    <string name="refresh">Refrescar</string>
+    <string name="comment">Comentar</string>
+    <string name="settings">Ajustes</string>
+    <string name="add_flight">Agregar Vuelo</string>
+    <string name="search_hint">Buscar vuelos</string>
+    <string name="search_label">Búsqueda</string>
+
+</resources>

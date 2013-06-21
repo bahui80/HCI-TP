@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.quieroviajar"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="15"
+        android:targetSdkVersion="15" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@android:style/Theme.Holo" >
+        <activity
+            android:name="com.example.quieroviajar.MyFlightsListActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+             <meta-data
+                android:name="android.app.default_searchable"
+                android:value="notificator.activities.SearchActivity" />
+        </activity>
+        <activity android:name="com.example.quieroviajar.FlightDetailActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MyFlightsListActivity" />
+        </activity>
+        <activity android:name="notificator.activities.ResultActivity" >
+        </activity>
+        <activity android:name="notificator.activities.SettingActivity" >
+        </activity>
+        <activity
+            android:name="notificator.activities.DealsActivity"
+            android:configChanges="orientation|screenSize" >
+        </activity>
+        
+        <activity
+            android:name="notificator.activities.SearchActivity"
+            android:configChanges="orientation|screenSize"
+            android:launchMode="singleTop" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+
+        <receiver android:name="notificator.alarm.AlarmReceiver" />
+        <receiver android:name="notificator.boot.starter.BootReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name="notificator.alarm.AlarmService" />
+        <service android:name="notificator.notification.SendNotificationService" />
+        <service android:name="notificator.notification.CheckNotificationsService" />
+        <service android:name="notificator.web.api.service.FlightService" />
+        <service android:name="notificator.web.api.service.DealsService" />
+        <service android:name="notificator.web.api.service.CitiesService" />
+        <service android:name="notificator.web.api.service.CommentService" />
+        <service android:name="notificator.web.api.service.GPSTrackerService" />
+    </application>
+
+</manifest>
