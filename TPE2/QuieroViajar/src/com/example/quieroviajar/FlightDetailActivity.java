@@ -1,6 +1,8 @@
 package com.example.quieroviajar;
 
+import notificator.activities.CommentDialog;
 import notificator.web.api.model.Flight;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -69,6 +71,10 @@ public class FlightDetailActivity extends FragmentActivity {
 		case R.id.erase: {
 			return true;
 
+		}case R.id.comment: {
+			DialogFragment newFragment = new CommentDialog();
+			newFragment.show(getFragmentManager(), "dialog"); /* por hacer */
+			return true;
 		}
 
 		}

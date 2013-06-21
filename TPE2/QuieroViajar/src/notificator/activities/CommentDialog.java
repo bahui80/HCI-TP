@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
+import com.example.quieroviajar.FlightManager;
 import com.example.quieroviajar.R;
 
 public class CommentDialog extends DialogFragment {
@@ -28,6 +29,7 @@ public class CommentDialog extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        System.out.println("ENTRO ALC OMENNNNNTTT");
     }
 
     @Override
@@ -52,8 +54,8 @@ public class CommentDialog extends DialogFragment {
                 		// Este es de prueba
                 		intent1.putExtra("comment", et.getText().toString());
                 		intent1.putExtra("rating", (int)(rb.getRating()*2));
-                		intent1.putExtra("flight", 6942);
-                		intent1.putExtra("airline", "AA");
+                		intent1.putExtra("flight", FlightManager.CUR_ITEM.getFlightNum());
+                		intent1.putExtra("airline", FlightManager.CUR_ITEM.getAirlineId());
                 		
                 		/* Se pasa un callback (ResultReceiver), con el cual se procesará la
                 		 * respuesta del servicio. Si se le pasa null como parámetro del constructor

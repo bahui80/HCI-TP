@@ -40,6 +40,7 @@ public class FlightDetailFragment extends Fragment {
 			// arguments. In a real-world scenario, use a Loader
 			// to load content from a content provider.
 			mItem = (Flight) getArguments().getSerializable("flight");
+			FlightManager.CUR_ITEM = mItem;
 			System.out.println(mItem.getAirlineName());
 			
 		}
@@ -77,6 +78,10 @@ public class FlightDetailFragment extends Fragment {
 			.setText(mItem.getDepartureGate());
 			((TextView) rootView.findViewById(R.id.flight_detail_destiny_gate))
 			.setText(mItem.getArrivalGate());
+			((TextView) rootView.findViewById(R.id.flight_detail_departure_day))
+			.setText(mItem.getDepartureDay());
+			((TextView) rootView.findViewById(R.id.flight_detail_baggage))
+			.setText(mItem.getArrivalBaggageGate());
 		}
 
 		return rootView;

@@ -1,6 +1,8 @@
 package notificator.web.api.model;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,7 +23,8 @@ public class FlightImpl implements Flight, Serializable {
 	private String departureAirport;
 	private String departureGate;	
 	private String departureTerminal;	
-	private String departureScheduledTime;	
+	private String departureScheduledTime;
+	private String departureScheduledDay;	
 	private String departureScheduledGateTime;	
 	private String departureActualGateTime;
 	private String departureEstimatedRunwayTime;	
@@ -37,7 +40,8 @@ public class FlightImpl implements Flight, Serializable {
 	private String arrivalGate;	
 	private String arrivalBaggageGate;	
 	private String arrivalTerminal;	
-	private String arrivalScheduledTime;	
+	private String arrivalScheduledTime;
+	private String arrivalScheduledDay;
 	private String arrivalScheduledGateTime;	
 	private String arrivalActualGateTime;
 	private String arrivalEstimatedRunwayTime;	
@@ -49,7 +53,7 @@ public class FlightImpl implements Flight, Serializable {
 			String departureAirport, String departureGate, String departureTerminal, String departureScheduledTime, String departureScheduledGateTime, String departureActualGateTime, 
 			String departureEstimatedRunwayTime, String departureActualRunwayTime, int departureGateDelay, int departureRunwayDelay, String arrivalCountry, String arrivalTimeZone, 
 			String arrivalCity, String arrivalAirport, String arrivalGate, String arrivalBaggageGate, String arrivalTerminal, String arrivalScheduledTime, String arrivalScheduledGateTime, 
-			String arrivalActualGateTime, String arrivalEstimatedRunwayTime, String arrivalActualRunwayTime, int arrivalGateDelay, int arrivalRunwayDelay, String airlineLogo) {
+			String arrivalActualGateTime, String arrivalEstimatedRunwayTime, String arrivalActualRunwayTime, int arrivalGateDelay, int arrivalRunwayDelay, String airlineLogo, String departureScheduledDay, String arrivalScheduledDay) {
 		this.flightNum = flightNum;
 		this.airlineId = airlineId;
 		this.airlineName = airlineName;
@@ -82,6 +86,8 @@ public class FlightImpl implements Flight, Serializable {
 		this.arrivalGateDelay = arrivalGateDelay;
 		this.arrivalRunwayDelay = arrivalRunwayDelay;
 		this.airlineLogo = airlineLogo;
+		this.departureScheduledDay = departureScheduledDay;
+		this.arrivalScheduledDay = arrivalScheduledDay;
 	}
 	
 	public static Flight fromJSON(String JSONString){
@@ -94,15 +100,22 @@ public class FlightImpl implements Flight, Serializable {
 			Integer flightNum = jsonObj.getJSONObject("status").getInt("number");
 			String status = jsonObj.getJSONObject("status").getString("status");
 			// info de la salida
-			String departureAirport = jsonObj.getJSONObject("status").getJSONObject("departure").getJSONObject("airport").getString("description");
+			String departureAirport = (jsonObj.getJSONObject("status").getJSONObject("departure").getJSONObject("airport").getString("description")).split(",")[0];
 			String departureTimeZone = jsonObj.getJSONObject("status").getJSONObject("departure").getJSONObject("airport").getString("timezone");
 			String departureTerminal = jsonObj.getJSONObject("status").getJSONObject("departure").getJSONObject("airport").getString("terminal");
+			if(departureTerminal.equals("null")){
+				departureTerminal = "-";
+			}
 			String departureGate = jsonObj.getJSONObject("status").getJSONObject("departure").getJSONObject("airport").getString("gate");
+			if(departureGate.equals("null")){
+				departureGate = "-";
+			}
 			// info de la ciudad de salida
-			String departureCity = jsonObj.getJSONObject("status").getJSONObject("departure").getJSONObject("city").getString("name");
-			String departureCountry = jsonObj.getJSONObject("status").getJSONObject("departure").getJSONObject("country").getString("name");
+			String departureCity = (jsonObj.getJSONObject("status").getJSONObject("departure").getJSONObject("city").getString("name")).split(",")[0];
+			String departureCountry = (jsonObj.getJSONObject("status").getJSONObject("departure").getJSONObject("country").getString("name")).split(",")[0];
 			// info de los horarios de salida
-			String departureScheduledTime = jsonObj.getJSONObject("status").getJSONObject("departure").getString("scheduledTime");
+			String departureScheduledTime = jsonObj.getJSONObject("status").getJSONObject("departure").getString("scheduledTime").split(" ")[1];
+			String departureScheduledDay = jsonObj.getJSONObject("status").getJSONObject("departure").getString("scheduledTime").split(" ")[0];
 			String departureScheduledGateTime = jsonObj.getJSONObject("status").getJSONObject("departure").getString("scheduledGateTime");
 			String departureActualGateTime = jsonObj.getJSONObject("status").getJSONObject("departure").getString("actualGateTime");
 			String departureEstimatedRunwayTime = jsonObj.getJSONObject("status").getJSONObject("departure").getString("estimateRunwayTime");
@@ -110,16 +123,26 @@ public class FlightImpl implements Flight, Serializable {
 			Integer departureGateDelay = jsonObj.getJSONObject("status").getJSONObject("departure").optInt("gateDelay");
 			Integer departureRunwayDelay = jsonObj.getJSONObject("status").getJSONObject("departure").optInt("runwayDelay");
 			// info de la llegada
-			String arrivalAirport = jsonObj.getJSONObject("status").getJSONObject("arrival").getJSONObject("airport").getString("description");;
+			String arrivalAirport = (jsonObj.getJSONObject("status").getJSONObject("arrival").getJSONObject("airport").getString("description")).split(",")[0];
 			String arrivalTimeZone = jsonObj.getJSONObject("status").getJSONObject("arrival").getJSONObject("airport").getString("timezone");
 			String arrivalTerminal = jsonObj.getJSONObject("status").getJSONObject("arrival").getJSONObject("airport").getString("terminal");
+			if(arrivalTerminal.equals("null")){
+				arrivalTerminal = "-";
+			}
 			String arrivalGate = jsonObj.getJSONObject("status").getJSONObject("arrival").getJSONObject("airport").getString("gate");
+			if(arrivalGate.equals("null")){
+				arrivalGate = "-";
+			}
 			String arrivalBaggageGate = jsonObj.getJSONObject("status").getJSONObject("arrival").getJSONObject("airport").getString("baggageGate");
+			if(arrivalBaggageGate.equals("null")){
+				arrivalBaggageGate = "-";
+			}
 			// info de la ciudad de llegada
-			String arrivalCity = jsonObj.getJSONObject("status").getJSONObject("arrival").getJSONObject("city").getString("name");
-			String arrivalCountry = jsonObj.getJSONObject("status").getJSONObject("arrival").getJSONObject("country").getString("name");
+			String arrivalCity = (jsonObj.getJSONObject("status").getJSONObject("arrival").getJSONObject("city").getString("name")).split(",")[0];
+			String arrivalCountry = (jsonObj.getJSONObject("status").getJSONObject("arrival").getJSONObject("country").getString("name")).split(",")[0];
 			// info de los horarios de llegada
-			String arrivalScheduledTime = jsonObj.getJSONObject("status").getJSONObject("arrival").getString("scheduledTime");
+			String arrivalScheduledTime = jsonObj.getJSONObject("status").getJSONObject("arrival").getString("scheduledTime").split(" ")[1];
+			String arrivalScheduledDay = jsonObj.getJSONObject("status").getJSONObject("arrival").getString("scheduledTime").split(" ")[0];
 			String arrivalScheduledGateTime = jsonObj.getJSONObject("status").getJSONObject("arrival").getString("scheduledGateTime");
 			String arrivalActualGateTime = jsonObj.getJSONObject("status").getJSONObject("arrival").getString("actualGateTime");
 			String arrivalEstimatedRunwayTime = jsonObj.getJSONObject("status").getJSONObject("arrival").getString("estimateRunwayTime");
@@ -131,7 +154,7 @@ public class FlightImpl implements Flight, Serializable {
 		return new FlightImpl(flightNum, airlineId, airlineName, status, departureCountry, departureTimeZone, departureCity, departureAirport, departureGate, departureTerminal, departureScheduledTime,
 				departureScheduledGateTime, departureActualGateTime, departureEstimatedRunwayTime, departureActualRunwayTime, departureGateDelay, departureRunwayDelay, arrivalCountry, arrivalTimeZone, 
 				arrivalCity, arrivalAirport, arrivalGate, arrivalBaggageGate, arrivalTerminal, arrivalScheduledTime, arrivalScheduledGateTime, 	arrivalActualGateTime, arrivalEstimatedRunwayTime, 
-				arrivalActualRunwayTime, arrivalGateDelay, arrivalRunwayDelay, airlineLogo);
+				arrivalActualRunwayTime, arrivalGateDelay, arrivalRunwayDelay, airlineLogo, departureScheduledDay, arrivalScheduledDay);
 		} catch (JSONException e) {
 			return null;
 		}
@@ -267,5 +290,13 @@ public class FlightImpl implements Flight, Serializable {
 
 	public Integer getArrivalRunwayDelay() {
 		return arrivalRunwayDelay;
+	}
+
+	public String getDepartureDay() {
+		return departureScheduledDay;
+	}
+	
+	public String getArrivalDay() {
+		return arrivalScheduledDay;
 	}
 }

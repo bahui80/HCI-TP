@@ -43,8 +43,8 @@ public class CitiesService extends IntentService {
 	@Override
 	protected void onHandleIntent(final Intent intent) {
 		final ResultReceiver receiver = intent.getParcelableExtra("receiver");
-		final Double latitude = intent.getDoubleExtra("latitude", 0.0);
-		final Double longitude =  intent.getDoubleExtra("longitude", 0.0);
+		final Double latitude = intent.getDoubleExtra("latitude", -34.5875);
+		final Double longitude =  intent.getDoubleExtra("longitude", -58.6725);
 
 		
 		final Bundle b = new Bundle();

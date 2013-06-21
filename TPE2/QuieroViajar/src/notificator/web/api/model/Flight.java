@@ -72,4 +72,8 @@ public interface Flight {
 	public Integer getArrivalGateDelay();
 	
 	public Integer getArrivalRunwayDelay();
+
+	public String getDepartureDay();
+	
+	public String getArrivalDay();
 }

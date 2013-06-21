@@ -12,6 +12,8 @@ import notificator.web.api.service.DealsService;
 import notificator.web.api.service.FlightService;
 import notificator.web.api.service.GPSTrackerService;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.quieroviajar.MyFlightsListActivity;
@@ -43,76 +46,63 @@ public class DealsActivity extends Activity {
 			apiIntentCity.putExtra("longitude", gps.getLongitude());
 			apiIntentCity.putExtra("receiver",
 					new ResultReceiver(new Handler()) {
-						@Override
-						protected void onReceiveResult(int resultCode,
-								Bundle resultData) {
-							super.onReceiveResult(resultCode, resultData);
-							if (resultCode == FlightService.STATUS_OK) {
+				@SuppressWarnings("deprecation")
+				@Override
+				protected void onReceiveResult(int resultCode,
+						Bundle resultData) {
+					super.onReceiveResult(resultCode, resultData);
+					if (resultCode == FlightService.STATUS_OK) {
 
-								final Cities closestCity = (Cities) resultData
-										.getSerializable("return");
-								// ACA TENGO LA CIUDAD QUE ENGANCHO EL GPS
-								// AHORA BUSCO LASOFERTAS DE ESTA CIUDAD
-								if (closestCity != null) {
-									Toast.makeText(
-											DealsActivity.this,
-											"Buscando ofertas desde "
-													+ closestCity.getCityName(),
+						final Cities closestCity = (Cities) resultData
+								.getSerializable("return");
+						// ACA TENGO LA CIUDAD QUE ENGANCHO EL GPS
+						// AHORA BUSCO LASOFERTAS DE ESTA CIUDAD
+						if (closestCity != null) {
+							Toast.makeText(
+									DealsActivity.this,
+									"Buscando ofertas desde "
+											+ closestCity.getCityName(),
 											Toast.LENGTH_LONG).show();
-									Intent apiIntentDeals = new Intent(
-											DealsActivity.this,
-											DealsService.class);
-									apiIntentDeals.putExtra("from",
-											closestCity.getCityId());
-									apiIntentDeals.putExtra("receiver",
-											new ResultReceiver(new Handler()) {
-												@Override
-												protected void onReceiveResult(
-														int resultCode,
-														Bundle resultData) {
-													super.onReceiveResult(
-															resultCode,
-															resultData);
-													if (resultCode == FlightService.STATUS_OK) {
-
-														@SuppressWarnings("unchecked")
-														List<Deal> dealsList = (List<Deal>) resultData
-																.getSerializable("return");
-														// ACA HAGO LA LISTA DE
-														// OFERTAS
-														makeList(dealsList,
-																closestCity);
-
-													} else if (resultCode == FlightService.STATUS_CONNECTION_ERROR) {
-														Toast.makeText(
-																DealsActivity.this,
-																"Connection error",
-																Toast.LENGTH_LONG)
-																.show();
-													} else {
-														Toast.makeText(
-																DealsActivity.this,
-																"Deals Unkown error",
-																Toast.LENGTH_LONG)
-																.show();
-													}
-												}
-											});
-									// Mando el intent al flight service
-									DealsActivity.this
-											.startService(apiIntentDeals);
+							Intent apiIntentDeals = new Intent(
+									DealsActivity.this,
+									DealsService.class);
+							apiIntentDeals.putExtra("from",
+									closestCity.getCityId());
+							apiIntentDeals.putExtra("receiver",
+									new ResultReceiver(new Handler()) {
+								@Override
+								protected void onReceiveResult(int resultCode, Bundle resultData) {
+									super.onReceiveResult(resultCode, resultData);
+									if (resultCode == FlightService.STATUS_OK) {
+										@SuppressWarnings("unchecked")
+										List<Deal> dealsList = (List<Deal>) resultData
+										.getSerializable("return");
+										// ACA HAGO LA LISTA DE
+										// OFERTAS
+										makeList(dealsList, closestCity);
+									} else if (resultCode == FlightService.STATUS_CONNECTION_ERROR) {
+										Toast.makeText(DealsActivity.this,"Connection error",Toast.LENGTH_LONG).show();
+									} else {
+										Toast.makeText(DealsActivity.this,"Deals Unkown error",Toast.LENGTH_LONG).show();
+									}
 								}
-							} else if (resultCode == FlightService.STATUS_CONNECTION_ERROR) {
-								Toast.makeText(DealsActivity.this,
-										"Connection error", Toast.LENGTH_LONG)
-										.show();
-							} else {
-								Toast.makeText(DealsActivity.this,
-										"City Unkown error", Toast.LENGTH_LONG)
-										.show();
-							}
+							});
+							// Mando el intent al flight service
+							DealsActivity.this
+							.startService(apiIntentDeals);
+						}else{
+							TextView tv = new TextView(DealsActivity.this);
+							tv.setPadding(10, 10, 10, 10);
+							tv.setText("No se pudo encontrar ciudades en las cercanías");
+							setContentView(tv);
 						}
-					});
+					} else if (resultCode == FlightService.STATUS_CONNECTION_ERROR) {
+						Toast.makeText(DealsActivity.this,"Connection error", Toast.LENGTH_LONG).show();
+					} else {
+						Toast.makeText(DealsActivity.this,"City Unkown error", Toast.LENGTH_LONG).show();
+					}
+				}
+			});
 			// Mando el intent al flight service
 			startService(apiIntentCity);
 		} else {

@@ -118,6 +118,7 @@ public class MyFlightsListActivity extends FragmentActivity implements
 			return true;
 		}
 		case R.id.comment: {
+			System.out.println("CLICKIEEEEEEEEEEEEEEEEEEEEEE");
 			DialogFragment newFragment = new CommentDialog();
 			newFragment.show(getFragmentManager(), "dialog"); /* por hacer */
 			return true;
