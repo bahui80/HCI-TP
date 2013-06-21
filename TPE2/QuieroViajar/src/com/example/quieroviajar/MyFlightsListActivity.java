@@ -1,13 +1,16 @@
 package com.example.quieroviajar;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import notificator.activities.CommentDialog;
 import notificator.activities.DealsActivity;
 import notificator.activities.SettingActivity;
 import notificator.web.api.model.Flight;
+import notificator.web.api.model.FlightImpl;
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
@@ -19,8 +22,6 @@ import android.view.MenuItem;
 
 public class MyFlightsListActivity extends FragmentActivity implements
 		FlightListFragment.Callbacks {
-	
-
 
 	/**
 	 * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -60,10 +61,10 @@ public class MyFlightsListActivity extends FragmentActivity implements
 	@Override
 	public void onItemSelected(String id) {
 		Flight flight = FlightManager.ITEM_MAP.get(id);
-	
+
 		Bundle arguments = new Bundle();
 		arguments.putSerializable("flight", (Serializable) flight);
-		
+
 		if (mTwoPane) {
 			// In two-pane mode, show the detail view in this activity by
 			// adding or replacing the detail fragment using a
@@ -84,7 +85,7 @@ public class MyFlightsListActivity extends FragmentActivity implements
 			// In single-pane mode, simply start the detail activity
 			// for the selected item ID.
 
-			Intent detailIntent = new Intent(this, FlightDetailActivity.class);			
+			Intent detailIntent = new Intent(this, FlightDetailActivity.class);
 			detailIntent.putExtra("flight_intent", arguments);
 			startActivity(detailIntent);
 		}
@@ -125,11 +126,37 @@ public class MyFlightsListActivity extends FragmentActivity implements
 		}
 		case R.id.add_flight: {
 			startSearch(null, false, null, false);
-		
+
+			return true;
+		}
+		case R.id.erase: {
+			removeFlight(FlightManager.CUR_ITEM);
+			startActivity(new Intent(this, MyFlightsListActivity.class));
 			return true;
 		}
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
+	private void removeFlight(Flight flight) {
+		Set<String> flightsSet;
+		String foundStr = null;
+		SharedPreferences flights = getSharedPreferences("flightObjects",
+				MODE_PRIVATE);
+
+		SharedPreferences.Editor editor = flights.edit();
+		flightsSet = flights.getStringSet("flightObjects", null);
+
+		for (String str : flightsSet) {
+			if (FlightImpl.fromJSON(str).getFlightId()
+					.equals(flight.getFlightId())) {
+				foundStr = str;
+			}
+		}
+
+		flightsSet.remove(foundStr);
+		editor.putStringSet("flightObjects", flightsSet);
+		editor.commit();
+		FlightManager.CUR_ITEM=null;
+	}
 }

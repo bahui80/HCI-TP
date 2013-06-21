@@ -1,9 +1,13 @@
 package com.example.quieroviajar;
 
+import java.util.Set;
+
 import notificator.activities.CommentDialog;
 import notificator.web.api.model.Flight;
+import notificator.web.api.model.FlightImpl;
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
@@ -69,6 +73,8 @@ public class FlightDetailActivity extends FragmentActivity {
 			return true;
 		}
 		case R.id.erase: {
+			removeFlight(FlightManager.CUR_ITEM);
+			startActivity(new Intent(this, MyFlightsListActivity.class));
 			return true;
 
 		}case R.id.comment: {
@@ -86,5 +92,26 @@ public class FlightDetailActivity extends FragmentActivity {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.flight_options, menu);
 		return true;
+	}
+	private void removeFlight(Flight flight) {
+		Set<String> flightsSet;
+		String foundStr = null;
+		SharedPreferences flights = getSharedPreferences("flightObjects",
+				MODE_PRIVATE);
+
+		SharedPreferences.Editor editor = flights.edit();
+		flightsSet = flights.getStringSet("flightObjects", null);
+
+		for (String str : flightsSet) {
+			if (FlightImpl.fromJSON(str).getFlightId()
+					.equals(flight.getFlightId())) {
+				foundStr = str;
+			}
+		}
+
+		flightsSet.remove(foundStr);
+		editor.putStringSet("flightObjects", flightsSet);
+		editor.commit();
+		FlightManager.CUR_ITEM=null;
 	}
 }
