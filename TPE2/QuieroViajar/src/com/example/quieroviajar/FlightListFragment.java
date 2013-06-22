@@ -81,44 +81,52 @@ public class FlightListFragment extends ListFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// create flight list
-		Set<String> flightsSet;
-		SharedPreferences flights = this.getActivity().getSharedPreferences("flightObjects",android.content.Context.MODE_PRIVATE);
-		flightsSet = flights.getStringSet("flightObjects", null);
-		List<Flight> flightList = new ArrayList<Flight>();
-		if(flightsSet != null){
-			Integer i= 0;
-			
-			for(String flightJSON: flightsSet ){
-				//El vuelo que estoy siguiendo				
-				Flight curFlight = FlightImpl.fromJSON(flightJSON);
-				flightList.add(curFlight);
-				FlightManager.addItem(i.toString(), curFlight);
-				i++;
-			}
-			System.out.println(FlightManager.ITEM_MAP);
-		}
-		List<Map<String,String>> mapList = new ArrayList<Map<String,String>>();
-		for(Flight curFlight: flightList){
-			Map<String, String> map = new HashMap<String, String>();
-			map.put("listTextAirline", curFlight.getAirlineName());
-			map.put("listTextOrigin", curFlight.getDepartureCity());
-			map.put("listTextDestiny", curFlight.getArrivalCity());
-			map.put("listTextFlightNumber", curFlight.getFlightId());
-			mapList.add(map);
-		}
-		
-		// TODO: replace with a real list adapter.
-		String[] from = new String[] { "listTextAirline", "listTextOrigin",
-				"listTextDestiny", "listTextFlightNumber" };
-
-		int[] to = new int[] { R.id.listTextAirline, R.id.listTextOrigin,
-				R.id.listTextDestiny, R.id.listTextFlightNumber };
-
-		setListAdapter(new SimpleAdapter(getActivity(), mapList,
-				R.layout.my_flights_item, from, to));
+		loadList();
 	}
 
+	public void onResume() {
+        super.onResume();
+        loadList();
+    }
+	
+	private void loadList(){
+		// create flight list
+				Set<String> flightsSet;
+				SharedPreferences flights = this.getActivity().getSharedPreferences("flightObjects",android.content.Context.MODE_PRIVATE);
+				flightsSet = flights.getStringSet("flightObjects", null);
+				List<Flight> flightList = new ArrayList<Flight>();
+				if(flightsSet != null){
+					Integer i= 0;
+					
+					for(String flightJSON: flightsSet ){
+						//El vuelo que estoy siguiendo				
+						Flight curFlight = FlightImpl.fromJSON(flightJSON);
+						flightList.add(curFlight);
+						FlightManager.addItem(i.toString(), curFlight);
+						i++;
+					}
+					System.out.println(FlightManager.ITEM_MAP);
+				}
+				List<Map<String,String>> mapList = new ArrayList<Map<String,String>>();
+				for(Flight curFlight: flightList){
+					Map<String, String> map = new HashMap<String, String>();
+					map.put("listTextAirline", curFlight.getAirlineName());
+					map.put("listTextOrigin", curFlight.getDepartureCity());
+					map.put("listTextDestiny", curFlight.getArrivalCity());
+					map.put("listTextFlightNumber", curFlight.getFlightId());
+					mapList.add(map);
+				}
+				
+				// TODO: replace with a real list adapter.
+				String[] from = new String[] { "listTextAirline", "listTextOrigin",
+						"listTextDestiny", "listTextFlightNumber" };
+
+				int[] to = new int[] { R.id.listTextAirline, R.id.listTextOrigin,
+						R.id.listTextDestiny, R.id.listTextFlightNumber };
+
+				setListAdapter(new SimpleAdapter(getActivity(), mapList,
+						R.layout.my_flights_item, from, to));
+	}
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);

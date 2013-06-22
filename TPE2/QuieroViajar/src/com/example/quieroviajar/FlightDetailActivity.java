@@ -60,28 +60,33 @@ public class FlightDetailActivity extends FragmentActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case android.R.id.home: {
-			// This ID represents the Home or Up button. In the case of this
-			// activity, the Up button is shown. Use NavUtils to allow users
-			// to navigate up one level in the application structure. For
-			// more details, see the Navigation pattern on Android Design:
-			//
-			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
-			//
-			NavUtils.navigateUpTo(this, new Intent(this,
-					MyFlightsListActivity.class));
-			return true;
-		}
-		case R.id.erase: {
-			removeFlight(FlightManager.CUR_ITEM);
-			startActivity(new Intent(this, MyFlightsListActivity.class));
-			return true;
-
-		}case R.id.comment: {
-			DialogFragment newFragment = new CommentDialog();
-			newFragment.show(getFragmentManager(), "dialog"); /* por hacer */
-			return true;
-		}
+			case android.R.id.home: {
+				// This ID represents the Home or Up button. In the case of this
+				// activity, the Up button is shown. Use NavUtils to allow users
+				// to navigate up one level in the application structure. For
+				// more details, see the Navigation pattern on Android Design:
+				//
+				// http://developer.android.com/design/patterns/navigation.html#up-vs-back
+				//
+				NavUtils.navigateUpTo(this, new Intent(this,
+						MyFlightsListActivity.class));
+				return true;
+			}
+			case R.id.erase: {
+				removeFlight(FlightManager.CUR_ITEM);
+				startActivity(new Intent(this, MyFlightsListActivity.class));
+				return true;
+	
+			}case R.id.comment: {
+				DialogFragment newFragment = new CommentDialog();
+				newFragment.show(getFragmentManager(), "dialog"); /* por hacer */
+				return true;
+			}case R.id.refresh: {				
+				Intent intent = new Intent(this, MyFlightsListActivity.class);
+				intent.putExtra("flight", FlightManager.CUR_ITEM.getFlightId());
+				startActivity(intent);
+				return true;
+			}
 
 		}
 

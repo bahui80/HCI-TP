@@ -19,6 +19,7 @@ import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ListView;
 
 public class MyFlightsListActivity extends FragmentActivity implements
 		FlightListFragment.Callbacks {
@@ -50,8 +51,20 @@ public class MyFlightsListActivity extends FragmentActivity implements
 			((FlightListFragment) getSupportFragmentManager().findFragmentById(
 					R.id.flight_list)).setActivateOnItemClick(true);
 		}
-
-		// TODO: If exposing deep links into your app, handle intents here.
+		
+		Intent mIntent = getIntent();
+		if(mIntent.hasExtra("flight")){
+			String id = "0";
+			for(String curId: FlightManager.ITEM_MAP.keySet()){
+				String curFlightId = FlightManager.ITEM_MAP.get(curId).getFlightId();
+				if (curFlightId.equals(mIntent.getStringExtra("flight"))){
+					id = curId;
+				}
+			}
+			mIntent.removeExtra("flight");
+			System.out.println("PIOLA");
+			onItemSelected(id);
+		}
 	}
 
 	/**
@@ -108,32 +121,36 @@ public class MyFlightsListActivity extends FragmentActivity implements
 
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.sales_tab: {
-			Intent activityIntent = new Intent(this, DealsActivity.class);
-			startActivity(activityIntent);
-			return true;
-		}
-		case R.id.settings: {
-			Intent activityIntent = new Intent(this, SettingActivity.class);
-			startActivity(activityIntent);
-			return true;
-		}
-		case R.id.comment: {
-			System.out.println("CLICKIEEEEEEEEEEEEEEEEEEEEEE");
-			DialogFragment newFragment = new CommentDialog();
-			newFragment.show(getFragmentManager(), "dialog"); /* por hacer */
-			return true;
-		}
-		case R.id.add_flight: {
-			startSearch(null, false, null, false);
-
-			return true;
-		}
-		case R.id.erase: {
-			removeFlight(FlightManager.CUR_ITEM);
-			startActivity(new Intent(this, MyFlightsListActivity.class));
-			return true;
-		}
+			case R.id.sales_tab: {
+				Intent activityIntent = new Intent(this, DealsActivity.class);
+				startActivity(activityIntent);
+				return true;
+			}
+			case R.id.settings: {
+				Intent activityIntent = new Intent(this, SettingActivity.class);
+				startActivity(activityIntent);
+				return true;
+			}
+			case R.id.comment: {
+				DialogFragment newFragment = new CommentDialog();
+				newFragment.show(getFragmentManager(), "dialog"); /* por hacer */
+				return true;
+			}
+			case R.id.add_flight: {
+				startSearch(null, false, null, false);
+	
+				return true;
+			}
+			case R.id.erase: {
+				removeFlight(FlightManager.CUR_ITEM);
+				startActivity(new Intent(this, MyFlightsListActivity.class));
+				return true;
+			}case R.id.refresh: {				
+				Intent intent = new Intent(this, MyFlightsListActivity.class);
+				intent.putExtra("flight", FlightManager.CUR_ITEM.getFlightId());
+				startActivity(intent);
+				return true;
+			}
 		}
 		return super.onOptionsItemSelected(item);
 	}
