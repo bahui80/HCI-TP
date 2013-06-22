@@ -8,6 +8,7 @@ import notificator.web.api.model.FlightImpl;
 import notificator.web.api.service.FlightService;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.example.quieroviajar.MyFlightsListActivity;
 import com.example.quieroviajar.R;
 
 @SuppressLint("DefaultLocale")
@@ -31,11 +33,8 @@ public class SearchActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		Intent intent = getIntent();
-		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-			String query = intent.getStringExtra(SearchManager.QUERY);
-			performSearch(query);
-		}
-
+		String query = intent.getStringExtra(SearchManager.QUERY);
+		performSearch(query);
 	}
 
 	@Override
@@ -47,6 +46,10 @@ public class SearchActivity extends Activity {
 	}
 
 	public void performSearch(String query) {
+		final ProgressDialog mDialog = new ProgressDialog(this);
+        mDialog.setMessage("Loading...");
+        mDialog.setCancelable(false);
+        mDialog.show();
 		String airlineId;
 		String flightNumber;
 		if (query.length() >= 3) {
@@ -129,19 +132,34 @@ public class SearchActivity extends Activity {
 								}
 
 							});
+							mDialog.dismiss();
 						} else {
+							
 							Toast.makeText(SearchActivity.this,"No se encontraron resultados",Toast.LENGTH_LONG).show();
+							Intent intent = new Intent(SearchActivity.this, MyFlightsListActivity.class);
+							startActivity(intent);
+							mDialog.dismiss();
 						}
 					} else if (resultCode == FlightService.STATUS_CONNECTION_ERROR) {
+						mDialog.dismiss();
 						Toast.makeText(SearchActivity.this,"Error de conexión", Toast.LENGTH_LONG).show();
+						Intent intent = new Intent(SearchActivity.this, MyFlightsListActivity.class);
+						startActivity(intent);
 					} else {
+						mDialog.dismiss();
 						Toast.makeText(SearchActivity.this,"No se encontraron resultados",Toast.LENGTH_LONG).show();
+						Intent intent = new Intent(SearchActivity.this, MyFlightsListActivity.class);
+						startActivity(intent);
 					}
 				}
 			});
 			this.startService(intent1);
 		} else {
+			
 			Toast.makeText(SearchActivity.this, "No se encontraron resultados",Toast.LENGTH_LONG).show();
+			Intent intent = new Intent(SearchActivity.this, MyFlightsListActivity.class);
+			startActivity(intent);
+			mDialog.dismiss();
 		}
 	}
 

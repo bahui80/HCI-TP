@@ -81,9 +81,13 @@ public class FlightDetailActivity extends FragmentActivity {
 				DialogFragment newFragment = new CommentDialog();
 				newFragment.show(getFragmentManager(), "dialog"); /* por hacer */
 				return true;
-			}case R.id.refresh: {				
+			}case R.id.refresh: {
+				Intent updateIntent = new Intent(this,UpdateService.class);
+				updateIntent.putExtra("flight", FlightManager.CUR_ITEM.getFlightId());
+				startService(updateIntent);
 				Intent intent = new Intent(this, MyFlightsListActivity.class);
 				intent.putExtra("flight", FlightManager.CUR_ITEM.getFlightId());
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 				return true;
 			}

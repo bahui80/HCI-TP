@@ -166,18 +166,21 @@ public class GPSTrackerService extends Service implements LocationListener {
         alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog,int which) {
                 Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 mContext.startActivity(intent);
             }
         });
+         // on pressing cancel button
+            alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+    	            dialog.cancel();
+    	            Intent intent = new Intent(mContext, MyFlightsListActivity.class);
+    	            mContext.startActivity(intent);
+                }
+            });
+        
   
-        // on pressing cancel button
-        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-            dialog.cancel();
-            Intent intent = new Intent(GPSTrackerService.this, MyFlightsListActivity.class);
-            GPSTrackerService.this.startActivity(intent);
-            }
-        });
+        
   
         // Showing Alert Message
         alertDialog.show();

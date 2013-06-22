@@ -52,19 +52,7 @@ public class MyFlightsListActivity extends FragmentActivity implements
 					R.id.flight_list)).setActivateOnItemClick(true);
 		}
 		
-		Intent mIntent = getIntent();
-		if(mIntent.hasExtra("flight")){
-			String id = "0";
-			for(String curId: FlightManager.ITEM_MAP.keySet()){
-				String curFlightId = FlightManager.ITEM_MAP.get(curId).getFlightId();
-				if (curFlightId.equals(mIntent.getStringExtra("flight"))){
-					id = curId;
-				}
-			}
-			mIntent.removeExtra("flight");
-			System.out.println("PIOLA");
-			onItemSelected(id);
-		}
+		
 	}
 
 	/**
@@ -82,13 +70,14 @@ public class MyFlightsListActivity extends FragmentActivity implements
 			// In two-pane mode, show the detail view in this activity by
 			// adding or replacing the detail fragment using a
 			// fragment transaction.
+			System.out.println("BLABLA");
 			MenuItem erase = menu.findItem(R.id.erase);
 			MenuItem refresh = menu.findItem(R.id.refresh);
 			MenuItem comment = menu.findItem(R.id.comment);
 			erase.setVisible(true);
 			refresh.setVisible(true);
 			comment.setVisible(true);
-
+			System.out.println("BLABLA2");
 			FlightDetailFragment fragment = new FlightDetailFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
@@ -115,7 +104,19 @@ public class MyFlightsListActivity extends FragmentActivity implements
 		refresh.setVisible(false);
 		comment.setVisible(false);
 		this.menu = menu;
-
+		Intent mIntent = getIntent();
+		if(mIntent.hasExtra("flight")){
+			String id = "0";
+			for(String curId: FlightManager.ITEM_MAP.keySet()){
+				String curFlightId = FlightManager.ITEM_MAP.get(curId).getFlightId();
+				if (curFlightId.equals(mIntent.getStringExtra("flight"))){
+					id = curId;
+				}
+			}
+			mIntent.removeExtra("flight");
+			System.out.println("PIOLA");
+			onItemSelected(id);
+		}
 		return true;
 	}
 
@@ -137,17 +138,20 @@ public class MyFlightsListActivity extends FragmentActivity implements
 				return true;
 			}
 			case R.id.add_flight: {
-				startSearch(null, false, null, false);
-	
+				startSearch(null, false, null, false);	
 				return true;
 			}
 			case R.id.erase: {
 				removeFlight(FlightManager.CUR_ITEM);
 				startActivity(new Intent(this, MyFlightsListActivity.class));
 				return true;
-			}case R.id.refresh: {				
+			}case R.id.refresh: {
+				Intent updateIntent = new Intent(this,UpdateService.class);
+				updateIntent.putExtra("flight", FlightManager.CUR_ITEM.getFlightId());
+				startService(updateIntent);
 				Intent intent = new Intent(this, MyFlightsListActivity.class);
 				intent.putExtra("flight", FlightManager.CUR_ITEM.getFlightId());
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 				return true;
 			}

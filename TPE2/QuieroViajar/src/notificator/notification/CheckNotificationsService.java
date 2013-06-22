@@ -1,6 +1,10 @@
 package notificator.notification;
 
 import java.util.Set;
+
+import com.example.quieroviajar.FlightManager;
+import com.example.quieroviajar.UpdateService;
+
 import notificator.web.api.model.Flight;
 import notificator.web.api.model.FlightImpl;
 import notificator.web.api.service.FlightService;
@@ -69,7 +73,9 @@ public class CheckNotificationsService extends IntentService{
 									System.out.println("VUELO "+curFlight.getFlightId()+": "+curFlight.getArrivalBaggageGate()+" -> "+resultFlight.getArrivalBaggageGate());
 									notifyFlight(resultFlight, "Cambio en la puerta de equipaje: "+resultFlight.getArrivalBaggageGate());
 								}
-								
+								Intent updateIntent = new Intent(CheckNotificationsService.this, UpdateService.class);
+								updateIntent.putExtra("flight", curFlight.getFlightId());
+								startService(updateIntent);
 							} else if (resultCode == FlightService.STATUS_CONNECTION_ERROR) {
 								Toast.makeText(CheckNotificationsService.this,"Connection error",Toast.LENGTH_LONG).show();
 							} else {
@@ -88,6 +94,7 @@ public class CheckNotificationsService extends IntentService{
 		serviceIntent.putExtra("flight", flight.getFlightNum()+airlineToInt(flight.getAirlineId()));
 		serviceIntent.putExtra("status", "Vuelo "+flight.getFlightId());
 		serviceIntent.putExtra("description", description);
+		serviceIntent.putExtra("flightId", flight.getFlightId());
 		CheckNotificationsService.this.startService(serviceIntent);
 	}
 	

@@ -1,8 +1,10 @@
 package notificator.notification;
 
+import notificator.activities.SearchActivity;
 import android.app.IntentService;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
@@ -32,10 +34,9 @@ public class SendNotificationService extends IntentService {
 		        .setContentText(flight_description);
 		
 		// Creates an explicit intent for an Activity in your app		
-		Intent resultIntent = new Intent(this, MyFlightsListActivity.class);
-		resultIntent.putExtra("flight", flight_id);
-		resultIntent.putExtra("status", flight_status);
-		resultIntent.putExtra("description", flight_description);
+		Intent resultIntent = new Intent(this, SearchActivity.class);
+		resultIntent.putExtra(SearchManager.QUERY, intent.getStringExtra("flightId"));
+
 		
 		// The stack builder object will contain an artificial back stack for the
 		// started Activity.
@@ -53,6 +54,7 @@ public class SendNotificationService extends IntentService {
 		            0,
 		            PendingIntent.FLAG_UPDATE_CURRENT
 		        );
+		
 		mBuilder.setContentIntent(resultPendingIntent);
 		NotificationManager mNotificationManager =
 		    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

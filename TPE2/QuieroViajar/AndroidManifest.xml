@@ -60,13 +60,16 @@
         </activity>
 
         <receiver android:name="notificator.alarm.AlarmReceiver" />
-        <receiver android:name="notificator.boot.starter.BootReceiver" >
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
+        <receiver android:name="notificator.boot.starter.BootReceiver"
+            android:enabled="true"
+        	android:exported="true">
+		    <intent-filter>  
+		        <action android:name="android.intent.action.BOOT_COMPLETED" />  
+		    </intent-filter>  
         </receiver>
 
         <service android:name="notificator.alarm.AlarmService" />
+        <service android:name="com.example.quieroviajar.UpdateService" />
         <service android:name="notificator.notification.SendNotificationService" />
         <service android:name="notificator.notification.CheckNotificationsService" />
         <service android:name="notificator.web.api.service.FlightService" />
