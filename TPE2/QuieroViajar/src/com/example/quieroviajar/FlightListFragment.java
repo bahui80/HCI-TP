@@ -95,6 +95,8 @@ public class FlightListFragment extends ListFragment {
 				SharedPreferences flights = this.getActivity().getSharedPreferences("flightObjects",android.content.Context.MODE_PRIVATE);
 				flightsSet = flights.getStringSet("flightObjects", null);
 				List<Flight> flightList = new ArrayList<Flight>();
+				System.out.println("SHARED PREFERENCE: " + flights.getAll());
+				System.out.println("SET DE VUELOS: " + flightsSet);
 				if(flightsSet != null){
 					Integer i= 0;
 					
@@ -105,7 +107,7 @@ public class FlightListFragment extends ListFragment {
 						FlightManager.addItem(i.toString(), curFlight);
 						i++;
 					}
-					System.out.println(FlightManager.ITEM_MAP);
+					//System.out.println(FlightManager.ITEM_MAP);
 				}
 				List<Map<String,String>> mapList = new ArrayList<Map<String,String>>();
 				for(Flight curFlight: flightList){

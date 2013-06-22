@@ -188,13 +188,21 @@ public class SearchActivity extends Activity {
 		SharedPreferences flights = getSharedPreferences("flightObjects", MODE_PRIVATE);
 
 		SharedPreferences.Editor editor = flights.edit();
+		editor.putString("DUMMY1", "ESTA1");
+		editor.putString("DUMMY2", "ESTA2");
+		editor.putString("DUMMY3", "ESTA3");
+		editor.putString("DUMMY4", "ESTA4");
+		editor.putString("DUMMY5", "ESTA5");
 		flightsSet = flights.getStringSet("flightObjects", null);
 		if (flightsSet == null) {
 			flightsSet = new HashSet<String>();
 		}
 		flightsSet.add(flight);
+		editor.remove("flightObjects");
+		editor.commit();
 		editor.putStringSet("flightObjects", flightsSet);
 		editor.commit();
+		System.out.println("SET LUEGO DE AGREGAR: " + flightsSet);
 	}
 
 	public void removeFlight(String flight) {
