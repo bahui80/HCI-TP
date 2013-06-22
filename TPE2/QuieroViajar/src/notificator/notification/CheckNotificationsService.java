@@ -53,29 +53,29 @@ public class CheckNotificationsService extends IntentService{
 									notifyFlight(resultFlight, statusConvert(resultFlight.getStatus()));
 								} else if (sharedPref.getBoolean("terminal_change", true) && !curFlight.getDepartureTerminal().equals(resultFlight.getDepartureTerminal())){
 									System.out.println("VUELO "+curFlight.getFlightId()+": "+curFlight.getDepartureTerminal()+" -> "+resultFlight.getDepartureTerminal());
-									notifyFlight(resultFlight, "Nueva terminal de partida: "+resultFlight.getDepartureTerminal());
+									notifyFlight(resultFlight, "Nueva terminal de partida");
 								} else if (sharedPref.getBoolean("terminal_change", true) && !curFlight.getArrivalTerminal().equals(resultFlight.getArrivalTerminal())){
 									System.out.println("VUELO "+curFlight.getFlightId()+": "+curFlight.getArrivalTerminal()+" -> "+resultFlight.getArrivalTerminal());
-									notifyFlight(resultFlight, "Nueva terminal de arribo: "+resultFlight.getArrivalTerminal());
+									notifyFlight(resultFlight, "Nueva terminal de arribo");
 								} else if (sharedPref.getBoolean("gate_change", true) && !curFlight.getDepartureGate().equals(resultFlight.getDepartureGate())){
 									System.out.println("VUELO "+curFlight.getFlightId()+": "+curFlight.getDepartureGate()+" -> "+resultFlight.getDepartureGate());
-									notifyFlight(resultFlight, "Nueva puerta de partida: "+resultFlight.getDepartureGate());
+									notifyFlight(resultFlight, "Nueva puerta de partida");
 								} else if (sharedPref.getBoolean("gate_change", true) && !curFlight.getArrivalGate().equals(resultFlight.getArrivalGate())){
 									System.out.println("VUELO "+curFlight.getFlightId()+": "+curFlight.getArrivalGate()+" -> "+resultFlight.getArrivalGate());
-									notifyFlight(resultFlight, "Nueva puerta de arribo: "+resultFlight.getArrivalGate());
+									notifyFlight(resultFlight, "Nueva puerta de arribo");
 								} else if (sharedPref.getBoolean("time_change", true) && !curFlight.getDepartureScheduledTime().equals(resultFlight.getDepartureScheduledTime())){
 									System.out.println("VUELO "+curFlight.getFlightId()+": "+curFlight.getDepartureScheduledTime()+" -> "+resultFlight.getDepartureScheduledTime());
-									notifyFlight(resultFlight, "Cambio en el horario de partida: "+resultFlight.getDepartureScheduledTime());
+									notifyFlight(resultFlight, "Cambio en el horario de partida");
 								} else if (sharedPref.getBoolean("time_change", true) && !curFlight.getArrivalScheduledTime().equals(resultFlight.getArrivalScheduledTime())){
 									System.out.println("VUELO "+curFlight.getFlightId()+": "+curFlight.getArrivalScheduledTime()+" -> "+resultFlight.getArrivalScheduledTime());
-									notifyFlight(resultFlight, "Cambio en el horario de llegada: "+resultFlight.getArrivalScheduledTime());
+									notifyFlight(resultFlight, "Cambio en el horario de llegada");
 								} else if (sharedPref.getBoolean("baggage_changee", true) && !curFlight.getArrivalBaggageGate().equals(resultFlight.getArrivalBaggageGate())){
 									System.out.println("VUELO "+curFlight.getFlightId()+": "+curFlight.getArrivalBaggageGate()+" -> "+resultFlight.getArrivalBaggageGate());
-									notifyFlight(resultFlight, "Cambio en la puerta de equipaje: "+resultFlight.getArrivalBaggageGate());
+									notifyFlight(resultFlight, "Cambio en la puerta de equipaje");
 								}
-								Intent updateIntent = new Intent(CheckNotificationsService.this, UpdateService.class);
-								updateIntent.putExtra("flight", curFlight.getFlightId());
-								startService(updateIntent);
+								//Intent updateIntent = new Intent(CheckNotificationsService.this, UpdateService.class);
+								//updateIntent.putExtra("flight", curFlight.getFlightId());
+								//startService(updateIntent);
 							} else if (resultCode == FlightService.STATUS_CONNECTION_ERROR) {
 								Toast.makeText(CheckNotificationsService.this,"Connection error",Toast.LENGTH_LONG).show();
 							} else {

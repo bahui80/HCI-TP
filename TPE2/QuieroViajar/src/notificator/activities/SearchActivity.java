@@ -18,6 +18,7 @@ import android.os.ResultReceiver;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -31,7 +32,6 @@ public class SearchActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		Intent intent = getIntent();
 		String query = intent.getStringExtra(SearchManager.QUERY);
 		performSearch(query);
@@ -49,7 +49,7 @@ public class SearchActivity extends Activity {
 		final ProgressDialog mDialog = new ProgressDialog(this);
         mDialog.setMessage("Loading...");
         mDialog.setCancelable(false);
-        mDialog.show();
+        
 		String airlineId;
 		String flightNumber;
 		if (query.length() >= 3) {
@@ -153,6 +153,7 @@ public class SearchActivity extends Activity {
 					}
 				}
 			});
+			mDialog.show();
 			this.startService(intent1);
 		} else {
 			

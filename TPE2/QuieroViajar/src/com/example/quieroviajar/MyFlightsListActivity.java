@@ -143,7 +143,8 @@ public class MyFlightsListActivity extends FragmentActivity implements
 			}
 			case R.id.erase: {
 				removeFlight(FlightManager.CUR_ITEM);
-				startActivity(new Intent(this, MyFlightsListActivity.class));
+				Intent intent = new Intent(this, MyFlightsListActivity.class);
+				startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
 				return true;
 			}case R.id.refresh: {
 				Intent updateIntent = new Intent(this,UpdateService.class);

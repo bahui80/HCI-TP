@@ -74,9 +74,9 @@ public class FlightDetailActivity extends FragmentActivity {
 			}
 			case R.id.erase: {
 				removeFlight(FlightManager.CUR_ITEM);
-				startActivity(new Intent(this, MyFlightsListActivity.class));
+				Intent intent = new Intent(this, MyFlightsListActivity.class);
+				startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
 				return true;
-	
 			}case R.id.comment: {
 				DialogFragment newFragment = new CommentDialog();
 				newFragment.show(getFragmentManager(), "dialog"); /* por hacer */

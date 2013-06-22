@@ -22,7 +22,7 @@ public class SendNotificationService extends IntentService {
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		// lee el intent
-		int flight_id = intent.getIntExtra("flight", -1);
+		int flight_num = intent.getIntExtra("flight", -1);
 		String flight_status = intent.getStringExtra("status");
 		String flight_description =intent.getStringExtra("description");
 		
@@ -35,6 +35,7 @@ public class SendNotificationService extends IntentService {
 		
 		// Creates an explicit intent for an Activity in your app		
 		Intent resultIntent = new Intent(this, SearchActivity.class);
+		System.out.println(intent.getStringExtra("flightId"));
 		resultIntent.putExtra(SearchManager.QUERY, intent.getStringExtra("flightId"));
 
 		
@@ -51,7 +52,7 @@ public class SendNotificationService extends IntentService {
 		stackBuilder.addNextIntent(resultIntent);
 		PendingIntent resultPendingIntent =
 		        stackBuilder.getPendingIntent(
-		            0,
+		        		flight_num,
 		            PendingIntent.FLAG_UPDATE_CURRENT
 		        );
 		
@@ -60,6 +61,6 @@ public class SendNotificationService extends IntentService {
 		    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		
 		// mando la notificacion
-		mNotificationManager.notify(flight_id, mBuilder.build());
+		mNotificationManager.notify(flight_num, mBuilder.build());
 	}
 }
