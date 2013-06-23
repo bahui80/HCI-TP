@@ -195,11 +195,6 @@ public class DealsActivity extends Activity {
 					MyFlightsListActivity.class));
 			return true;
 		}
-		case R.id.my_flights_tab: {
-			Intent intent = new Intent(this, MyFlightsListActivity.class);
-			startActivity(intent);
-			return true;
-		}
 		case R.id.settings: {
 			Intent activityIntent = new Intent(this, SettingActivity.class);
 			startActivity(activityIntent);

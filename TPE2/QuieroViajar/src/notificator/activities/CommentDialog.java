@@ -52,9 +52,13 @@ public class CommentDialog extends DialogFragment {
                 		RatingBar rb = (RatingBar) v.findViewById(R.id.ratingBar1);
                 		EditText et = (EditText) v.findViewById(R.id.editText1);
 
+                		int rate = (int)(rb.getRating()*2);
+                		if (rate == 0){
+                			rate = 1;
+                		}
                 		// Este es de prueba
                 		intent1.putExtra("comment", et.getText().toString());
-                		intent1.putExtra("rating", (int)(rb.getRating()*2));
+                		intent1.putExtra("rating", rate);
                 		intent1.putExtra("flight", FlightManager.CUR_ITEM.getFlightNum());
                 		intent1.putExtra("airline", FlightManager.CUR_ITEM.getAirlineId());
                 		

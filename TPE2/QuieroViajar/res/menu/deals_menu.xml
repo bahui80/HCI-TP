@@ -2,11 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/my_flights_tab"
-         android:icon="@drawable/ic_action_airplane_mode_off"
-        android:showAsAction="always|withText"
-        android:title="@string/my_flights"/>
-    <item
         android:id="@+id/settings"
         android:icon="@drawable/ic_action_refresh"
         android:orderInCategory="100"

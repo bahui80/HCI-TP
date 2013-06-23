@@ -70,14 +70,14 @@ public final class R {
         public static final int ta=0x7f020017;
     }
     public static final class id {
-        public static final int add_flight=0x7f0b0031;
+        public static final int add_flight=0x7f0b0030;
         public static final int city=0x7f0b0021;
-        public static final int comment=0x7f0b002f;
+        public static final int comment=0x7f0b002e;
         public static final int country=0x7f0b0022;
         public static final int deals_list=0x7f0b0000;
         public static final int detail_image=0x7f0b0004;
         public static final int editText1=0x7f0b0020;
-        public static final int erase=0x7f0b002d;
+        public static final int erase=0x7f0b002c;
         public static final int flight_detail_airline=0x7f0b0007;
         public static final int flight_detail_airport_destiny=0x7f0b0012;
         public static final int flight_detail_airport_origin=0x7f0b000b;
@@ -109,13 +109,12 @@ public final class R {
         public static final int listTextFlightNumber=0x7f0b0026;
         public static final int listTextOrigin=0x7f0b0028;
         public static final int listview_background_shape=0x7f0b002a;
-        public static final int my_flights_tab=0x7f0b002b;
         public static final int price=0x7f0b0023;
         public static final int ratingBar1=0x7f0b001f;
-        public static final int refresh=0x7f0b002e;
-        public static final int sales_tab=0x7f0b0030;
+        public static final int refresh=0x7f0b002d;
+        public static final int sales_tab=0x7f0b002f;
         public static final int scrollView1=0x7f0b0003;
-        public static final int settings=0x7f0b002c;
+        public static final int settings=0x7f0b002b;
         public static final int textView1=0x7f0b001a;
         public static final int textView3=0x7f0b001b;
         public static final int textView4=0x7f0b001c;
