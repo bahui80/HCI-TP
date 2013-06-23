@@ -3,6 +3,7 @@ package com.example.quieroviajar;
 import java.util.Set;
 
 import notificator.activities.CommentDialog;
+import notificator.activities.SettingActivity;
 import notificator.web.api.model.FlightImpl;
 import notificator.web.api.service.FlightService;
 import android.app.DialogFragment;
@@ -91,6 +92,10 @@ public class FlightDetailActivity extends FragmentActivity {
 				intent.putExtra("flight", FlightManager.CUR_ITEM.getFlightId());
 				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
+				return true;
+			} case R.id.settings: {
+				Intent activityIntent = new Intent(this, SettingActivity.class);
+				startActivity(activityIntent);
 				return true;
 			}
 

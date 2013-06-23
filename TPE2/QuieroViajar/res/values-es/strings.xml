@@ -56,5 +56,6 @@
     <string name="landed_flight">Aterrizado</string>
     <string name="canceled_flight">Cancelado</string>
     <string name="redirected_flight">Redireccionado</string>
+    <string name="commentary">Comentarios</string>
 
 </resources>

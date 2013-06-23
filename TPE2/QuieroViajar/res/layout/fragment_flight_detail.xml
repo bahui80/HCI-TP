@@ -86,7 +86,7 @@
                 <ImageView
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:src="@drawable/ic_launcher" />
+                    android:src="@drawable/ic_takeoff" />
 
                 <TextView
                     android:id="@+id/flight_detail_origin"
@@ -194,7 +194,7 @@
                 <ImageView
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:src="@drawable/ic_launcher" />
+                    android:src="@drawable/ic_landing" />
 
                 <TextView
                     android:id="@+id/flight_detail_destiny"

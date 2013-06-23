@@ -1,5 +1,7 @@
 package notificator.activities;
 
+import java.util.Locale;
+
 import notificator.web.api.service.CommentService;
 import notificator.web.api.service.FlightService;
 import android.app.AlertDialog;
@@ -72,19 +74,34 @@ public class CommentDialog extends DialogFragment {
                 					boolean gotSent = resultData.getBoolean("return");
                 					// ACA HAGO LO QUE TENGA QUE HACER CON EL RESULTADO
                 					if(gotSent){
-                				//		String aux = getString(R.string.comment_confirmation);
-                						Toast.makeText(v.getContext(),"¡Gracias por comentar!",Toast.LENGTH_LONG).show();
+                						if(Locale.getDefault().getDisplayLanguage().toUpperCase().equals("ESPAÑOL")) {
+                							Toast.makeText(v.getContext(),"¡Gracias por comentar!",Toast.LENGTH_LONG).show();
+                						} else {
+                							Toast.makeText(v.getContext(),"Thanks for leaving a comment!",Toast.LENGTH_LONG).show();
+                						}
+     
                 					}else{
-                						//getString(R.string.comment_fail)
-                						Toast.makeText(v.getContext(),"No se pudo comentar",Toast.LENGTH_LONG).show();
+                						if(Locale.getDefault().getDisplayLanguage().toUpperCase().equals("ESPAÑOL")) {
+                							Toast.makeText(v.getContext(),"No se pudo comentar",Toast.LENGTH_LONG).show();
+                						} else {
+                							Toast.makeText(v.getContext(),"Unable to leave a comment",Toast.LENGTH_LONG).show();
+                						}
                 					}
                 					
                 				} else if (resultCode == FlightService.STATUS_CONNECTION_ERROR) {
-                					//getString(R.string.connection_error)
-                					Toast.makeText(v.getContext(),"Error de conexión",Toast.LENGTH_LONG).show();
+                					if(Locale.getDefault().getDisplayLanguage().toUpperCase().equals("ESPAÑOL")) {
+            							Toast.makeText(v.getContext(),"Error de conexión",Toast.LENGTH_LONG).show();
+            						} else {
+            							Toast.makeText(v.getContext(),"Connection error",Toast.LENGTH_LONG).show();
+            						}
+                				
                 				} else {
-                					//getString(R.string.unknown_error)
-                					Toast.makeText(v.getContext(),"Error desconocido",Toast.LENGTH_LONG).show();
+                					if(Locale.getDefault().getDisplayLanguage().toUpperCase().equals("ESPAÑOL")) {
+            							Toast.makeText(v.getContext(),"Error desconocido",Toast.LENGTH_LONG).show();
+            						} else {
+            							Toast.makeText(v.getContext(),"Unknown error",Toast.LENGTH_LONG).show();
+            						}
+                					
                 				}
                 			}
                 		});

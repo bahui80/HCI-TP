@@ -4,7 +4,7 @@
     <string name="app_name">QuieroViajar!</string>
     <string name="my_flights">My flights</string>
     <string name="search_flight">Search fight</string>
-    <string name="sales">Sales</string>
+    <string name="sales">Deals</string>
     <string name="terminal">Terminal </string>
     <string name="gate">Gate </string>
     <string name="luggage">Luggage </string>
@@ -33,7 +33,7 @@
     <string name="unknown_error">Unknown error</string>
     <string name="cancel">Cancel</string>
     <string name="loading">Loading</string>
-    <string name="deals_from">Sales from</string>
+    <string name="deals_from">Deals from</string>
     <string name="city_search_fail">Unable to find cities nearby</string>
     <string name="search_fail">No matches found</string>
     <string name="minutes">minutes</string>
@@ -56,5 +56,6 @@
     <string name="landed_flight">Landed</string>
     <string name="canceled_flight">Canceled</string>
     <string name="redirected_flight">Redirected</string>
+    <string name="commentary">Comments</string>
 
 </resources>

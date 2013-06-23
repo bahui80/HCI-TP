@@ -5,6 +5,7 @@
         android:id="@+id/settings"
         android:orderInCategory="100"
         android:showAsAction="never"
+        android:icon="@drawable/ic_action_settings"
         android:title="@string/settings"/>
 
 </menu>
