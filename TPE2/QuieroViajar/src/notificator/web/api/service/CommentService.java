@@ -39,7 +39,7 @@ public class CommentService extends IntentService {
 	 */
 	@Override
 	protected void onHandleIntent(final Intent intent) {
-		System.out.println("LLEGO HASTA AL COMMENT SERVICE");
+
 		final ResultReceiver receiver = intent.getParcelableExtra("receiver");
 		final int rating = intent.getIntExtra("rating",-1);
 		final String comment = intent.getStringExtra("comment");

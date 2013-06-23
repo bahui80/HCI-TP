@@ -1,8 +1,5 @@
 package notificator.web.api.model;
 
-import java.io.Serializable;
-
-import org.json.JSONObject;
 
 public interface Flight {
 	

@@ -12,13 +12,12 @@ import notificator.web.api.service.DealsService;
 import notificator.web.api.service.FlightService;
 import notificator.web.api.service.GPSTrackerService;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -35,10 +34,11 @@ public class DealsActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_deals);
-		 final ProgressDialog mDialog = new ProgressDialog(this);
-         mDialog.setMessage("Loading...");
-         mDialog.setCancelable(false);
-         mDialog.show();
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		final ProgressDialog mDialog = new ProgressDialog(this);
+		mDialog.setMessage(getString(R.string.loading));
+		mDialog.setCancelable(false);
+		mDialog.show();
 		// Manejo del GPS
 		GPSTrackerService gps = new GPSTrackerService(this);
 		if (gps.canGetLocation()) {
@@ -51,74 +51,104 @@ public class DealsActivity extends Activity {
 			apiIntentCity.putExtra("longitude", gps.getLongitude());
 			apiIntentCity.putExtra("receiver",
 					new ResultReceiver(new Handler()) {
-				@SuppressWarnings("deprecation")
-				@Override
-				protected void onReceiveResult(int resultCode,
-						Bundle resultData) {
-					super.onReceiveResult(resultCode, resultData);
-					if (resultCode == FlightService.STATUS_OK) {
+						@Override
+						protected void onReceiveResult(int resultCode,
+								Bundle resultData) {
+							super.onReceiveResult(resultCode, resultData);
+							if (resultCode == FlightService.STATUS_OK) {
 
-						final Cities closestCity = (Cities) resultData
-								.getSerializable("return");
-						// ACA TENGO LA CIUDAD QUE ENGANCHO EL GPS
-						// AHORA BUSCO LASOFERTAS DE ESTA CIUDAD
-						if (closestCity != null) {
-							Intent apiIntentDeals = new Intent(
-									DealsActivity.this,
-									DealsService.class);
-							apiIntentDeals.putExtra("from",
-									closestCity.getCityId());
-							apiIntentDeals.putExtra("receiver",
-									new ResultReceiver(new Handler()) {
-								@Override
-								protected void onReceiveResult(int resultCode, Bundle resultData) {
-									super.onReceiveResult(resultCode, resultData);
-									if (resultCode == FlightService.STATUS_OK) {
-										@SuppressWarnings("unchecked")
-										List<Deal> dealsList = (List<Deal>) resultData
+								final Cities closestCity = (Cities) resultData
 										.getSerializable("return");
-										// ACA HAGO LA LISTA DE
-										// OFERTAS
-										mDialog.dismiss();
-										Toast.makeText(DealsActivity.this,"Ofertas desde "+closestCity.getCityName(),Toast.LENGTH_LONG).show();
-										makeList(dealsList, closestCity);
-									} else if (resultCode == FlightService.STATUS_CONNECTION_ERROR) {
-										mDialog.dismiss();
-										Toast.makeText(DealsActivity.this,"Connection error",Toast.LENGTH_LONG).show();
-										Intent intent = new Intent(DealsActivity.this, MyFlightsListActivity.class);
-										startActivity(intent);
-									} else {
-										mDialog.dismiss();
-										Toast.makeText(DealsActivity.this,"Deals Unkown error",Toast.LENGTH_LONG).show();
-										Intent intent = new Intent(DealsActivity.this, MyFlightsListActivity.class);
-										startActivity(intent);
-									}
+								// ACA TENGO LA CIUDAD QUE ENGANCHO EL GPS
+								// AHORA BUSCO LASOFERTAS DE ESTA CIUDAD
+								if (closestCity != null) {
+									Intent apiIntentDeals = new Intent(
+											DealsActivity.this,
+											DealsService.class);
+									apiIntentDeals.putExtra("from",
+											closestCity.getCityId());
+									apiIntentDeals.putExtra("receiver",
+											new ResultReceiver(new Handler()) {
+												@Override
+												protected void onReceiveResult(
+														int resultCode,
+														Bundle resultData) {
+													super.onReceiveResult(
+															resultCode,
+															resultData);
+													if (resultCode == FlightService.STATUS_OK) {
+														@SuppressWarnings("unchecked")
+														List<Deal> dealsList = (List<Deal>) resultData
+																.getSerializable("return");
+														// ACA HAGO LA LISTA DE
+														// OFERTAS
+														mDialog.dismiss();
+														Toast.makeText(
+																DealsActivity.this,
+																getString(R.string.deals_from)
+																		+ " "
+																		+ closestCity
+																				.getCityName(),
+																Toast.LENGTH_LONG)
+																.show();
+														makeList(dealsList,
+																closestCity);
+													} else if (resultCode == FlightService.STATUS_CONNECTION_ERROR) {
+														mDialog.dismiss();
+														Toast.makeText(
+																DealsActivity.this,
+																getString(R.string.connection_error),
+																Toast.LENGTH_LONG)
+																.show();
+														Intent intent = new Intent(
+																DealsActivity.this,
+																MyFlightsListActivity.class);
+														startActivity(intent);
+													} else {
+														mDialog.dismiss();
+														Toast.makeText(
+																DealsActivity.this,
+																getString(R.string.unknown_error),
+																Toast.LENGTH_LONG)
+																.show();
+														Intent intent = new Intent(
+																DealsActivity.this,
+																MyFlightsListActivity.class);
+														startActivity(intent);
+													}
+												}
+											});
+									// Mando el intent al flight service
+									DealsActivity.this
+											.startService(apiIntentDeals);
+								} else {
+									mDialog.dismiss();
+									TextView tv = new TextView(
+											DealsActivity.this);
+									tv.setPadding(10, 10, 10, 10);
+									tv.setText(getString(R.string.city_search_fail));
+									setContentView(tv);
 								}
-							});
-							// Mando el intent al flight service
-							DealsActivity.this
-							.startService(apiIntentDeals);
-						}else{
-							mDialog.dismiss();
-							TextView tv = new TextView(DealsActivity.this);
-							tv.setPadding(10, 10, 10, 10);
-							tv.setText("No se pudo encontrar ciudades en las cercanías");
-							setContentView(tv);
+							} else if (resultCode == FlightService.STATUS_CONNECTION_ERROR) {
+								mDialog.dismiss();
+								Toast.makeText(DealsActivity.this,
+										getString(R.string.connection_error),
+										Toast.LENGTH_LONG).show();
+								Intent intent = new Intent(DealsActivity.this,
+										MyFlightsListActivity.class);
+								startActivity(intent);
+							} else {
+								mDialog.dismiss();
+								Toast.makeText(DealsActivity.this,
+										getString(R.string.unknown_error),
+										Toast.LENGTH_LONG).show();
+								Intent intent = new Intent(DealsActivity.this,
+										MyFlightsListActivity.class);
+								startActivity(intent);
+							}
 						}
-					} else if (resultCode == FlightService.STATUS_CONNECTION_ERROR) {
-						mDialog.dismiss();
-						Toast.makeText(DealsActivity.this,"Connection error", Toast.LENGTH_LONG).show();
-						Intent intent = new Intent(DealsActivity.this, MyFlightsListActivity.class);
-						startActivity(intent);
-					} else {
-						mDialog.dismiss();
-						Toast.makeText(DealsActivity.this,"City Unkown error", Toast.LENGTH_LONG).show();
-						Intent intent = new Intent(DealsActivity.this, MyFlightsListActivity.class);
-						startActivity(intent);
-					}
-				}
-			});
-			// Mando el intent al flight service			
+					});
+			// Mando el intent al flight service
 			startService(apiIntentCity);
 		} else {
 			mDialog.dismiss();
@@ -132,9 +162,9 @@ public class DealsActivity extends Activity {
 		List<Map<String, String>> data = loadData(dealsList);
 		SimpleAdapter adapter = new SimpleAdapter(this, data,
 				R.layout.deal_row, new String[] { "city", "country", "price" },
-				new int[] { R.id.city, R.id.country, R.id.price });		
+				new int[] { R.id.city, R.id.country, R.id.price });
 		activityList.setAdapter(adapter);
-		
+
 	}
 
 	private List<Map<String, String>> loadData(List<Deal> dealsList) {
@@ -160,16 +190,21 @@ public class DealsActivity extends Activity {
 
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.my_flights_tab: {
-				Intent intent = new Intent(this, MyFlightsListActivity.class);
-				startActivity(intent);
-				return true;
-			}
-			case R.id.settings: {
-				Intent activityIntent = new Intent(this, SettingActivity.class);
-				startActivity(activityIntent);
-				return true;
-			}
+		case android.R.id.home: {
+			NavUtils.navigateUpTo(this, new Intent(this,
+					MyFlightsListActivity.class));
+			return true;
+		}
+		case R.id.my_flights_tab: {
+			Intent intent = new Intent(this, MyFlightsListActivity.class);
+			startActivity(intent);
+			return true;
+		}
+		case R.id.settings: {
+			Intent activityIntent = new Intent(this, SettingActivity.class);
+			startActivity(activityIntent);
+			return true;
+		}
 		}
 
 		return super.onOptionsItemSelected(item);

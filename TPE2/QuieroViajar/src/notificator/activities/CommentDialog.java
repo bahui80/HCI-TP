@@ -29,18 +29,17 @@ public class CommentDialog extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        System.out.println("ENTRO ALC OMENNNNNTTT");
+      
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         final View v = inflater.inflate(R.layout.comment_dialog, null);
-        return new AlertDialog.Builder(getActivity())
-                .setTitle("Calificar vuelo")
+        return new AlertDialog.Builder(getActivity()).setTitle(getString(R.string.rate_flight))
                 .setView(v)
                 .setCancelable(true)
-                .setPositiveButton("Comentar", new DialogInterface.OnClickListener() {
+                .setPositiveButton(getString(R.string.comment), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                     	
@@ -73,15 +72,19 @@ public class CommentDialog extends DialogFragment {
                 					boolean gotSent = resultData.getBoolean("return");
                 					// ACA HAGO LO QUE TENGA QUE HACER CON EL RESULTADO
                 					if(gotSent){
-                						Toast.makeText(v.getContext(),"Gracias por dejar tu opinión!",Toast.LENGTH_LONG).show();
+                				//		String aux = getString(R.string.comment_confirmation);
+                						Toast.makeText(v.getContext(),"¡Gracias por comentar!",Toast.LENGTH_LONG).show();
                 					}else{
-                						Toast.makeText(v.getContext(),"Hubo inconvenientes, intente más tarde",Toast.LENGTH_LONG).show();
+                						//getString(R.string.comment_fail)
+                						Toast.makeText(v.getContext(),"No se pudo comentar",Toast.LENGTH_LONG).show();
                 					}
                 					
                 				} else if (resultCode == FlightService.STATUS_CONNECTION_ERROR) {
-                					Toast.makeText(v.getContext(),"Connection error",Toast.LENGTH_LONG).show();
+                					//getString(R.string.connection_error)
+                					Toast.makeText(v.getContext(),"Error de conexión",Toast.LENGTH_LONG).show();
                 				} else {
-                					Toast.makeText(v.getContext(),"Unkown error",Toast.LENGTH_LONG).show();
+                					//getString(R.string.unknown_error)
+                					Toast.makeText(v.getContext(),"Error desconocido",Toast.LENGTH_LONG).show();
                 				}
                 			}
                 		});
@@ -90,7 +93,7 @@ public class CommentDialog extends DialogFragment {
                 		v.getContext().startService(intent1);
                     }
                 })
-                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();

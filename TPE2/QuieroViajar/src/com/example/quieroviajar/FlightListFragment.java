@@ -95,8 +95,7 @@ public class FlightListFragment extends ListFragment {
 				SharedPreferences flights = this.getActivity().getSharedPreferences("flightObjects",android.content.Context.MODE_PRIVATE);
 				flightsSet = flights.getStringSet("flightObjects", null);
 				List<Flight> flightList = new ArrayList<Flight>();
-				System.out.println("SHARED PREFERENCE: " + flights.getAll());
-				System.out.println("SET DE VUELOS: " + flightsSet);
+
 				if(flightsSet != null){
 					Integer i= 0;
 					
@@ -193,7 +192,7 @@ public class FlightListFragment extends ListFragment {
 						: ListView.CHOICE_MODE_NONE);
 	}
 
-	private void setActivatedPosition(int position) {
+	public void setActivatedPosition(int position) {
 		if (position == ListView.INVALID_POSITION) {
 			getListView().setItemChecked(mActivatedPosition, false);
 		} else {

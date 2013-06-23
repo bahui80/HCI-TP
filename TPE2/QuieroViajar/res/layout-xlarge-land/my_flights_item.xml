@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="?android:attr/activatedBackgroundIndicator"
-    android:orientation="horizontal" >
+    android:orientation="horizontal"
+    android:padding="10dp" >
 
     <ImageView
         android:id="@+id/listImage"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginLeft="3sp"
-        android:layout_marginRight="3sp"
-        android:layout_marginTop="3sp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
         android:src="@drawable/ic_launcher" />
 
     <LinearLayout
@@ -20,11 +20,22 @@
         android:orientation="vertical" >
 
         <TextView
+            android:id="@+id/listTextFlightNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Medium Text"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold" />
+
+        <TextView
             android:id="@+id/listTextAirline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Medium Text"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -35,19 +46,25 @@
                 android:id="@+id/listTextOrigin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:singleLine="true"
                 android:text="Origin"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=" -> "
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text=" → "
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <TextView
                 android:id="@+id/listTextDestiny"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:singleLine="true"
                 android:text="Destiny"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
         </LinearLayout>

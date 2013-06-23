@@ -60,12 +60,12 @@ public class SettingActivity extends PreferenceActivity implements OnSharedPrefe
 	}
 	
 	private void setListSummary(Preference pref, String key){
-		String time = " minutes";
+		String time = " " + getString(R.string.minutes);
 		int divider = 1;
 		if(Integer.parseInt(key) >= 60){
-			time = " hours";
+			time = " " + getString(R.string.hours);
 			divider = 60;
 		}
-		pref.setSummary("Every "+((Integer.parseInt(key))/divider)+time);
+		pref.setSummary(getString(R.string.every) + " " +((Integer.parseInt(key))/divider)+time);
 	}
 }

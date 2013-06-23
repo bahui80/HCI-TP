@@ -1,6 +1,5 @@
 package com.example.quieroviajar;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 

@@ -62,6 +62,7 @@ public class FlightService extends IntentService {
 
 	private void getFlights(ResultReceiver receiver, String flight, Bundle b) throws ClientProtocolException, IOException, JSONException {
 		final DefaultHttpClient client = new DefaultHttpClient();
+		System.out.println("http://eiffel.itba.edu.ar/hci/service2/Status.groovy?method=GetFlightStatus&airline_id="+flight.substring(0,2)+"&flight_num="+flight.substring(2));
 		final HttpResponse response = client.execute(new HttpGet("http://eiffel.itba.edu.ar/hci/service2/Status.groovy?method=GetFlightStatus&airline_id="+flight.substring(0,2)+"&flight_num="+flight.substring(2)));
 		if ( response.getStatusLine().getStatusCode() != 200 ) {
 			throw new IllegalArgumentException(response.getStatusLine().toString());

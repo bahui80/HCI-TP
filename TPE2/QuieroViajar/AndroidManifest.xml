@@ -19,33 +19,37 @@
         android:theme="@android:style/Theme.Holo" >
         <activity
             android:name="com.example.quieroviajar.MyFlightsListActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-             <meta-data
+
+            <meta-data
                 android:name="android.app.default_searchable"
                 android:value="notificator.activities.SearchActivity" />
         </activity>
-        <activity android:name="com.example.quieroviajar.FlightDetailActivity" >
+        <activity
+            android:name="com.example.quieroviajar.FlightDetailActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MyFlightsListActivity" />
-        </activity>
-        <activity android:name="notificator.activities.ResultActivity" >
         </activity>
         <activity android:name="notificator.activities.SettingActivity" >
         </activity>
         <activity
             android:name="notificator.activities.DealsActivity"
             android:configChanges="orientation|screenSize" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.quieroviajar.MyFlightsListActivity" />
         </activity>
-        
         <activity
             android:name="notificator.activities.SearchActivity"
-            android:configChanges="orientation|screenSize"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTop" >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
@@ -60,16 +64,16 @@
         </activity>
 
         <receiver android:name="notificator.alarm.AlarmReceiver" />
-        <receiver android:name="notificator.boot.starter.BootReceiver"
+        <receiver
+            android:name="notificator.boot.starter.BootReceiver"
             android:enabled="true"
-        	android:exported="true">
-		    <intent-filter>  
-		        <action android:name="android.intent.action.BOOT_COMPLETED" />  
-		    </intent-filter>  
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
         </receiver>
 
         <service android:name="notificator.alarm.AlarmService" />
-        <service android:name="com.example.quieroviajar.UpdateService" />
         <service android:name="notificator.notification.SendNotificationService" />
         <service android:name="notificator.notification.CheckNotificationsService" />
         <service android:name="notificator.web.api.service.FlightService" />
@@ -77,6 +81,7 @@
         <service android:name="notificator.web.api.service.CitiesService" />
         <service android:name="notificator.web.api.service.CommentService" />
         <service android:name="notificator.web.api.service.GPSTrackerService" />
+        <service android:name="notificator.web.api.service.SharedPreferenceService" />
     </application>
 
 </manifest>

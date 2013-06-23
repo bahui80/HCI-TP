@@ -1,8 +1,6 @@
 package notificator.web.api.model;
 
 import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -114,10 +112,16 @@ public class FlightImpl implements Flight, Serializable {
 			String departureCity = (jsonObj.getJSONObject("status").getJSONObject("departure").getJSONObject("city").getString("name")).split(",")[0];
 			String departureCountry = (jsonObj.getJSONObject("status").getJSONObject("departure").getJSONObject("country").getString("name")).split(",")[0];
 			// info de los horarios de salida
-			String departureScheduledTime = jsonObj.getJSONObject("status").getJSONObject("departure").getString("scheduledTime").split(" ")[1];
+			String departureScheduledTime = jsonObj.getJSONObject("status").getJSONObject("departure").getString("scheduledTime").split(" ")[1].split(":")[0]+":"+jsonObj.getJSONObject("status").getJSONObject("departure").getString("scheduledTime").split(" ")[1].split(":")[1];
 			String departureScheduledDay = jsonObj.getJSONObject("status").getJSONObject("departure").getString("scheduledTime").split(" ")[0];
 			String departureScheduledGateTime = jsonObj.getJSONObject("status").getJSONObject("departure").getString("scheduledGateTime");
+			if(!departureScheduledGateTime.equals("null")){
+				departureScheduledGateTime = jsonObj.getJSONObject("status").getJSONObject("departure").getString("scheduledGateTime").split(" ")[1].split(":")[0]+":"+jsonObj.getJSONObject("status").getJSONObject("departure").getString("scheduledGateTime").split(" ")[1].split(":")[1];
+			}
 			String departureActualGateTime = jsonObj.getJSONObject("status").getJSONObject("departure").getString("actualGateTime");
+			if(!departureActualGateTime.equals("null")){
+				departureActualGateTime = jsonObj.getJSONObject("status").getJSONObject("departure").getString("actualGateTime").split(" ")[1].split(":")[0]+":"+jsonObj.getJSONObject("status").getJSONObject("departure").getString("actualGateTime").split(" ")[1].split(":")[1];
+			}
 			String departureEstimatedRunwayTime = jsonObj.getJSONObject("status").getJSONObject("departure").getString("estimateRunwayTime");
 			String departureActualRunwayTime = jsonObj.getJSONObject("status").getJSONObject("departure").getString("actualRunwayTime");
 			Integer departureGateDelay = jsonObj.getJSONObject("status").getJSONObject("departure").optInt("gateDelay");
@@ -141,10 +145,16 @@ public class FlightImpl implements Flight, Serializable {
 			String arrivalCity = (jsonObj.getJSONObject("status").getJSONObject("arrival").getJSONObject("city").getString("name")).split(",")[0];
 			String arrivalCountry = (jsonObj.getJSONObject("status").getJSONObject("arrival").getJSONObject("country").getString("name")).split(",")[0];
 			// info de los horarios de llegada
-			String arrivalScheduledTime = jsonObj.getJSONObject("status").getJSONObject("arrival").getString("scheduledTime").split(" ")[1];
+			String arrivalScheduledTime = jsonObj.getJSONObject("status").getJSONObject("arrival").getString("scheduledTime").split(" ")[1].split(":")[0]+":"+jsonObj.getJSONObject("status").getJSONObject("arrival").getString("scheduledTime").split(" ")[1].split(":")[1];
 			String arrivalScheduledDay = jsonObj.getJSONObject("status").getJSONObject("arrival").getString("scheduledTime").split(" ")[0];
 			String arrivalScheduledGateTime = jsonObj.getJSONObject("status").getJSONObject("arrival").getString("scheduledGateTime");
+			if(!arrivalScheduledGateTime.equals("null")){
+				arrivalScheduledGateTime = jsonObj.getJSONObject("status").getJSONObject("arrival").getString("scheduledGateTime").split(" ")[1].split(":")[0]+":"+jsonObj.getJSONObject("status").getJSONObject("arrival").getString("scheduledGateTime").split(" ")[1].split(":")[1];
+			}
 			String arrivalActualGateTime = jsonObj.getJSONObject("status").getJSONObject("arrival").getString("actualGateTime");
+			if(!arrivalActualGateTime.equals("null")){
+				arrivalActualGateTime = jsonObj.getJSONObject("status").getJSONObject("arrival").getString("actualGateTime").split(" ")[1].split(":")[0]+":"+jsonObj.getJSONObject("status").getJSONObject("arrival").getString("actualGateTime").split(" ")[1].split(":")[1];
+			}
 			String arrivalEstimatedRunwayTime = jsonObj.getJSONObject("status").getJSONObject("arrival").getString("estimateRunwayTime");
 			String arrivalActualRunwayTime = jsonObj.getJSONObject("status").getJSONObject("arrival").getString("actualRunwayTime");
 			Integer arrivalGateDelay = jsonObj.getJSONObject("status").getJSONObject("arrival").optInt("gateDelay");
