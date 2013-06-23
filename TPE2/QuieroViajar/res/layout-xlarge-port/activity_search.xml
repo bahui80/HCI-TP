@@ -29,6 +29,7 @@
                     <ImageView
                         android:layout_width="53dp"
                         android:layout_height="53dp"
+                        android:id="@+id/detail_image"
                         android:src="@drawable/ic_launcher" />
 
                     <TextView

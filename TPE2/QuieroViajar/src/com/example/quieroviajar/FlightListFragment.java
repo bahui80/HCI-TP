@@ -108,22 +108,49 @@ public class FlightListFragment extends ListFragment {
 					}
 					//System.out.println(FlightManager.ITEM_MAP);
 				}
-				List<Map<String,String>> mapList = new ArrayList<Map<String,String>>();
+				List<Map<String,Object>> mapList = new ArrayList<Map<String,Object>>();
 				for(Flight curFlight: flightList){
-					Map<String, String> map = new HashMap<String, String>();
+					Map<String,Object> map = new HashMap<String,Object>();
 					map.put("listTextAirline", curFlight.getAirlineName());
 					map.put("listTextOrigin", curFlight.getDepartureCity());
 					map.put("listTextDestiny", curFlight.getArrivalCity());
 					map.put("listTextFlightNumber", curFlight.getFlightId());
+					if(curFlight.getAirlineId().equals("AA")) {
+						map.put("listImage", R.drawable.aa);
+					} else if(curFlight.getAirlineId().equals("AF")) {
+						map.put("listImage", R.drawable.af);
+					} else if(curFlight.getAirlineId().equals("AM")) {
+						map.put("listImage", R.drawable.am);
+					} else if(curFlight.getAirlineId().equals("AR")) {
+						map.put("listImage", R.drawable.ar);
+					} else if(curFlight.getAirlineId().equals("AV")) {
+						map.put("listImage", R.drawable.av);
+					} else if(curFlight.getAirlineId().equals("AZ")) {
+						map.put("listImage", R.drawable.az);
+					} else if(curFlight.getAirlineId().equals("BA")) {
+						map.put("listImage", R.drawable.ba);
+					} else if(curFlight.getAirlineId().equals("CM")) {
+						map.put("listImage", R.drawable.cm);
+					} else if(curFlight.getAirlineId().equals("IB")) {
+						map.put("listImage", R.drawable.ib);
+					} else if(curFlight.getAirlineId().equals("JJ")) {
+						map.put("listImage", R.drawable.jj);
+					} else if(curFlight.getAirlineId().equals("LA")) {
+						map.put("listImage", R.drawable.la);
+					} else if(curFlight.getAirlineId().equals("TA")) {
+						map.put("listImage", R.drawable.ta);
+					} else {
+						map.put("listImage", R.drawable.rr);
+					}
 					mapList.add(map);
 				}
 				
 				// TODO: replace with a real list adapter.
 				String[] from = new String[] { "listTextAirline", "listTextOrigin",
-						"listTextDestiny", "listTextFlightNumber" };
+						"listTextDestiny", "listTextFlightNumber", "listImage" };
 
 				int[] to = new int[] { R.id.listTextAirline, R.id.listTextOrigin,
-						R.id.listTextDestiny, R.id.listTextFlightNumber };
+						R.id.listTextDestiny, R.id.listTextFlightNumber, R.id.listImage };
 
 				setListAdapter(new SimpleAdapter(getActivity(), mapList,
 						R.layout.my_flights_item, from, to));

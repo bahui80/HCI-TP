@@ -23,6 +23,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -88,7 +89,33 @@ public class SearchActivity extends Activity {
 							final Flight resultFlight = FlightImpl.fromJSON(flightData);
 
 							SearchActivity.this.setContentView(R.layout.activity_search);
-//TODO asgasgdasgdgasgdagdgasdgasgdgasdgasdga hacer
+							if(resultFlight.getAirlineId().equals("AA")) {
+								((ImageView)findViewById(R.id.detail_image)).setImageResource(R.drawable.aa);
+							} else if(resultFlight.getAirlineId().equals("AF")) {
+								((ImageView)findViewById(R.id.detail_image)).setImageResource(R.drawable.af);
+							} else if(resultFlight.getAirlineId().equals("AM")) {
+								((ImageView)findViewById(R.id.detail_image)).setImageResource(R.drawable.am);
+							} else if(resultFlight.getAirlineId().equals("AR")) {
+								((ImageView)findViewById(R.id.detail_image)).setImageResource(R.drawable.ar);
+							} else if(resultFlight.getAirlineId().equals("AV")) {
+								((ImageView)findViewById(R.id.detail_image)).setImageResource(R.drawable.av);
+							} else if(resultFlight.getAirlineId().equals("AZ")) {
+								((ImageView)findViewById(R.id.detail_image)).setImageResource(R.drawable.az);
+							} else if(resultFlight.getAirlineId().equals("BA")) {
+								((ImageView)findViewById(R.id.detail_image)).setImageResource(R.drawable.ba);
+							} else if(resultFlight.getAirlineId().equals("CM")) {
+								((ImageView)findViewById(R.id.detail_image)).setImageResource(R.drawable.cm);
+							} else if(resultFlight.getAirlineId().equals("IB")) {
+								((ImageView)findViewById(R.id.detail_image)).setImageResource(R.drawable.ib);
+							} else if(resultFlight.getAirlineId().equals("JJ")) {
+								((ImageView)findViewById(R.id.detail_image)).setImageResource(R.drawable.jj);
+							} else if(resultFlight.getAirlineId().equals("LA")) {
+								((ImageView)findViewById(R.id.detail_image)).setImageResource(R.drawable.la);
+							} else if(resultFlight.getAirlineId().equals("TA")) {
+								((ImageView)findViewById(R.id.detail_image)).setImageResource(R.drawable.ta);
+							} else {
+								((ImageView)findViewById(R.id.detail_image)).setImageResource(R.drawable.rr);
+							}
 							((TextView) findViewById(R.id.flight_detail_number)).setText(resultFlight.getFlightId());
 					((TextView) findViewById(R.id.flight_detail_airline))
 							.setText(resultFlight.getAirlineName());

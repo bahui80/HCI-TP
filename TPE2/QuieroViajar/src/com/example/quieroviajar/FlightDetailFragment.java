@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -58,6 +59,33 @@ public class FlightDetailFragment extends Fragment {
 
 		// Show the dummy content as text in a TextView.
 		if (mItem != null) {
+			if(mItem.getAirlineId().equals("AA")) {
+				((ImageView) rootView.findViewById(R.id.detail_image)).setImageResource(R.drawable.aa);
+			} else if(mItem.getAirlineId().equals("AF")) {
+				((ImageView) rootView.findViewById(R.id.detail_image)).setImageResource(R.drawable.af);
+			} else if(mItem.getAirlineId().equals("AM")) {
+				((ImageView) rootView.findViewById(R.id.detail_image)).setImageResource(R.drawable.am);
+			} else if(mItem.getAirlineId().equals("AR")) {
+				((ImageView) rootView.findViewById(R.id.detail_image)).setImageResource(R.drawable.ar);
+			} else if(mItem.getAirlineId().equals("AV")) {
+				((ImageView) rootView.findViewById(R.id.detail_image)).setImageResource(R.drawable.av);
+			} else if(mItem.getAirlineId().equals("AZ")) {
+				((ImageView) rootView.findViewById(R.id.detail_image)).setImageResource(R.drawable.az);
+			} else if(mItem.getAirlineId().equals("BA")) {
+				((ImageView) rootView.findViewById(R.id.detail_image)).setImageResource(R.drawable.ba);
+			} else if(mItem.getAirlineId().equals("CM")) {
+				((ImageView) rootView.findViewById(R.id.detail_image)).setImageResource(R.drawable.cm);
+			} else if(mItem.getAirlineId().equals("IB")) {
+				((ImageView) rootView.findViewById(R.id.detail_image)).setImageResource(R.drawable.ib);
+			} else if(mItem.getAirlineId().equals("JJ")) {
+				((ImageView) rootView.findViewById(R.id.detail_image)).setImageResource(R.drawable.jj);
+			} else if(mItem.getAirlineId().equals("LA")) {
+				((ImageView) rootView.findViewById(R.id.detail_image)).setImageResource(R.drawable.la);
+			} else if(mItem.getAirlineId().equals("TA")) {
+				((ImageView) rootView.findViewById(R.id.detail_image)).setImageResource(R.drawable.ta);
+			} else {
+				((ImageView) rootView.findViewById(R.id.detail_image)).setImageResource(R.drawable.rr);
+			}
 			((TextView) rootView.findViewById(R.id.flight_detail_number))
 					.setText(mItem.getFlightId());
 			((TextView) rootView.findViewById(R.id.flight_detail_airline))
