@@ -24,7 +24,7 @@
     <string name="scheduled">Previsto</string>
     <string name="bording">Embarque</string>
     <string name="unboarding">Desembarque</string>
-    <string name="refresh_error">No se pudo actualizar</string>
+    <string name="refresh_error">No se pudo refrescar</string>
     <string name="flight_deleted">El vuelo ha sido borrado</string>
     <string name="rate_flight">Calificar vuelo</string>
     <string name="comment_confirmation">¡Gracias por comentar!</string>
@@ -50,11 +50,11 @@
     <string name="unboarding_time_changed">Cambio de horario de desembarque</string>
     <string name="takeoff_time_changed">Cambio de horario de despegue</string>
     <string name="landing_time_changed">Cambio de horario de aterrizaje</string>
-    <string name="scheduled_flight">Vuelo planificado</string>
-    <string name="active_flight">Vuelo activo</string>
-    <string name="diverted_flight">Vuelo desviado</string>
-    <string name="landed_flight">Vuelo aterrizado</string>
-    <string name="canceled_flight">Vuelo cancelado</string>
-    <string name="redirected_flight">Vuelo redireccionado</string>
+    <string name="scheduled_flight">Planificado</string>
+    <string name="active_flight">Activo</string>
+    <string name="diverted_flight">Desviado</string>
+    <string name="landed_flight">Aterrizado</string>
+    <string name="canceled_flight">Cancelado</string>
+    <string name="redirected_flight">Redireccionado</string>
 
 </resources>
