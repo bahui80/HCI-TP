@@ -46,7 +46,6 @@ public class CheckNotificationsService extends IntentService{
 								// Información actualizada del vuelo
 								Flight resultFlight = FlightImpl.fromJSON(resultData.getString("return"));	
 								SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(CheckNotificationsService.this);
-								notifyFlight(resultFlight, statusConvert(resultFlight.getStatus()));
 								// Chequeo cambios y disparo nortificaciones
 								if(sharedPref.getBoolean("state_change", true) && !curFlight.getStatus().equals(resultFlight.getStatus())){
 									System.out.println("VUELO "+curFlight.getFlightId()+": "+curFlight.getStatus()+" -> "+resultFlight.getStatus());
