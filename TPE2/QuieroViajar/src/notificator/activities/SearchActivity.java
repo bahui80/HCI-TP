@@ -2,9 +2,10 @@ package notificator.activities;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Comparator;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import notificator.web.api.model.Flight;
 import notificator.web.api.model.FlightImpl;
@@ -414,7 +415,15 @@ public class SearchActivity extends Activity {
 		SharedPreferences.Editor editor = flights.edit();
 		flightsSet = flights.getStringSet("flightObjects", null);
 		if (flightsSet == null) {
-			flightsSet = new HashSet<String>();
+			flightsSet = new TreeSet<String>(new Comparator<String>() {
+				@Override
+				public int compare(String lhs, String rhs) {
+					Flight f1 = FlightImpl.fromJSON(lhs);
+					Flight f2 = FlightImpl.fromJSON(rhs);
+					return f1.getFlightId().compareTo(f2.getFlightId());
+				}
+				
+			});
 		}
 		flightsSet.add(jsonFlight);
 		editor.remove("flightObjects");

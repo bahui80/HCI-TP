@@ -78,12 +78,12 @@ public final class R {
         public static final int detail_image=0x7f0b0004;
         public static final int editText1=0x7f0b0020;
         public static final int erase=0x7f0b002c;
-        public static final int flight_detail_airline=0x7f0b0007;
+        public static final int flight_detail_airline=0x7f0b0006;
         public static final int flight_detail_airport_destiny=0x7f0b0012;
         public static final int flight_detail_airport_origin=0x7f0b000b;
         public static final int flight_detail_baggage=0x7f0b0019;
         public static final int flight_detail_container=0x7f0b0001;
-        public static final int flight_detail_departure_day=0x7f0b0008;
+        public static final int flight_detail_departure_day=0x7f0b0007;
         public static final int flight_detail_destiny=0x7f0b0011;
         public static final int flight_detail_destiny_actual_gate_time=0x7f0b0016;
         public static final int flight_detail_destiny_actual_time=0x7f0b0013;
@@ -100,7 +100,7 @@ public final class R {
         public static final int flight_detail_origin_terminal=0x7f0b000f;
         public static final int flight_detail_status=0x7f0b0009;
         public static final int flight_list=0x7f0b0002;
-        public static final int follow_button=0x7f0b0006;
+        public static final int follow_button=0x7f0b0008;
         public static final int layoutPageDialogRoot=0x7f0b001e;
         public static final int listFlights=0x7f0b0024;
         public static final int listImage=0x7f0b0025;
