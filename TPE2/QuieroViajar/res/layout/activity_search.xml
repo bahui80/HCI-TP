@@ -39,12 +39,6 @@
                         android:text="AR6475"
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:textStyle="bold" />
-                    
-                     <ToggleButton
-                    android:id="@+id/follow_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="ToggleButton" />
                 </LinearLayout>
 
                 <TextView
@@ -62,15 +56,29 @@
                     android:textAppearance="?android:attr/textAppearanceMedium" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/flight_detail_status"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|right"
-                android:text="PLANIFICADO"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="bold"
-                android:visibility="gone" />
+                android:orientation="vertical" >
+
+                <ToggleButton
+                    android:id="@+id/follow_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="ToggleButton" />
+
+                <TextView
+                    android:id="@+id/flight_detail_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|right"
+                    android:text="PLANIFICADO"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textStyle="bold" 
+                    android:visibility="gone">
+                </TextView>
+            </LinearLayout>
         </LinearLayout>
 
         <View
